@@ -1,0 +1,62 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Backend</title>
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.min.css' %}">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% block js %}{% endblock %}
+        {% block css %}{% endblock %}
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse">
+          <div class="container-fluid">
+            <div class="navbar-header">
+              <a class="navbar-brand" href="#">Bandongo Backend</a>
+            </div>
+            <ul class="nav navbar-nav">
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Schedule
+                <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="setSchedule">Set Schedule</a></li>
+                  <li><a href="editSchedule">Edit Schedule</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Member
+                <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Add member</a></li>
+                  <li><a href="#">Edit member</a></li>
+                  <li><a href="#">Add value</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Departments
+                <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Add department</a></li>
+                  <li><a href="#">Edit department</a></li>
+                </ul>
+              </li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Member
+                <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="#">Add member</a></li>
+                  <li><a href="#">Edit member</a></li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+            </ul>
+          </div>
+        </nav>
+        {% block content %}{% endblock %}
+    </body>
+</html>

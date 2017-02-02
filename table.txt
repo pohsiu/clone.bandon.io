@@ -1,0 +1,58 @@
+//店家基本資料,店名,電話,地址,備註
+CREATE TABLE shop
+(
+ shop_id INT auto_increment, 		 //PK
+ shop_name varchar(20),
+ shop_pci varchar(20),
+ telephone varchar(20),
+ address varchar(255),
+ remark varchar(100)
+)
+
+//產品目錄, 品名, 價格
+CREATE TABLE catalog
+(
+ catalog_no INT auto_increment,	//PK
+ shop_id INT,		//FK to shop(shop_id)
+ name varchar(20),
+ pic varchar(20),
+ price INT
+)
+
+//會員資料, 姓名,電話,電子信箱,備註(科室)
+CREATE TABLE member
+(
+ member_no INT auto_increment,		//PK
+ member_name varchar(20),
+ password varchar(20),
+ member_phone varchar(20),
+ member_email varchar(50),
+ member_mark varchar(10),
+ member_auth varchar(10) //      admin or normal
+ member_saving int //存款
+)
+
+
+//訂單紀錄
+CREATE TABLE orderlog
+(
+ log_no INT auto_increment,		//PK
+ member_no INT,		//FK to member(member_no)
+ catalog_no INT, 	//FK to catalog(catalog_no)
+ ordernum INT		//單項商品訂單數量
+ timestamp DATETIME	
+)
+
+//存款記錄
+CREATE TABLE saving
+(
+ saving_no INT auto_increment, //PK
+ member_no INT, //FK to member(member_no)
+ money INT,  //存款金額
+ date datetime,  //存款時間
+ admin_no INT  //收款人no FK to member_no
+)
+
+
+
+

@@ -1,0 +1,14 @@
+{% extends 'bandongo/base.html' %}
+
+
+
+{% block content %}
+{% for member in members %}
+    
+    <h1><a href="{% url 'bandongo.views.member_detail' pk=member.pk %}">{{ member.name }}</a></h1>
+    <p>電話: {{ member.member_phone }}</p>
+    <!--<h1><a href="">{{ member.member_phone }}</a></h1>-->
+    <p>科別: {{ member.member_mark }}</p>
+{% endfor %}
+{% endblock%}
+

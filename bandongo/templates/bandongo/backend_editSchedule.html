@@ -1,0 +1,34 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}<script src="{% static 'js/backend_editSchedule.js' %}"></script>{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Edit Schedule</h1></div>
+    <div><h3>Bandon</h3></div>
+    <div>
+        <!--choose shop-->
+        <select id="bandon" style="width: 20%;" class="form-control">
+            {% for shop in shops %}
+                <option value="{{shop.name}}">{{shop.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div><h3>Drink</h3></div>
+    <div>
+        <!--choose shop-->
+        <select id="drink" style="width: 20%;" class="form-control">
+            {% for drink in drinks %}
+                <option value="{{drink.name}}">{{drink.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div><h3>Due Date Time</h3></div>
+    <!--set due time-->
+    <div>
+        <input type="datetime-local" class="form-control" style="width: 25%;" id="dueDatetime">
+    </div>
+    <div style="margin-top: 20px">
+        <button class="btn btn-default" onclick="submit();">Submit</button>
+    </div>
+</div>
+{% endblock %}

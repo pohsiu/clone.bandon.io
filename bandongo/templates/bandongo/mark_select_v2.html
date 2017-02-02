@@ -1,0 +1,58 @@
+<!-- mark_select.html -->
+
+{% extends 'bandongo/base.html' %}
+
+
+{% block script %}
+        <script type="text/javascript">
+            var js_mark_list = {{ mark_list }};
+            alert(js_mark_list);
+        </script>
+        <script>
+    $(document).ready(
+        function () {
+            $("select#mark").change(function() {
+                if ($(this).val() == 'Z') {
+                     $("select#member_name").html("<option>選擇姓名</option>");
+                     $("select#member_name").attr('disabled', true);
+                }
+                else {
+                    var url = "/mark/" + $(this).val() + "/json_models";
+                    var brand = $(this).val();
+                    $.getJSON(url, function(models) {
+                        // alert(brand);
+                        var options = '<option value="Z">選擇姓名</option>';
+                        for (var i = 0; i < models.length; i++) {
+                        options += '<option value="' + models[i].pk + '">'  + models[i].fields['name'] + '</option>';
+                        }
+                        $("select#member_name").html(options);
+                        $("select#member_name option:first").attr('selected', 'selected');
+                        $("select#member_name").attr('disabled', false);
+                    });
+                }
+            });
+    
+    
+            $("select#member_name").change(function(vent) {
+                if ($(this).val() == -1) {
+                    return;
+                }
+                
+                var e = document.getElementById("member_name");
+                var pkk = e.options[e.selectedIndex].value; //pk number
+                var strUser = e.options[e.selectedIndex].text; //member name
+                
+               
+                // alert(strUser);
+            });
+            });
+        </script>    
+{% endblock %}
+        
+        
+{% block content%}
+      
+        
+{%endblock%}
+
+

@@ -1,0 +1,43 @@
+{% extends 'bandongo/base.html' %}
+
+{% block content %}
+    <h1>{{ de_member.name }}</h1>
+    <p>{{ de_member.member_email }}</p>
+    <div class="content">
+        {% if de_member.member_phone %}
+            {{ de_member.member_phone }}
+        {% endif %}
+    </div>
+    <h1>店家:{{list_food.0.shop_name}}</h1>
+    {% for foods in list_food %}
+        <p>品名: {{ foods.name }}</p>
+        <p>價格: {{ foods.price }}</p>
+    {% endfor %}
+    <!--{% for beverage in list_beverage %}-->
+    <!--    <p>電話: {{ member.member_phone }}</p>-->
+    <!--    <p>科別: {{ member.member_mark }}</p>-->
+    <!--{% endfor %}-->
+{% endblock %}
+
+<!--
+datatime
+
+select * from catalog where shop_no IN
+(
+ Select shop_no from schedule where datatime=today
+)
+
+
+today's shop
+today's shop's catalog
+
+personal data
+ ===save===
+ select SUM(saving) from savelog where member_no = thismember_no
+ group by member_no
+ 
+ ===spend===
+ select SUM(price) from orderlog where member_no = thismember_no
+ group by member_no
+ 
+-->
