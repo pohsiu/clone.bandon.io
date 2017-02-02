@@ -9,7 +9,7 @@ function submit() {
         alert("invalid time");
     } else {
         $.post(
-            "setBandon",
+            "setSchedule",
             {bandon : bandon, drink : drink, dueDatetime: dueDatetime},
             function(response) {
               alert(response);

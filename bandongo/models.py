@@ -69,7 +69,7 @@ class Schedule(models.Model):
     expire = models.BooleanField(default=False)
     
     def __unicode__(self):
-        return u'%s '% (self.beverage)
+        return u'%s %s'% (self.food, self.beverage)
    
 #Product Menu
 class Catalog(models.Model):

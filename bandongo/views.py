@@ -114,40 +114,67 @@ def mark_detail(request, pk):
     return render(request, 'bandongo/mark_detail.html', {'de_member': de_member,'list_food':list_food})
 
 def mark2(request):
-    # mark_list = Member.objects.all()
-    # mark_list = serializers.serialize("json", mark_list)
-    mark_list = Member.objects.values_list('member_mark',flat=True).distinct()
+    mark_list = Member.objects.all()
+  
+    mark_list = serializers.serialize("json", mark_list)
+    
+    # mark_list = Member.objects.values_list('member_mark',flat=True).distinct()
     return render(request, 'bandongo/mark_select_v2.html',{'mark_list':mark_list})
 
 
 
 
 ## backend_part
-def setSchedule(request):
+def setSchedulePage(request):
     shops=Shop.objects.all()
     drinks=Beverage.objects.all()
     return render(request, 'bandongo/backend_setSchedule.html',{'shops':shops, 'drinks':drinks})
 
-def editSchedule(request):
+def editSchedulePage(request):
+    nonExpire=checkNonExpireNum()
     shops=Shop.objects.all()
     drinks=Beverage.objects.all()
-    return render(request, 'bandongo/backend_editSchedule.html',{'shops':shops, 'drinks':drinks})
-    
-def setBandon(request):
+    if nonExpire==0:
+        return render(request, 'bandongo/backend_editSchedule.html',{'nonExpire':nonExpire})
+    elif nonExpire==1:
+        schedule=Schedule.objects.get(expire=False)
+        for index in range(len(shops)):
+            if shops[index]==schedule.food:
+                shops[index].selected="selected"
+            else:
+                shops[index].selected=""
+        for index in range(len(drinks)):
+            if drinks[index]==schedule.beverage:
+                drinks[index].selected="selected"
+            else:
+                drinks[index].selected=""
+        
+        return render(request, 'bandongo/backend_editSchedule.html',{'pk': schedule.pk, 'shops':shops, 'drinks':drinks, 'nonExpire': nonExpire, 'datetime': schedule.date.strftime("%Y-%m-%dT%H:%M")})
+    else:
+        print "bugbugbugbug"
+        
+def setSchedule(request):
+    nonExpire=checkNonExpireNum()
     dueDatetime=parse_datetime(request.POST["dueDatetime"])
-    nonExpire=Schedule.objects.filter(expire=False)
     bandon=Shop.objects.get(name=request.POST["bandon"])
     drink=Beverage.objects.get(name=request.POST["drink"])
-    if len(nonExpire)>1:
-        return HttpResponse("Server Error")
-    elif len(nonExpire)==0:
+    if nonExpire==0:
         Schedule.objects.create(food=bandon, beverage=drink, date=dueDatetime)
         return HttpResponse("Registered Bandon Successfully")
     else:
-        if(nonExpire[0].date<datetime.now()):
+        return HttpResponse("Another schedule has not expired.")
+            
+def checkNonExpireNum():
+    nonExpire=Schedule.objects.filter(expire=False)
+    if len(nonExpire)>1:
+        print "bugbugbugbugbug"
+        return len(nonExpire)
+    elif len(nonExpire)==1:
+        if nonExpire[0].date<datetime.now():
             nonExpire[0].expire=True
             nonExpire[0].save()
-            Schedule.objects.create(food=bandon, beverage=drink, date=dueDatetime)
-            return HttpResponse("Registered Bandon Successfully")
+            return 0
         else:
-            return HttpResponse("Another schedule has not expired.")
+            return 1
+    else:
+        return 0

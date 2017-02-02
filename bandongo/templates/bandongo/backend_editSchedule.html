@@ -3,32 +3,45 @@
 {% block js %}<script src="{% static 'js/backend_editSchedule.js' %}"></script>{% endblock %}
 {% block content %}
 <div class="container">
+    {% if nonExpire == 1 %}
     <div><h1>Edit Schedule</h1></div>
-    <div><h3>Bandon</h3></div>
-    <div>
-        <!--choose shop-->
-        <select id="bandon" style="width: 20%;" class="form-control">
-            {% for shop in shops %}
-                <option value="{{shop.name}}">{{shop.name}}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div><h3>Drink</h3></div>
-    <div>
-        <!--choose shop-->
-        <select id="drink" style="width: 20%;" class="form-control">
-            {% for drink in drinks %}
-                <option value="{{drink.name}}">{{drink.name}}</option>
-            {% endfor %}
-        </select>
-    </div>
-    <div><h3>Due Date Time</h3></div>
-    <!--set due time-->
-    <div>
-        <input type="datetime-local" class="form-control" style="width: 25%;" id="dueDatetime">
-    </div>
-    <div style="margin-top: 20px">
-        <button class="btn btn-default" onclick="submit();">Submit</button>
-    </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>pk</th>
+                    <th>Shop</th>
+                    <th>Drink</th>
+                    <th>Due Date Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="pk">{{ pk }}</td>
+                    <td>
+                        <select id="bandon" style="width: 60%;" class="form-control">
+                            {% for shop in shops %}
+                                <option value="{{shop.name}}" {{shop.selected}}>{{shop.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <select id="drink" style="width: 60%;" class="form-control">
+                            {% for drink in drinks %}
+                                <option value="{{drink.name}}" {{drink.selected}}>{{drink.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <input type="datetime-local" class="form-control" style="width: 60%;" id="dueDatetime" value="{{ datetime }}">
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div style="margin-top: 20px">
+            <button class="btn btn-default" onclick="submit();">Submit</button>
+        </div>
+    {% else %}
+        <div><h1>No non-expired schedule.</h1></div>
+    {% endif %}
 </div>
 {% endblock %}
