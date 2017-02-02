@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from models import Member, Shop, Catalog, Orderlog, Savelog, Beverage, Schedule
+from models import Category
 
 from .forms import MemberForm
 from django.shortcuts import render_to_response, RequestContext
@@ -113,8 +114,9 @@ def mark_detail(request, pk):
     return render(request, 'bandongo/mark_detail.html', {'de_member': de_member,'list_food':list_food})
 
 def mark2(request):
-    mark_list = Member.objects.all()
-    mark_list = serializers.serialize("json", mark_list)
+    # mark_list = Member.objects.all()
+    # mark_list = serializers.serialize("json", mark_list)
+    mark_list = Member.objects.values_list('member_mark',flat=True).distinct()
     return render(request, 'bandongo/mark_select_v2.html',{'mark_list':mark_list})
 
 
