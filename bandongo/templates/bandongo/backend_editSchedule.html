@@ -9,6 +9,7 @@
             <thead>
                 <tr>
                     <th>pk</th>
+                    <th>name</th>
                     <th>Shop</th>
                     <th>Drink</th>
                     <th>Due Date Time</th>
@@ -17,15 +18,16 @@
             <tbody>
                 <tr>
                     <td id="pk">{{ pk }}</td>
+                    <td id="name"><input type="text" class="form-control" id="schedule_name" value="{{ name }}"></td>
                     <td>
-                        <select id="bandon" style="width: 60%;" class="form-control">
+                        <select id="bandon" class="form-control">
                             {% for shop in shops %}
                                 <option value="{{shop.name}}" {{shop.selected}}>{{shop.name}}</option>
                             {% endfor %}
                         </select>
                     </td>
                     <td>
-                        <select id="drink" style="width: 60%;" class="form-control">
+                        <select id="drink" class="form-control">
                             {% for drink in drinks %}
                                 <option value="{{drink.name}}" {{drink.selected}}>{{drink.name}}</option>
                             {% endfor %}
@@ -41,7 +43,7 @@
             <button class="btn btn-default" onclick="submit();">Submit</button>
         </div>
     {% else %}
-        <div><h1>No non-expired schedule.</h1></div>
+        <div><h1>No non-finished schedule.</h1></div>
     {% endif %}
 </div>
 {% endblock %}

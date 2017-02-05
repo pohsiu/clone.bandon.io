@@ -1,0 +1,34 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Edit Schedule</h1></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>pk</th>
+                    <th>name</th>
+                    <th>Shop</th>
+                    <th>Drink</th>
+                    <th>Due Date Time</th>
+                    <th>Expired</th>
+                    <th>Finished</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for schedule in schedules %}
+                <tr>
+                    <td>{{ schedule.pk }}</td>
+                    <td>{{ schedule.name }}</td>
+                    <td>{{ schedule.food.name }}</td>
+                    <td>{{ schedule.beverage.name }}</td>
+                    <td>{{ schedule.date }}</td>
+                    <td>{{ schedule.expire }}</td>
+                    <td>{{ schedule.finish }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+{% endblock %}

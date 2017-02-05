@@ -1,18 +1,16 @@
 $( document ).ready(function() {
 });
 function submit() {
-    // var bandon=$("#bandon").val();
-    // var drink=$("#drink").val();
-    // var dueDatetime=$("#dueDatetime").val();
-    // if(Date.parse(dueDatetime)-1000*60*60*8<Date.now()) {
-    //     alert("invalid time");
-    // } else {
-    //     $.post(
-    //         "setBandon",
-    //         {bandon : bandon, drink : drink, dueDatetime: dueDatetime},
-    //         function(response) {
-    //           alert(response);
-    //         }
-    //     );
-    // }
+    var name=$("#schedule_name").val();
+    var bandon=$("#bandon").val();
+    var drink=$("#drink").val();
+    var dueDatetime=$("#dueDatetime").val();
+    var pk=$("#pk").html();
+    $.post(
+        "editSchedule",
+        {pk: pk, schedule_name: name, bandon : bandon, drink : drink, dueDatetime: dueDatetime},
+        function(response) {
+          alert(response);
+        }
+    );
 }

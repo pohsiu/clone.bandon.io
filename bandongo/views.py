@@ -16,6 +16,7 @@ from django.db.models import Sum
 
 from models import VehicleBrand,VehicleModel
 from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
 
 from datetime import datetime
 from datetime import date #detail index used
@@ -142,6 +143,7 @@ def mark2(request):
 
 
 ## backend_part
+## page part
 def setSchedulePage(request):
     shops=Shop.objects.all()
     drinks=Beverage.objects.all()
@@ -165,13 +167,37 @@ def editSchedulePage(request):
             else:
                 drinks[index].selected=""
         
-        return render(request, 'bandongo/backend_editSchedule.html',{'pk': nonFinish[0].pk, 'shops':shops, 'drinks':drinks, 'nonFinish': len(nonFinish), 'datetime': nonFinish[0].date.strftime("%Y-%m-%dT%H:%M")})
+        return render(request, 'bandongo/backend_editSchedule.html',{'name': nonFinish[0].name, 'pk': nonFinish[0].pk, 'shops':shops, 'drinks':drinks, 'nonFinish': len(nonFinish), 'datetime': nonFinish[0].date.strftime("%Y-%m-%dT%H:%M")})
     else:
         print "bugbugbugbug"
 
-def orderPage(request):
-    return render(request, 'bandongo/backend_order.html',{})
+def scheduleListPage(request):
+    schedules=Schedule.objects.all()
+    return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules})
 
+def orderPage(request):
+    try:
+        schedule=Schedule.objects.get(finish=False)
+        catalogs=Catalog.objects.filter(shop_name=schedule.food)
+        orders=[]
+        total_price=0
+        for catalog in catalogs:
+            print catalog.name
+            tempOrders=Orderlog.objects.filter(schedule_name=schedule, catalog_name=catalog)
+            count=0
+            price=0
+            for tempOrder in tempOrders:
+                count+=tempOrder.ordernum
+                price+=tempOrder.ordernum*catalog.price
+            if count > 0:
+                orders.append({"food_name": catalog.name, "count": count, 'price': price})
+                total_price+=price
+        return render(request, 'bandongo/backend_order.html',{'schedule': schedule, 'orders': orders, 'total_price': total_price})
+    except ObjectDoesNotExist:
+        return render(request, 'bandongo/backend_order.html',{'schedule': None})
+
+
+## function part
 def setSchedule(request):
     checkExpire()
     nonFinish=len(Schedule.objects.filter(finish=False))
@@ -179,16 +205,31 @@ def setSchedule(request):
     bandon=Shop.objects.get(name=request.POST["bandon"])
     drink=Beverage.objects.get(name=request.POST["drink"])
     if nonFinish==0:
-        Schedule.objects.create(food=bandon, beverage=drink, date=dueDatetime)
-        return HttpResponse("Registered Bandon Successfully")
+        Schedule.objects.create(name=request.POST["schedule_name"], food=bandon, beverage=drink, date=dueDatetime)
+        return HttpResponse("Registered Schedule Successfully")
     else:
         return HttpResponse("Another schedule has not expired.")
-            
+
+def editSchedule(request):
+    nonFinish=len(Schedule.objects.filter(finish=False))
+    schedule=Schedule.objects.get(pk=request.POST["pk"])
+    schedule.date=parse_datetime(request.POST["dueDatetime"])
+    schedule.food=Shop.objects.get(name=request.POST["bandon"])
+    schedule.beverage=Beverage.objects.get(name=request.POST["drink"])
+    schedule.name=request.POST["schedule_name"]
+    schedule.save();
+
+    return HttpResponse("Edit Schedule Successfully")
+
+def finishSchedule(request):
+    schedule=Schedule.objects.get(pk=request.POST["pk"])
+    schedule.finish=True
+    schedule.save();
+    return HttpResponse("Finish Schedule Successfully")
+
 def checkExpire():
     nonExpire=Schedule.objects.filter(expire=False)
-    if len(nonExpire)>1:
-        print "bugbugbugbugbug"
-    elif len(nonExpire)==1:
-        if nonExpire[0].date<datetime.now():
+    for schedule in nonExpire:
+        if schedule.date<datetime.now():
             nonExpire[0].expire=True
             nonExpire[0].save()

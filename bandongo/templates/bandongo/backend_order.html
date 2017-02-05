@@ -2,4 +2,63 @@
 {% load staticfiles%}
 {% block js %}<script src="{% static 'js/backend_order.js' %}"></script>{% endblock %}
 {% block content %}
+<div class="container">
+	{% if schedule %}
+    <div><h1>Schedule</h1></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>pk</th>
+                    <th>name</th>
+                    <th>Shop</th>
+                    <th>Drink</th>
+                    <th>Due Date Time</th>
+                    <th>Expired</th>
+                    <th>Finished</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td id="pk">{{ schedule.pk }}</td>
+                    <td>{{ schedule.name }}</td>
+                    <td>{{ schedule.food.name }}</td>
+                    <td>{{ schedule.beverage.name }}</td>
+                    <td>{{ schedule.date }}</td>
+                    <td>{{ schedule.expire }}</td>
+                    <td>{{ schedule.finish }}</td>
+                </tr>
+            </tbody>
+        </table>
+    	<div><h1>Bandon Orders</h1></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Food</th>
+                    <th>Count</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+            	{% for order in orders %}
+                <tr>
+                	<td>{{ order.food_name }}</td>
+                    <td>{{ order.count }}</td>
+                    <td>{{ order.price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tbody>
+                <tr>
+                	<td colspan="2">Total Price</td>
+                	<td>{{ total_price }}</td>
+                </tr>
+            </tbody>
+        </table>
+    	<div style="margin-top: 20px">
+        	<button class="btn btn-default" onclick="finish();">Finish</button>
+    	</div>
+    {% else %}
+    	<div><h1>No non-finished schedule.</h1></div>
+    {% endif %}
+</div>
 {% endblock %}

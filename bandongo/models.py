@@ -96,7 +96,7 @@ class Catalog(models.Model):
 class Orderlog(models.Model):
     member_name = models.ForeignKey(Member)
     schedule_name = models.ForeignKey(Schedule)
-    catalog_name = models.CharField(max_length=10)
+    catalog_name = models.ForeignKey(Catalog)
     ordernum = models.IntegerField(default=1) #single product ordering num 
     orderdate = models.DateTimeField(default=timezone.now)
     orderremark = models.CharField(max_length=10,blank=True)
