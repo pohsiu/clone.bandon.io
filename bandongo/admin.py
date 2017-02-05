@@ -9,6 +9,7 @@ from .models import Schedule
 from .models import Category
 
 
+
 from .models import VehicleBrand, VehicleModel
 
 
@@ -21,8 +22,11 @@ class SavelogAdmin(admin.ModelAdmin):
     # search_fields = ('member_name')
 class CatalogAdmin(admin.ModelAdmin):
     list_display = ('name','shop_name','pic','price')
+    
+  
+    
 class OrderlogAdmin(admin.ModelAdmin):
-    list_display = ('member_name','catalog_name','ordernum','orderdate')
+    list_display = ('member_name', 'schedule_name','catalog_name', 'ordernum','orderdate')
     list_filter = ('orderdate',)
     date_hierarchy = 'orderdate'
     ordering = ('-orderdate',)
@@ -31,7 +35,7 @@ class ShopAdmin(admin.ModelAdmin):
 class BeverageAdmin(admin.ModelAdmin):
     list_display = ('name','pic','telephone','address','remark')
 class ScheduleAdmin(admin.ModelAdmin):
-    list_display = ('food','beverage','date','expire')
+    list_display = ('name', 'food','beverage','date','expire','finish')
 
 admin.site.register(Member, MemberAdmin)
 admin.site.register(Savelog, SavelogAdmin)

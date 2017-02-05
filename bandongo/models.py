@@ -1,7 +1,10 @@
 from __future__ import unicode_literals
 from django.db import models
 from django.utils import timezone
-from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
+
+
+
 
 #category
 class Category(models.Model):
@@ -63,30 +66,37 @@ class Beverage(models.Model):
         return u'%s '% (self.name)
 
 class Schedule(models.Model):
+    name = models.CharField(max_length=15)
+    comment = models.CharField(max_length=50, blank=True)
     food = models.ForeignKey(Shop)
     beverage = models.ForeignKey(Beverage, blank=True)
-    date = models.DateTimeField() #alter it to only date!!! 1/30 changed
+    date = models.DateTimeField() 
     expire = models.BooleanField(default=False)
+    finish = models.BooleanField(default=False)
     
     def __unicode__(self):
-        return u'%s %s'% (self.food, self.beverage)
+        return u'%s'% (self.name)
    
-#Product Menu
+#Product Food Menu
 class Catalog(models.Model):
     shop_name = models.ForeignKey(Shop)
     name = models.CharField(max_length=10)
     pic = models.URLField(blank=True)
     price = models.IntegerField()
+    
     def store(self):
         self.save()
     def __unicode__(self):
         return u'%s '% (self.name)
+        
+
 
 
 #Transaction log
 class Orderlog(models.Model):
     member_name = models.ForeignKey(Member)
-    catalog_name = models.ForeignKey(Catalog)
+    schedule_name = models.ForeignKey(Schedule)
+    catalog_name = models.CharField(max_length=10)
     ordernum = models.IntegerField(default=1) #single product ordering num 
     orderdate = models.DateTimeField(default=timezone.now)
     orderremark = models.CharField(max_length=10,blank=True)

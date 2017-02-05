@@ -41,7 +41,7 @@ urlpatterns = [
     
     
     #form selection json temp html 
-    url(r'^mark/(?P<mark>[-\w]+)/json_models/' , views.filter_json),
+    url(r'^mark/json_models' , views.filter_json),
     
     #example part
     url(r'^select/', views.brand_model_select),
@@ -53,6 +53,7 @@ urlpatterns = [
     url(r'^backend/$', views.setSchedulePage),
     url(r'^backend/setSchedulePage$', views.setSchedulePage),
     url(r'^backend/editSchedulePage$', views.editSchedulePage),
+    url(r'^backend/order$', views.orderPage),
     
     ## function part
     url(r'^backend/setSchedule$', views.setSchedule),

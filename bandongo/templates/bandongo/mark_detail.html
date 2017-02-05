@@ -8,15 +8,25 @@
             {{ de_member.member_phone }}
         {% endif %}
     </div>
-    <h1>店家:{{list_food.0.shop_name}}</h1>
+    <h1>今天吃:{{list_food.0.shop_name}}</h1>
     {% for foods in list_food %}
         <p>品名: {{ foods.name }}</p>
         <p>價格: {{ foods.price }}</p>
     {% endfor %}
-    <!--{% for beverage in list_beverage %}-->
-    <!--    <p>電話: {{ member.member_phone }}</p>-->
-    <!--    <p>科別: {{ member.member_mark }}</p>-->
-    <!--{% endfor %}-->
+    <h1>今天喝:{{pic_beverage.0.name}}</h1>
+    <p>{{pic_beverage.0.pic}}</p>
+    
+    {% for savings in savelogs %}
+    
+    {% endfor %}
+    <p>總存款:{{save_total}}</p>
+    {% for orders in orderlogs %}
+    
+    {% endfor %}
+    <p>總花費:{{cost_total}}</p>
+    
+    
+    <p>餘額:{{ total_sum }}</p>
 {% endblock %}
 
 <!--
