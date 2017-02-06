@@ -1,0 +1,31 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}<script src="{% static 'js/backend_addMember.js' %}"></script>{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Add Member</h1></div>
+    <div><h3>Name</h3></div>
+    <div>
+        <input type="text" class="form-control" style="width: 20%;" id="name">
+    </div>
+    <div><h3>Phone</h3></div>
+    <div>
+        <input type="text" class="form-control" style="width: 20%;" id="phone">
+    </div>
+    <div><h3>Email</h3></div>
+    <div>
+        <input type="text" class="form-control" style="width: 20%;" id="email">
+    </div>
+    <div><h3>Department</h3></div>
+    <div>
+        <select id="category" style="width: 20%;" class="form-control">
+            {% for category in categories %}
+                <option value="{{category.category_name}}">{{category.category_name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div style="margin-top: 20px">
+        <button class="btn btn-default" onclick="submit();">Submit</button>
+    </div>
+</div>
+{% endblock %}

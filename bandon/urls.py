@@ -55,11 +55,14 @@ urlpatterns = [
     url(r'^backend/editSchedulePage$', views.editSchedulePage),
     url(r'^backend/scheduleListPage$', views.scheduleListPage),
     url(r'^backend/order$', views.orderPage),
+    url(r'^backend/schedule/([0-9]+)$', views.orderDetailPage),
+    url(r'^backend/addMemberPage$', views.addMemberPage),
     
     ## function part
     url(r'^backend/setSchedule$', views.setSchedule),
     url(r'^backend/editSchedule$', views.editSchedule),
     url(r'^backend/finishSchedule$', views.finishSchedule),
+    url(r'^backend/addMember$', views.addMember),
 
     url(r'^admin/', admin.site.urls),
 ]

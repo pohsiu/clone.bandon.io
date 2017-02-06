@@ -33,6 +33,7 @@
         <table class="table">
             <thead>
                 <tr>
+                    <th>Name</th>
                     <th>Food</th>
                     <th>Count</th>
                     <th>Price</th>
@@ -40,22 +41,20 @@
             </thead>
             <tbody>
             {% for bag in bags %}
-            <tr><td colspan="3">Bag {{ forloop.counter }}</td></tr>
+            <tr><td colspan="4">Bag {{ forloop.counter }}</td></tr>
             	{% for order in bag %}
                 <tr>
-                	<td>{{ order.food_name }}</td>
-                    <td>{{ order.count }}</td>
-                    <td>{{ order.price }}</td>
+                    <td>{{ order.member_name.name }}</td>
+                	<td>{{ order.catalog_name.name }}</td>
+                    <td>{{ order.ordernum }}</td>
+                    <td>{{ order.orderprice }}</td>
                 </tr>
                 {% endfor %}
             {% endfor %}
             </tbody>
         </table>
-    	<div style="margin-top: 20px">
-        	<button class="btn btn-default" onclick="finish();">Finish</button>
-    	</div>
     {% else %}
-    	<div><h1>No non-finished schedule.</h1></div>
+    	<div><h1>No this schedule.</h1></div>
     {% endif %}
 </div>
 {% endblock %}

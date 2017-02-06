@@ -20,7 +20,7 @@
                 {% for schedule in schedules %}
                 <tr>
                     <td>{{ schedule.pk }}</td>
-                    <td>{{ schedule.name }}</td>
+                    <td><a href="schedule/{{ schedule.pk }}">{{ schedule.name }}</a></td>
                     <td>{{ schedule.food.name }}</td>
                     <td>{{ schedule.beverage.name }}</td>
                     <td>{{ schedule.date }}</td>

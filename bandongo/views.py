@@ -176,6 +176,7 @@ def scheduleListPage(request):
     return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules})
 
 def orderPage(request):
+    checkExpire()
     try:
         schedule=Schedule.objects.get(finish=False)
         catalogs=Catalog.objects.filter(shop_name=schedule.food)
@@ -184,7 +185,7 @@ def orderPage(request):
         for i in range(3):
             bags.append([])
             for catalog in catalogs:
-                tempOrders=Orderlog.objects.filter(schedule_name=schedule, catalog_name=catalog, member_name__member_mark=i+1)
+                tempOrders=Orderlog.objects.filter(schedule_name=schedule, catalog_name=catalog, member_name__member_mark__bag=(i+1))
                 count=0
                 price=0
                 for tempOrder in tempOrders:
@@ -193,10 +194,25 @@ def orderPage(request):
                 if count > 0:
                     bags[i].append({"food_name": catalog.name, "count": count, 'price': price})
                     total_price+=price
-        return render(request, 'bandongo/backend_order.html',{'schedule': schedule, 'firstBag': bags[0], 'secondBag': bags[1], 'thirdBag': bags[2], 'total_price': total_price})
+        return render(request, 'bandongo/backend_order.html',{'schedule': schedule, 'bags': bags, 'total_price': total_price})
     except ObjectDoesNotExist:
         return render(request, 'bandongo/backend_order.html',{'schedule': None})
 
+def orderDetailPage(request, pk):
+    checkExpire()
+    try:
+        schedule=Schedule.objects.get(pk=pk)
+        bags=[]
+        for i in range(3):
+            orders=Orderlog.objects.filter(schedule_name=schedule, member_name__member_mark__bag=(i+1))
+            bags.append(orders)
+        return render(request, 'bandongo/backend_orderDetail.html',{'schedule': schedule, 'bags': bags})
+    except ObjectDoesNotExist:
+        return render(request, 'bandongo/backend_orderDetail.html',{'schedule': None})
+
+def addMemberPage(request):
+    categories=Category.objects.all()
+    return render(request, 'bandongo/backend_addMember.html',{'categories': categories})
 
 ## function part
 def setSchedule(request):
@@ -227,6 +243,11 @@ def finishSchedule(request):
     schedule.finish=True
     schedule.save();
     return HttpResponse("Finish Schedule Successfully")
+
+def addMember(request):
+    category=Category.objects.get(category_name=request.POST["category"])
+    Member.objects.create(name=request.POST["name"], member_phone=request.POST["phone"], member_email=request.POST["email"], member_mark=category)
+    return HttpResponse("Add Member Successfully")
 
 def checkExpire():
     nonExpire=Schedule.objects.filter(expire=False)
