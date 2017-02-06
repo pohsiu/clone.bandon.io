@@ -221,6 +221,10 @@ def addMemberPage(request):
     categories=Category.objects.all()
     return render(request, 'bandongo/backend_addMember.html',{'categories': categories})
 
+def memberListPage(request):
+    members=Member.objects.order_by('member_mark')
+    return render(request, 'bandongo/backend_memberList.html',{'members': members})
+
 ## function part
 def setSchedule(request):
     checkExpire()
