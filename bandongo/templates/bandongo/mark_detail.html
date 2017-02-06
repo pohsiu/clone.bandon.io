@@ -8,25 +8,134 @@
             {{ de_member.member_phone }}
         {% endif %}
     </div>
-    <h1>今天吃:{{list_food.0.shop_name}}</h1>
-    {% for foods in list_food %}
-        <p>品名: {{ foods.name }}</p>
-        <p>價格: {{ foods.price }}</p>
-    {% endfor %}
-    <h1>今天喝:{{pic_beverage.0.name}}</h1>
-    <p>{{pic_beverage.0.pic}}</p>
+    <form name='foodorder' action=''>
+        <table style="width:100%">
+        <tr>
+            <th colspan="1">{{schedule_name}}</th>
+            <th colspan="3">Food:{{list_food.0.shop_name}}</th>
+        </tr>
+        {% for foods in list_food %}
+            <tr>
+                <td>{{foods.name}}</td></td>
+                <td>Food_pic</td>
+                <td>{{foods.price}}</td>
+                <td>
+                    <select name=num>
+                    <option value=0>0</option>
+                    <option value=1>1</option>
+                  	<option value=2>2</option>
+                  	<option value=3>3</option>
+                  	<option value=4>4</option>
+                    <option value=5>5</option>
+                  	</select>
+                </td>
+            </tr>
+        {% endfor %}
+        </table>
+    </form>
+    <form name='beverage_order' action=''>
+        <table style="width:100%">
+        <tr>
+            <th colspan="1">{{schedule_name}}</th>
+            <th colspan="3">Drink:{{pic_beverage.0.name}}</th>
+        </tr>
+        <tr>
+            <th colspan="4">
+               {{pic_beverage.0.pic}}
+            </th>
+        </tr>
+        <tr>
+            <td>喝什麼</td>
+            <th colspan="3">
+    	        <input type="text" name="drinking">
+            </th>
+        </tr>
+        <tr>
+  	        <td>甜度冰塊</td>
+            <th colspan="3">
+              <select name=sugar>
+              <option value="無糖">無糖</option>
+              <option value="微糖">微糖</option>
+              <option value="半糖">半糖</option>
+              <option value="少糖">少糖</option>
+              <option value="正常甜">正常甜</option>
+              </select>
+              <select name=ice>
+              <option value="去冰">去冰</option>
+              <option value="少冰">少冰</option>
+              <option value="微冰">微冰</option>
+              <option value="常溫">常溫</option>
+              <option value="正常冰">正常冰</option>
+              <option value="熱的">熱的</option>
+              </select>
+            </th>
+        </tr>
+        <tr>
+  	        <td>價格</td>
+            <th colspan="3">
+    	        <input type="number" name="drink_price" min="0" max="100">
+            </th>
+        </tr>
+        </table>
+    </form>
     
+    
+    <h1>存款紀錄</h1>
+    
+    <table style="width:100%">
+      <tr>
+        <th>存款日期</th>
+        <th>收款人</th>
+        <th>金額</th>
+        
+      </tr>
     {% for savings in savelogs %}
-    
+      <tr>
+        <td>{{savings.tran_date}}</td>
+        <td>{{savings.admin_name}}</td>
+        <td>{{savings.money}}</td>
+        
+      </tr>
     {% endfor %}
-    <p>總存款:{{save_total}}</p>
-    {% for orders in orderlogs %}
+       <tr>
+         <th></th>
+         <th>總存款</th>
+         <th>
+             {{save_total}}
+         </th>
+     </table>
     
+    <h1>消費紀錄</h1>
+    
+    <table style="width:100%">
+      <tr>
+        <th>消費日期</th>
+        <th>品名</th>
+        <th>金額</th>
+        
+      </tr>
+    {% for orders in costlogs %}
+      <tr>
+        <td>{{orders.orderdate}}</td>
+        <td>{{orders.catalog_name}}</td>
+        <td>{{orders.orderprice}}</td>
+        
+      </tr>
     {% endfor %}
-    <p>總花費:{{cost_total}}</p>
+       <tr>
+         <th></th>
+         <th>總花費</th>
+         <th>
+             {{cost_total}}
+         </th>
+     </table>
     
     
-    <p>餘額:{{ total_sum }}</p>
+    
+    
+    
+    
+    <h1>餘額:{{ total_sum }}</h1>
 {% endblock %}
 
 <!--
