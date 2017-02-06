@@ -17,7 +17,7 @@ class MemberAdmin(admin.ModelAdmin):
     list_display = ('name', 'member_phone', 'member_email','member_mark','member_auth','member_saving')
     search_fields = ('member_name','member_email')
 class SavelogAdmin(admin.ModelAdmin):
-    list_display = ('member_name','money','tran_date')
+    list_display = ('member_name','money','admin_name','tran_date')
     list_filter = ('tran_date',)
     # search_fields = ('member_name')
 class CatalogAdmin(admin.ModelAdmin):
@@ -26,7 +26,7 @@ class CatalogAdmin(admin.ModelAdmin):
   
     
 class OrderlogAdmin(admin.ModelAdmin):
-    list_display = ('member_name', 'schedule_name','catalog_name', 'ordernum','orderdate')
+    list_display = ('member_name', 'schedule_name','catalog_name','orderprice', 'ordernum','orderdate')
     list_filter = ('orderdate',)
     date_hierarchy = 'orderdate'
     ordering = ('-orderdate',)

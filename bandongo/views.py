@@ -107,25 +107,32 @@ def mark_detail(request, pk):
     now = datetime.now()
     
     schedules = Schedule.objects.filter(expire=False)
+    schedule_name= 'Resting'
     duedate = schedules[0].date
     if now < duedate:
         id_food = schedules[0].food
         id_beverage = schedules[0].beverage
         list_food = Catalog.objects.filter(shop_name=id_food)
         pic_beverage = Beverage.objects.filter(name=id_beverage)
+        schedule_name = schedules[0].name
     else:
         list_food=''
         pic_beverage=''
+        
     
     save_total = Savelog.objects.filter(member_name=pk).aggregate(save_total=Sum('money'))['save_total']
+    if save_total==None:
+        save_total=0
+    savelogs = Savelog.objects.filter(member_name=pk).order_by('tran_date')
     
-    savelogs = Savelog.objects.filter(member_name=pk)
     cost_total = Orderlog.objects.filter(member_name=pk).aggregate(cost_total=Sum('orderprice'))['cost_total']
-    costlogs = Savelog.objects.filter(member_name=pk)
+    if cost_total==None:
+        cost_total=0
+    costlogs = Orderlog.objects.filter(member_name=pk)
     
     total_sum = save_total - cost_total
     
-    return render(request, 'bandongo/mark_detail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'costlogs':costlogs,'total_sum':total_sum})
+    return render(request, 'bandongo/mark_detail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'costlogs':costlogs,'total_sum':total_sum,'schedule_name':schedule_name})
 
 def mark2(request):
     if request.method == "POST":
