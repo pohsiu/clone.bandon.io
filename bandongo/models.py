@@ -9,7 +9,7 @@ from django.utils import timezone
 #category
 class Category(models.Model):
     category_name = models.CharField(max_length=10)
-    
+    bag = models.IntegerField()
     def __unicode__(self):
         return u'%s '% (self.category_name)
 

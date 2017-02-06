@@ -179,20 +179,21 @@ def orderPage(request):
     try:
         schedule=Schedule.objects.get(finish=False)
         catalogs=Catalog.objects.filter(shop_name=schedule.food)
-        orders=[]
+        bags=[]
         total_price=0
-        for catalog in catalogs:
-            print catalog.name
-            tempOrders=Orderlog.objects.filter(schedule_name=schedule, catalog_name=catalog)
-            count=0
-            price=0
-            for tempOrder in tempOrders:
-                count+=tempOrder.ordernum
-                price+=tempOrder.ordernum*catalog.price
-            if count > 0:
-                orders.append({"food_name": catalog.name, "count": count, 'price': price})
-                total_price+=price
-        return render(request, 'bandongo/backend_order.html',{'schedule': schedule, 'orders': orders, 'total_price': total_price})
+        for i in range(3):
+            bags.append([])
+            for catalog in catalogs:
+                tempOrders=Orderlog.objects.filter(schedule_name=schedule, catalog_name=catalog, member_name__member_mark=i+1)
+                count=0
+                price=0
+                for tempOrder in tempOrders:
+                    count+=tempOrder.ordernum
+                    price+=tempOrder.ordernum*catalog.price
+                if count > 0:
+                    bags[i].append({"food_name": catalog.name, "count": count, 'price': price})
+                    total_price+=price
+        return render(request, 'bandongo/backend_order.html',{'schedule': schedule, 'firstBag': bags[0], 'secondBag': bags[1], 'thirdBag': bags[2], 'total_price': total_price})
     except ObjectDoesNotExist:
         return render(request, 'bandongo/backend_order.html',{'schedule': None})
 

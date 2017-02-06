@@ -36,7 +36,9 @@ class BeverageAdmin(admin.ModelAdmin):
     list_display = ('name','pic','telephone','address','remark')
 class ScheduleAdmin(admin.ModelAdmin):
     list_display = ('name', 'food','beverage','date','expire','finish')
-
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ('category_name', 'bag')
+    
 admin.site.register(Member, MemberAdmin)
 admin.site.register(Savelog, SavelogAdmin)
 admin.site.register(Catalog, CatalogAdmin)
@@ -44,7 +46,7 @@ admin.site.register(Orderlog, OrderlogAdmin)
 admin.site.register(Shop, ShopAdmin)
 admin.site.register(Beverage, BeverageAdmin)
 admin.site.register(Schedule, ScheduleAdmin)
-admin.site.register(Category)
+admin.site.register(Category, CategoryAdmin)
 
 
 admin.site.register(VehicleBrand)
