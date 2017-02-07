@@ -250,10 +250,14 @@ def editSchedule(request):
     return HttpResponse("Edit Schedule Successfully")
 
 def finishSchedule(request):
+    checkExpire()
     schedule=Schedule.objects.get(pk=request.POST["pk"])
-    schedule.finish=True
-    schedule.save();
-    return HttpResponse("Finish Schedule Successfully")
+    if not schedule.expire:
+        return HttpResponse("The schedule is not expired.")
+    else:
+        schedule.finish=True
+        schedule.save();
+        return HttpResponse("Finish Schedule Successfully")
 
 def addMember(request):
     category=Category.objects.get(category_name=request.POST["category"])
