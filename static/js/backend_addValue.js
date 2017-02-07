@@ -1,10 +1,11 @@
-var mark_list;
-var member_list;
+var categories;
+var members;
 $( document ).ready(function() {
     var url = "/getCateMem";
     $.getJSON(url, function(res) {
         categories=res.categories;
         members=res.members;
+        // alert(JSON.stringify(members[0][0]));
         
         options="<option value='Z' select>選擇姓名</option>"
         for(var i=0; i<categories.length; i++) {
@@ -25,7 +26,7 @@ $( document ).ready(function() {
             
             var options = '<option value="Z">選擇姓名</option>';
             for (var i = 0; i < members[brand].length; i++) {
-                options += '<option value="' + members[brand][i].pk + '">'  + members[brand][i].name + '</option>';
+                options += '<option value="' + members[brand][i].id + '">'  + members[brand][i].name + '</option>';
             }
             $("#member").html(options);
             $("#member option:first").attr('selected', 'selected');
@@ -36,14 +37,13 @@ $( document ).ready(function() {
 function submit() {
     var member=$("#member").val();
     var value=$("#value").val();
-    var email=$("#email").val();
     var admin=$("#admin").val();
     var comment=$("#comment").val();
-    // $.post(
-    //     "addMember",
-    //     {name: name, phone: phone, email: email, category: category},
-    //     function(response) {
-    //       alert(response);
-    //     }
-    // );
+    $.post(
+        "addValue",
+        {member: member, value: value, admin: admin, comment: comment},
+        function(response) {
+          alert(response);
+        }
+    );
 }

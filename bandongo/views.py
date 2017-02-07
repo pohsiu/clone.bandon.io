@@ -90,13 +90,7 @@ def filter_json(request):
         
     return JsonResponse({'member_list': models, 'mark_list': marks})
     
-def mark_select(request):
-    if request.method == "POST":
-        member_pk = request.POST['member_name']
-        return redirect('bandongo.views.mark_detail', pk=member_pk)
-    
-    mark_list = Member.objects.values_list('member_mark',flat=True).distinct()
-    return render(request, 'bandongo/mark_select.html',{'mark_list' : mark_list})
+
     
 
 def mark_detail(request, pk):
@@ -107,7 +101,7 @@ def mark_detail(request, pk):
     now = datetime.now()
     
     schedules = Schedule.objects.filter(expire=False)
-    schedule_name= 'Resting'
+    schedule_name = None
     duedate = schedules[0].date
     if now < duedate:
         id_food = schedules[0].food
@@ -144,7 +138,7 @@ def mark2(request):
         mark_list[i]['index']=i
    
     # mark_list = Member.objects.values_list('member_mark',flat=True).distinct()
-    return render(request, 'bandongo/mark_select_v2.html',{'mark_list':mark_list})
+    return render(request, 'bandongo/mark_select.html',{'mark_list':mark_list})
 
 
 
@@ -221,6 +215,11 @@ def addMemberPage(request):
     categories=Category.objects.all()
     return render(request, 'bandongo/backend_addMember.html',{'categories': categories})
 
+def editMemberPage(request, pk):
+    categories=Category.objects.all()
+    member=Member.objects.get(pk=pk)
+    return render(request, 'bandongo/backend_editMember.html',{'categories': categories, 'member': member})
+
 def memberListPage(request):
     members=Member.objects.order_by('member_mark')
     return render(request, 'bandongo/backend_memberList.html',{'members': members})
@@ -267,6 +266,26 @@ def addMember(request):
     category=Category.objects.get(category_name=request.POST["category"])
     Member.objects.create(name=request.POST["name"], member_phone=request.POST["phone"], member_email=request.POST["email"], member_mark=category)
     return HttpResponse("Add Member Successfully")
+
+def editMember(request):
+    member=Member.objects.get(pk=request.POST["pk"])
+    member.name=request.POST["name"]
+    member.member_phone=request.POST["phone"]
+    member.member_email=request.POST["email"]
+    member.member_mark=Category.objects.get(pk=request.POST["category"])
+    member.save()
+    return HttpResponse("Edit Member Successfully")
+
+def addValue(request):
+    member=Member.objects.get(pk=request.POST["member"])
+    value=request.POST["value"]
+    admin=Member.objects.get(pk=request.POST["admin"])
+    comment=request.POST["comment"]
+    
+    Savelog.objects.create(member_name=member, money=value, admin_name=admin, comment=comment)
+    member.member_saving+=int(value)
+    member.save()
+    return HttpResponse("Add Value Successfully")
 
 def checkExpire():
     nonExpire=Schedule.objects.filter(expire=False)
