@@ -39,6 +39,7 @@ class Savelog(models.Model):
     money = models.IntegerField()
     tran_date = models.DateTimeField(default=timezone.now)
     admin_name = models.ForeignKey(Member, default='none', related_name='admin')
+    comment = models.CharField(max_length=50, blank=True)
     def __unicode__(self):
         return u'%s' % (self.member_name)
     

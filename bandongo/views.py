@@ -225,6 +225,10 @@ def memberListPage(request):
     members=Member.objects.order_by('member_mark')
     return render(request, 'bandongo/backend_memberList.html',{'members': members})
 
+def addValuePage(request):
+    admins=Member.objects.filter(member_auth='admin')
+    return render(request, 'bandongo/backend_addValue.html',{'admins': admins})
+
 ## function part
 def setSchedule(request):
     checkExpire()
@@ -270,3 +274,10 @@ def checkExpire():
         if schedule.date<datetime.now():
             nonExpire[0].expire=True
             nonExpire[0].save()
+
+def getCateMem(request):
+    categories=Category.objects.all()
+    members=[]
+    for category in categories:
+        members.append(list(Member.objects.filter(member_mark=category).values()))
+    return JsonResponse({'categories': list(categories.values()), 'members': members})

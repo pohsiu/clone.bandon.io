@@ -5,6 +5,7 @@ function finish() {
         {pk: pk},
         function(response) {
           alert(response);
+          window.location.href = "/backend/scheduleListPage";
         }
     );
 }

@@ -1,0 +1,34 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}<script src="{% static 'js/backend_addValue.js' %}"></script>{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Add Value</h1></div>
+    <div><h3>Member</h3></div>
+    <div>
+        <select id="category" style="width: 20%;" class="form-control">
+        </select>
+        <select id="member" style="width: 20%;" class="form-control">
+        </select>
+    </div>
+    <div><h3>Value</h3></div>
+    <div>
+        <input type="number" step="100" class="form-control" style="width: 20%;" id="value">
+    </div>
+    <div><h3>Admin</h3></div>
+    <div>
+        <select id="category" style="width: 20%;" class="form-control">
+            {% for admin in admins %}
+                <option value="{{admin.pk}}">{{admin.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div><h3>Comment</h3></div>
+    <div>
+        <input type="text" class="form-control" style="width: 50%;" id="comment">
+    </div>
+    <div style="margin-top: 20px">
+        <button class="btn btn-default" onclick="submit();">Submit</button>
+    </div>
+</div>
+{% endblock %}
