@@ -1,0 +1,34 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Member List</h1></div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>pk</th>
+                <th>Name</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Department</th>
+                <th>Auth</th>
+                <th>Savings</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members %}
+            <tr>
+                <td>{{ member.pk }}</td>
+                <td><a href="member/{{ member.pk }}">{{ member.name }}</a></td>
+                <td>{{ member.member_phone }}</td>
+                <td>{{ member.member_email }}</td>
+                <td>{{ member.member_mark }}</td>
+                <td>{{ member.member_auth }}</td>
+                <td>{{ member.member_saving }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
