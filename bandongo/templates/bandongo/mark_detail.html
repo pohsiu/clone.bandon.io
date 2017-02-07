@@ -1,86 +1,102 @@
 {% extends 'bandongo/base.html' %}
-
+{% load staticfiles %}
 {% block content %}
-    <h1>{{ de_member.name }}</h1>
-    <p>{{ de_member.member_email }}</p>
-    <div class="content">
-        {% if de_member.member_phone %}
-            {{ de_member.member_phone }}
-        {% endif %}
-    </div>
+    <h1>{{ de_member.name }}, {{ de_member.member_email }}, {{ de_member.member_phone }}</h1>
     
-    {% if schedule_name}}
-    <form name='foodorder' action=''>
-        <table style="width:100%">
-        <tr>
-            <th colspan="1">{{schedule_name}}</th>
-            <th colspan="3">Food:{{list_food.0.shop_name}}</th>
-        </tr>
-        {% for foods in list_food %}
+    
+    {% if schedule_name %}
+        <form name='foodorder' action='' method="POST">{% csrf_token %}
+            <table style="width:100%">
             <tr>
-                <td>{{foods.name}}</td></td>
-                <td>Food_pic</td>
-                <td>{{foods.price}}</td>
-                <td>
-                    <select name=num>
-                    <option value=0>0</option>
-                    <option value=1>1</option>
-                  	<option value=2>2</option>
-                  	<option value=3>3</option>
-                  	<option value=4>4</option>
-                    <option value=5>5</option>
-                  	</select>
-                </td>
+                <th colspan="1">{{schedule_name}}</th>
+                <th colspan="3">Food:{{list_food.0.shop_name}}</th>
             </tr>
-        {% endfor %}
-        </table>
-    </form>
-    <form name='beverage_order' action=''>
-        <table style="width:100%">
-        <tr>
-            <th colspan="1">{{schedule_name}}</th>
-            <th colspan="3">Drink:{{pic_beverage.0.name}}</th>
-        </tr>
-        <tr>
-            <th colspan="4">
-               {{pic_beverage.0.pic}}
-            </th>
-        </tr>
-        <tr>
-            <td>喝什麼</td>
-            <th colspan="3">
-    	        <input type="text" name="drinking">
-            </th>
-        </tr>
-        <tr>
-  	        <td>甜度冰塊</td>
-            <th colspan="3">
-              <select name=sugar>
-              <option value="無糖">無糖</option>
-              <option value="微糖">微糖</option>
-              <option value="半糖">半糖</option>
-              <option value="少糖">少糖</option>
-              <option value="正常甜">正常甜</option>
-              </select>
-              <select name=ice>
-              <option value="去冰">去冰</option>
-              <option value="少冰">少冰</option>
-              <option value="微冰">微冰</option>
-              <option value="常溫">常溫</option>
-              <option value="正常冰">正常冰</option>
-              <option value="熱的">熱的</option>
-              </select>
-            </th>
-        </tr>
-        <tr>
-  	        <td>價格</td>
-            <th colspan="3">
-    	        <input type="number" name="drink_price" min="0" max="100">
-            </th>
-        </tr>
-        </table>
-    </form>
-    
+            {% for foods in list_food %}
+                <tr>
+                    <td>{{foods.name}}</td></td>
+                    <td>Food_pic</td>
+                    <td>{{foods.price}}</td>
+                    <td>
+                        <select name=num>
+                        <option value=0>0</option>
+                        <option value=1>1</option>
+                      	<option value=2>2</option>
+                      	<option value=3>3</option>
+                      	<option value=4>4</option>
+                        <option value=5>5</option>
+                      	</select>
+                    </td>
+                </tr>
+                
+            {% endfor %}
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>
+                    <button type="submit" class="save btn btn-default">送出</button>
+                </th>
+            </tr>
+            </table>
+        </form>
+        <form name='beverage_order' action='' method="POST">{% csrf_token %}
+            <table style="width:100%">
+            <tr>
+                <th colspan="1">{{schedule_name}}</th>
+                <th colspan="3">Drink:{{pic_beverage.0.name}}</th>
+            </tr>
+            <tr>
+                <th colspan="4">
+                
+                <img src="{{pic_beverage.0.pic}}" />
+                   
+                </th>
+            </tr>
+            <tr>
+                <td>喝什麼</td>
+                <th colspan="3">
+        	        <input type="text" name="drinking">
+                </th>
+            </tr>
+            <tr>
+      	        <td>甜度冰塊</td>
+                <th colspan="3">
+                  <select name=sugar>
+                  <option value="無糖">無糖</option>
+                  <option value="微糖">微糖</option>
+                  <option value="半糖">半糖</option>
+                  <option value="少糖">少糖</option>
+                  <option value="正常甜">正常甜</option>
+                  </select>
+                  <select name=ice>
+                  <option value="去冰">去冰</option>
+                  <option value="少冰">少冰</option>
+                  <option value="微冰">微冰</option>
+                  <option value="常溫">常溫</option>
+                  <option value="正常冰">正常冰</option>
+                  <option value="熱的">熱的</option>
+                  </select>
+                </th>
+            </tr>
+            <tr>
+      	        <td>價格</td>
+                <th colspan="3">
+        	        <input type="number" name="drink_price" min="0" max="100">
+                </th>
+            </tr>
+            <tr>
+                <th></th>
+                <th></th>
+                <th></th>
+                <th>
+                    <button type="submit" class="save btn btn-default">送出</button>
+                </th>
+            </tr>
+            </table>
+        </form>
+    {% else %}
+        <h1>this service is fucking unvailable, bitch</h1>
+    {% endif %}
     
     <h1>存款紀錄</h1>
     
@@ -113,6 +129,7 @@
       <tr>
         <th>消費日期</th>
         <th>品名</th>
+        <th>數量</th>
         <th>金額</th>
         
       </tr>
@@ -120,11 +137,13 @@
       <tr>
         <td>{{orders.orderdate}}</td>
         <td>{{orders.catalog_name}}</td>
+        <td>{{orders.ordernum}}</td>
         <td>{{orders.orderprice}}</td>
         
       </tr>
     {% endfor %}
        <tr>
+         <th></th>
          <th></th>
          <th>總花費</th>
          <th>

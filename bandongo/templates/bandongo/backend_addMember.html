@@ -18,7 +18,7 @@
     </div>
     <div><h3>Department</h3></div>
     <div>
-        <select id="category" style="width: 20%;" class="form-control">
+        <select id="category" style="width: 20%;" class="selectpicker">
             {% for category in categories %}
                 <option value="{{category.category_name}}">{{category.category_name}}</option>
             {% endfor %}

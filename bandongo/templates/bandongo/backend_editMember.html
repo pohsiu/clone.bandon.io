@@ -20,7 +20,7 @@
     </div>
     <div><h3>Department</h3></div>
     <div>
-        <select id="category" style="width: 20%;" class="form-control">
+        <select id="category" style="width: 20%;" class="selectpicker">
             {% for category in categories %}
                 {% if category == member.member_mark %}
                     <option value="{{category.pk}}" selected>{{category.category_name}}</option>

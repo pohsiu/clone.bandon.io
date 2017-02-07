@@ -95,38 +95,42 @@ def filter_json(request):
 
 def mark_detail(request, pk):
     de_member = get_object_or_404(Member, pk=pk)
-#order index 
-
-    #===get today's schedule part===
-    now = datetime.now()
     
-    schedules = Schedule.objects.filter(expire=False)
-    schedule_name = None
-    duedate = schedules[0].date
-    if now < duedate:
-        id_food = schedules[0].food
-        id_beverage = schedules[0].beverage
-        list_food = Catalog.objects.filter(shop_name=id_food)
-        pic_beverage = Beverage.objects.filter(name=id_beverage)
-        schedule_name = schedules[0].name
+    if request.method =="POST":
+        return render(request, 'bandongo/mark_detail.html', {'de_member': de_member})
     else:
-        list_food=''
-        pic_beverage=''
         
-    
-    save_total = Savelog.objects.filter(member_name=pk).aggregate(save_total=Sum('money'))['save_total']
-    if save_total==None:
-        save_total=0
-    savelogs = Savelog.objects.filter(member_name=pk).order_by('tran_date')
-    
-    cost_total = Orderlog.objects.filter(member_name=pk).aggregate(cost_total=Sum('orderprice'))['cost_total']
-    if cost_total==None:
-        cost_total=0
-    costlogs = Orderlog.objects.filter(member_name=pk)
-    
-    total_sum = save_total - cost_total
-    
-    return render(request, 'bandongo/mark_detail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'costlogs':costlogs,'total_sum':total_sum,'schedule_name':schedule_name})
+        #order index
+        #===get today's schedule part===
+        now = datetime.now()
+        schedules = Schedule.objects.filter(expire=False)
+        schedule_name = None
+        if schedules:
+            duedate = schedules[0].date
+            if now < duedate:
+                id_food = schedules[0].food
+                id_beverage = schedules[0].beverage.name 
+                list_food = Catalog.objects.filter(shop_name=id_food)
+                pic_beverage = Beverage.objects.filter(name=id_beverage)
+                schedule_name = schedules[0].name
+            else:
+                list_food=''
+                pic_beverage=''
+        else:
+            list_food=''
+            pic_beverage=''
+        save_total = Savelog.objects.filter(member_name=pk).aggregate(save_total=Sum('money'))['save_total']
+        if save_total==None:
+            save_total=0
+        savelogs = Savelog.objects.filter(member_name=pk).order_by('tran_date')
+        cost_total = Orderlog.objects.filter(member_name=pk).aggregate(cost_total=Sum('orderprice'))['cost_total']
+        if cost_total==None:
+            cost_total=0
+        costlogs = Orderlog.objects.filter(member_name=pk)
+        
+        total_sum = save_total - cost_total
+        
+        return render(request, 'bandongo/mark_detail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'costlogs':costlogs,'total_sum':total_sum,'schedule_name':schedule_name})
 
 def mark2(request):
     if request.method == "POST":
@@ -146,9 +150,9 @@ def mark2(request):
 ## backend_part
 ## page part
 def setSchedulePage(request):
-    shops=Shop.objects.all()
     drinks=Beverage.objects.all()
-    return render(request, 'bandongo/backend_setSchedule.html',{'shops':shops, 'drinks':drinks})
+    shops=Shop.objects.all()
+    return render(request, 'bandongo/backend_setSchedule.html',{'drinks':drinks, 'shops': shops})
 
 def editSchedulePage(request):
     nonFinish=Schedule.objects.filter(finish=False)
@@ -182,6 +186,16 @@ def orderPage(request):
         schedule=Schedule.objects.get(finish=False)
         catalogs=Catalog.objects.filter(shop_name=schedule.food)
         bags=[]
+        orders=[]
+        for catalog in catalogs:
+            tempOrders=Orderlog.objects.filter(schedule_name=schedule, catalog_name=catalog)
+            count=0
+            price=0
+            for tempOrder in tempOrders:
+                count+=tempOrder.ordernum
+                price+=tempOrder.orderprice
+            if count > 0:
+                orders.append({"food_name": catalog.name, "count": count, 'price': price})
         total_price=0
         for i in range(3):
             bags.append([])
@@ -195,7 +209,7 @@ def orderPage(request):
                 if count > 0:
                     bags[i].append({"food_name": catalog.name, "count": count, 'price': price})
                     total_price+=price
-        return render(request, 'bandongo/backend_order.html',{'schedule': schedule, 'bags': bags, 'total_price': total_price})
+        return render(request, 'bandongo/backend_order.html',{'schedule': schedule, 'bags': bags, 'orders': orders, 'total_price': total_price})
     except ObjectDoesNotExist:
         return render(request, 'bandongo/backend_order.html',{'schedule': None})
 
@@ -233,10 +247,16 @@ def setSchedule(request):
     checkExpire()
     nonFinish=len(Schedule.objects.filter(finish=False))
     dueDatetime=parse_datetime(request.POST["dueDatetime"])
-    bandon=Shop.objects.get(name=request.POST["bandon"])
+    bandon=Shop.objects.get(id=request.POST["bandon"])
     drink=Beverage.objects.get(name=request.POST["drink"])
+    catalogs=request.POST.getlist("cata[]")
     if nonFinish==0:
         Schedule.objects.create(name=request.POST["schedule_name"], food=bandon, beverage=drink, date=dueDatetime)
+        Catalog.objects.all().update(choosed=False)
+        for catalog in catalogs:
+            temp=Catalog.objects.get(id=catalog)
+            temp.choosed=True
+            temp.save()
         return HttpResponse("Registered Schedule Successfully")
     else:
         return HttpResponse("Another schedule has not expired.")
@@ -300,3 +320,10 @@ def getCateMem(request):
     for category in categories:
         members.append(list(Member.objects.filter(member_mark=category).values()))
     return JsonResponse({'categories': list(categories.values()), 'members': members})
+    
+def getShopCat(request):
+    shops=Shop.objects.all()
+    catalogs=[]
+    for shop in shops:
+        catalogs.append(list(Catalog.objects.filter(shop_name=shop).values()))
+    return JsonResponse({'shops': list(shops.values()), 'catalogs': catalogs})

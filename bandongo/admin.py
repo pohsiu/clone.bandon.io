@@ -21,7 +21,7 @@ class SavelogAdmin(admin.ModelAdmin):
     list_filter = ('tran_date',)
     # search_fields = ('member_name')
 class CatalogAdmin(admin.ModelAdmin):
-    list_display = ('name','shop_name','pic','price')
+    list_display = ('name','shop_name','pic','price', 'choosed')
     
   
     

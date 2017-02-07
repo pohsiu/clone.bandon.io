@@ -70,6 +70,7 @@ urlpatterns = [
     url(r'^backend/addValue$', views.addValue),
     
     url(r'^getCateMem$', views.getCateMem),
+    url(r'^getShopCat$', views.getShopCat),
 
     url(r'^admin/', admin.site.urls),
 ]

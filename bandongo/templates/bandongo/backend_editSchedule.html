@@ -20,14 +20,14 @@
                     <td id="pk">{{ pk }}</td>
                     <td id="name"><input type="text" class="form-control" id="schedule_name" value="{{ name }}"></td>
                     <td>
-                        <select id="bandon" class="form-control">
+                        <select id="bandon" class="selectpicker">
                             {% for shop in shops %}
                                 <option value="{{shop.name}}" {{shop.selected}}>{{shop.name}}</option>
                             {% endfor %}
                         </select>
                     </td>
                     <td>
-                        <select id="drink" class="form-control">
+                        <select id="drink" class="selectpicker">
                             {% for drink in drinks %}
                                 <option value="{{drink.name}}" {{drink.selected}}>{{drink.name}}</option>
                             {% endfor %}

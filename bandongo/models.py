@@ -84,6 +84,7 @@ class Catalog(models.Model):
     name = models.CharField(max_length=10)
     pic = models.URLField(blank=True)
     price = models.IntegerField()
+    choosed = models.BooleanField(default=False)
     
     def store(self):
         self.save()

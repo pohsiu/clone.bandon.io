@@ -29,7 +29,7 @@
                 </tr>
             </tbody>
         </table>
-    	<div><h1>Bandon Orders</h1></div>
+    	<div><h1>Bandon Orders Type 1</h1></div>
         <table class="table">
             <thead>
                 <tr>
@@ -48,6 +48,25 @@
                     <td>{{ order.price }}</td>
                 </tr>
                 {% endfor %}
+            {% endfor %}
+            </tbody>
+        </table>
+        <div><h1>Bandon Orders Type 2</h1></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Food</th>
+                    <th>Count</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+        	{% for order in orders %}
+            <tr>
+            	<td>{{ order.food_name }}</td>
+                <td>{{ order.count }}</td>
+                <td>{{ order.price }}</td>
+            </tr>
             {% endfor %}
             </tbody>
         </table>
