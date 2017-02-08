@@ -8,22 +8,22 @@ from django.utils import timezone
 
 #category
 class Category(models.Model):
-    category_name = models.CharField(max_length=10)
+    name = models.CharField(max_length=10)
     bag = models.IntegerField()
     def __unicode__(self):
-        return u'%s '% (self.category_name)
+        return u'%s '% (self.name)
 
 
 #basic informations
 class Member(models.Model):
     name = models.CharField(max_length=10)
     #password = models.CharField(max_length=50)
-    member_phone = models.CharField(max_length=15)
-    member_email = models.EmailField(blank=True, verbose_name='e-mail')
-    member_mark = models.ForeignKey(Category)
+    phone = models.CharField(max_length=15)
+    email = models.EmailField(blank=True, verbose_name='e-mail')
+    remark = models.ForeignKey(Category)
     # member_mark = models.CharField(max_length=10, blank=True)
-    member_auth = models.CharField(max_length=10, default='normal')
-    member_saving = models.IntegerField(default=0)
+    auth = models.CharField(max_length=10, default='normal')
+    saving = models.IntegerField(default=0)
     
     def store(self):
         self.save()
@@ -35,17 +35,17 @@ class Member(models.Model):
     
 #Saving record
 class Savelog(models.Model):
-    member_name = models.ForeignKey(Member, related_name='person') # not sure can operate
+    memberName = models.ForeignKey(Member, related_name='person') # not sure can operate
     money = models.IntegerField()
-    tran_date = models.DateTimeField(default=timezone.now)
-    admin_name = models.ForeignKey(Member, default='none', related_name='admin')
+    tranDate = models.DateTimeField(default=timezone.now)
+    adminName = models.ForeignKey(Member, default='none', related_name='admin')
     comment = models.CharField(max_length=50, blank=True)
     def __unicode__(self):
-        return u'%s' % (self.member_name)
+        return u'%s' % (self.memberName)
     
 
 #Shop information
-class Shop(models.Model):
+class Food(models.Model):
     name = models.CharField(max_length=10)
     pic = models.URLField(blank=True) #shop picture loading path
     telephone = models.CharField(max_length=15)
@@ -56,7 +56,7 @@ class Shop(models.Model):
     def __unicode__(self):
         return u'%s '% (self.name)
  
-class Beverage(models.Model):
+class Drink(models.Model):
     name = models.CharField(max_length=10)
     pic = models.URLField(blank=True)
     telephone = models.CharField(max_length=15)
@@ -69,8 +69,8 @@ class Beverage(models.Model):
 class Schedule(models.Model):
     name = models.CharField(max_length=15)
     comment = models.CharField(max_length=50, blank=True)
-    food = models.ForeignKey(Shop)
-    beverage = models.ForeignKey(Beverage, blank=True)
+    food = models.ForeignKey(Food)
+    drink = models.ForeignKey(Drink, blank=True)
     date = models.DateTimeField() 
     expire = models.BooleanField(default=False)
     finish = models.BooleanField(default=False)
@@ -80,7 +80,7 @@ class Schedule(models.Model):
    
 #Product Food Menu
 class Catalog(models.Model):
-    shop_name = models.ForeignKey(Shop)
+    foodShop = models.ForeignKey(Food)
     name = models.CharField(max_length=10)
     pic = models.URLField(blank=True)
     price = models.IntegerField()
@@ -95,29 +95,37 @@ class Catalog(models.Model):
 
 
 #Transaction log
-class Orderlog(models.Model):
-    member_name = models.ForeignKey(Member)
-    schedule_name = models.ForeignKey(Schedule)
-    catalog_name = models.ForeignKey(Catalog)
-    ordernum = models.IntegerField(default=1) #single product ordering num 
-    orderdate = models.DateTimeField(default=timezone.now)
-    orderremark = models.CharField(max_length=10,blank=True)
-    orderprice = models.IntegerField(default=0)
+class FoodOrder(models.Model):
+    memberName = models.ForeignKey(Member)
+    scheduleName = models.ForeignKey(Schedule)
+    foodName = models.ForeignKey(Catalog)
+    num = models.IntegerField(default=1) #single product ordering num 
+    date = models.DateTimeField(default=timezone.now)
+    remark = models.CharField(max_length=10,blank=True)
+    price = models.IntegerField(default=0)
     
     
-    
+    def store(self):
+        self.save()
     def __unicode__(self):
-        return u'%s '% (self.member_name)
+        return u'%s '% (self.memberName)
+
+class DrinkOrder(models.Model):
+    memberName = models.ForeignKey(Member)
+    scheduleName = models.ForeignKey(Schedule)
+    drinking = models.CharField(max_length=10)
+    num = models.IntegerField(default=1) #single product ordering num 
+    date = models.DateTimeField(default=timezone.now)
+    remark = models.CharField(max_length=10,blank=True)
+    price = models.IntegerField(default=0)
+    
+    
+    def store(self):
+        self.save()
+    def __unicode__(self):
+        return u'%s '% (self.memberName)
         
         
 
         
-#testing code
-class VehicleBrand(models.Model):
-    description = models.CharField(max_length=100)
-    code = models.SlugField(primary_key=True)
 
-class VehicleModel(models.Model):
-    description = models.CharField(max_length=100)
-    code = models.SlugField(primary_key=True)
-    brand = models.ForeignKey(VehicleBrand)

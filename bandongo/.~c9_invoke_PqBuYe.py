@@ -86,7 +86,7 @@ def filter_json(request):
     #     marks[i]['index']=i
     models = []
     for mark in mark_list:
-        models.append(list(Member.objects.all().filter(remark=mark).values()))
+        models.append(list(Member.objects.all().filter(member_mark=mark).values()))
         
     return JsonResponse({'member_list': models, 'mark_list': marks})
     
@@ -110,8 +110,8 @@ def mark_detail(request, pk):
                     price = int(request.POST['food-price'+unicode(i)])
                     num = int(request.POST['food-num'+unicode(i)])
                     count    = price * num
-                    name = Catalog.objects.get(name=request.POST['food-name'+unicode(i)])
-                    FoodOrder.objects.create(memberName=de_member,scheduleName=schedule,foodName=name,num=num,date=now,price=count)
+                    name = Food.objects.get(name=request.POST['food-name'+unicode(i)])
+                    FoodOrder.objects.create(name=de_member,scheduleName=schedule,foodName=name,num=num,date=now,price=count)
                     
             # print type(food_len)
             return render(request, 'bandongo/mark_detail.html', {'de_member': de_member,'finish_order':finish_order})
@@ -121,7 +121,7 @@ def mark_detail(request, pk):
                 drink = request.POST['drink-name']
                 remark = request.POST['sugar']+request.POST['ice']
                 price = request.POST['drink-price']
-                DrinkOrder.objects.create(memberName=de_member,scheduleName=schedule,drinking=drink,num=1,remark=remark,date=now,price=price)
+                DrinkOrder.objects.create(name=de_member,scheduleName=schedule,drinking=drink,num=1,remark=remark,date=now,price=count)
             
             return render(request, 'bandongo/mark_detail.html', {'de_member': de_member,'finish_order':finish_order})
         else:    
@@ -139,9 +139,9 @@ def mark_detail(request, pk):
             duedate = schedules[0].date
             if now < duedate:
                 id_food = schedules[0].food
-                id_beverage = schedules[0].drink.name
-                list_food = Catalog.objects.filter(foodShop = id_food)
-                pic_beverage = Drink.objects.filter(name = id_beverage)
+                id_beverage = schedules[0].beverage.name 
+                list_food = Catalog.objects.filter(shop_name=id_food)
+                pic_beverage = Drink.objects.filter(name=id_beverage)
                 schedule_name = schedules[0].name
             else:
                 list_food=''
@@ -159,9 +159,9 @@ def mark_log(request,pk):
     save_total = Savelog.objects.filter(memberName=pk).aggregate(save_total=Sum('money'))['save_total']
     if save_total == None:
         save_total = 0
-    savelogs = Savelog.objects.filter(memberName=pk).order_by('tranDate')
-    foods_total = FoodOrder.objects.filter(memberName=pk).aggregate(foods_total=Sum('price'))['foods_total']
-    drinks_total = DrinkOrder.objects.filter(memberName=pk).aggregate(drinks_total=Sum('price'))['drinks_total']
+    savelogs = Savelog.objects.filter(memberName=pk).order_by('tran_date')
+    foods_total = FoodOrder.objects.filter(name=pk).aggregate(cost_total=Sum('price'))['food_total']
+    drinks_total = DrinkOrder.objects.filter(name=pk).aggregate(cost_total=Sum('price'))['drinks_total']
     if foods_total == None:
         foods_total = 0
     if drinks_total == None:
@@ -324,8 +324,8 @@ def finishSchedule(request):
         return HttpResponse("Finish Schedule Successfully")
 
 def addMember(request):
-    category=Category.objects.get(name=request.POST["category"])
-    Member.objects.create(name=request.POST["name"], phone=request.POST["phone"], email=request.POST["email"], remark=category)
+    category=Category.objects.get(category_name=request.POST["category"])
+    Member.objects.create(name=request.POST["name"], member_phone=request.POST["phone"], member_email=request.POST["email"], member_mark=category)
     return HttpResponse("Add Member Successfully")
 
 def editMember(request):
@@ -359,7 +359,7 @@ def getCateMem(request):
     categories=Category.objects.all()
     members=[]
     for category in categories:
-        members.append(list(Member.objects.filter(remark=category).values()))
+        members.append(list(Member.objects.filter(member_mark=category).values()))
     return JsonResponse({'categories': list(categories.values()), 'members': members})
     
 def getShopCat(request):

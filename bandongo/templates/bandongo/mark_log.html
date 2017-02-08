@@ -1,0 +1,103 @@
+{% extends 'bandongo/base.html' %}
+
+{% block content %}
+    <h1>{{ de_member.name }}, {{ de_member.email }}, {{ de_member.phone }}</h1>
+    <h1>
+        <a href="{% url 'bandongo.views.mark_detail' pk=de_member.pk %}">訂餐頁面</a>;
+        <a href="{% url 'bandongo.views.mark_log' pk=de_member.pk %}">帳戶記錄</a>
+    </h1>
+    <h1>存款紀錄</h1>
+    {% if savelogs %}
+    
+    
+    <table style="width:100%">
+      <tr>
+        <th>存款日期</th>
+        <th>收款人</th>
+        <th>金額</th>
+        <th>備註</th>
+        
+      </tr>
+    {% for savings in savelogs %}
+      <tr>
+        <td>{{savings.tranDate}}</td>
+        <td>{{savings.adminName}}</td>
+        <td>{{savings.money}}</td>
+        <td>{{savings.comment}}</td>
+        
+      </tr>
+    {% endfor %}
+       <tr>
+         <th></th>
+         <th>總存款</th>
+         <th>
+             {{save_total}}
+         </th>
+     </table>
+    {% else %}
+    
+    <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp你沒存錢, 快點存</p>
+    {% endif %}
+    <h1>消費紀錄</h1>
+    <table style="width:100%">
+    {% if foods_logs %}
+    
+    
+    
+      <tr>
+        <th>消費日期</th>
+        <th>品名</th>
+        <th>數量</th>
+        <th>金額</th>
+        <th>備註</th>
+        
+      </tr>
+    {% for foods in foods_logs %}
+      <tr>
+        <td>{{foods.date}}</td>
+        <td>{{foods.foodName}}</td>
+        <td>{{foods.num}}</td>
+        <td>{{foods.price}}</td>
+        <td>{{foods.remark}}</td>
+        
+      </tr>
+    {% endfor %}
+    {% endif %}
+    
+    
+    {% if drinks_logs %}
+    {% for drinks in drinks_logs %}
+      <tr>
+        <td>{{drinks.date}}</td>
+        <td>{{drinks.drinking}}</td>
+        <td>{{drinks.num}}</td>
+        <td>{{drinks.price}}</td>
+        <td>{{drinks.remark}}</td>
+        
+      </tr>
+    
+    {% endfor %}
+    
+    {% endif %}
+    {% if cost_total %}
+       <tr>
+         <th></th>
+         <th></th>
+         
+         <th>總花費</th>
+         <th>
+             {{cost_total}}
+         </th>
+    {% endif %}
+         
+    
+     </table>
+    
+    
+    
+    
+    
+    {% if total_sum %}
+    <h1>餘額:{{ total_sum }}</h1>
+    {% endif %}
+{% endblock %}

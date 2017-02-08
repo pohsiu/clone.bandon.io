@@ -37,6 +37,7 @@ urlpatterns = [
     
     
     url(r'^detail/(?P<pk>[0-9]+)/$', views.mark_detail),
+    url(r'^log/(?P<pk>[0-9]+)/$',views.mark_log),
     url(r'^$', views.mark2),
     
     
@@ -44,8 +45,8 @@ urlpatterns = [
     url(r'^mark/json_models' , views.filter_json),
     
     #example part
-    url(r'^select/', views.brand_model_select),
-    url(r'^brand/(?P<brand>[-\w]+)/all_json_models/' , views.all_json_models),
+    # url(r'^select/', views.brand_model_select),
+    # url(r'^brand/(?P<brand>[-\w]+)/all_json_models/' , views.all_json_models),
     #example part
     
     ## backend part
