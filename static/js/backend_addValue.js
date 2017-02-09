@@ -9,7 +9,7 @@ $( document ).ready(function() {
         
         options="<option value='Z' select>選擇姓名</option>"
         for(var i=0; i<categories.length; i++) {
-            options+="<option value='"+i+"'>"+categories[i].category_name+"</option>";
+            options+="<option value='"+i+"'>"+categories[i].name+"</option>";
         }
         $("#category").html(options);
         

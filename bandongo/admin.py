@@ -15,36 +15,36 @@ from .models import Category
 
 
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ('name', 'phone', 'email','remark','auth','saving')
+    list_display = ('id', 'name', 'phone', 'email','remark','auth','saving')
     search_fields = ('name','email')
 class SavelogAdmin(admin.ModelAdmin):
-    list_display = ('memberName','money','adminName','tranDate', 'comment')
+    list_display = ('id', 'memberName','money','adminName','tranDate', 'comment')
     list_filter = ('tranDate',)
     # search_fields = ('member_name')
 class CatalogAdmin(admin.ModelAdmin):
-    list_display = ('name','foodShop','pic','price', 'choosed')
+    list_display = ('id', 'name','foodShop','pic','price', 'choosed')
     
   
     
 class FoodOrderAdmin(admin.ModelAdmin):
-    list_display = ('memberName', 'scheduleName','foodName','price','remark', 'num','date')
+    list_display = ('id', 'memberName', 'scheduleName','foodName','price','remark', 'num','date')
     list_filter = ('date',)
     date_hierarchy = 'date'
     ordering = ('-date',)
 class DrinkOrderAdmin(admin.ModelAdmin):
-    list_display = ('memberName', 'scheduleName','drinking','price','remark', 'num','date')
+    list_display = ('id', 'memberName', 'scheduleName','drinking','price','remark', 'num','date')
     list_filter = ('date',)
     date_hierarchy = 'date'
     ordering = ('-date',)
     
 class FoodAdmin(admin.ModelAdmin):
-    list_display = ('name','pic','telephone','address','remark')
+    list_display = ('id', 'name','pic','telephone','address','remark')
 class DrinkAdmin(admin.ModelAdmin):
-    list_display = ('name','pic','telephone','address','remark')
+    list_display = ('id', 'name','pic','telephone','address','remark')
 class ScheduleAdmin(admin.ModelAdmin):
-    list_display = ('name', 'food','drink','date','expire','finish')
+    list_display = ('id', 'name', 'food','drink','date','expire','finish')
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ('name', 'bag')
+    list_display = ('id', 'name', 'bag')
     
 admin.site.register(Member, MemberAdmin)
 admin.site.register(Savelog, SavelogAdmin)
