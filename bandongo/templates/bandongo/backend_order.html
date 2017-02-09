@@ -8,10 +8,12 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>pk</th>
+                    <th>id</th>
                     <th>name</th>
                     <th>Shop</th>
+                    <th>Shop Phone</th>
                     <th>Drink</th>
+                    <th>Drink Phone</th>
                     <th>Due Date Time</th>
                     <th>Expired</th>
                     <th>Finished</th>
@@ -19,10 +21,12 @@
             </thead>
             <tbody>
                 <tr>
-                    <td id="pk">{{ schedule.pk }}</td>
+                    <td id="id">{{ schedule.id }}</td>
                     <td>{{ schedule.name }}</td>
                     <td>{{ schedule.food.name }}</td>
-                    <td>{{ schedule.beverage.name }}</td>
+                    <td>{{ schedule.food.phone }}</td>
+                    <td>{{ schedule.drink.name }}</td>
+                    <td>{{ schedule.drink.phone }}</td>
                     <td>{{ schedule.date }}</td>
                     <td>{{ schedule.expire }}</td>
                     <td>{{ schedule.finish }}</td>
@@ -43,7 +47,7 @@
             <tr><td colspan="3">Bag {{ forloop.counter }}</td></tr>
             	{% for order in bag %}
                 <tr>
-                	<td>{{ order.food_name }}</td>
+                	<td>{{ order.foodName }}</td>
                     <td>{{ order.count }}</td>
                     <td>{{ order.price }}</td>
                 </tr>
@@ -63,7 +67,7 @@
             <tbody>
         	{% for order in orders %}
             <tr>
-            	<td>{{ order.food_name }}</td>
+            	<td>{{ order.foodName }}</td>
                 <td>{{ order.count }}</td>
                 <td>{{ order.price }}</td>
             </tr>
