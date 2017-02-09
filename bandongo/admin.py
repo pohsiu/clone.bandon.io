@@ -27,20 +27,12 @@ class CatalogAdmin(admin.ModelAdmin):
   
     
 class FoodOrderAdmin(admin.ModelAdmin):
-<<<<<<< HEAD
-    list_display = ('memberName', 'scheduleName','foodName','price','remark', 'num','date','finish')
-=======
-    list_display = ('id', 'memberName', 'scheduleName','foodName','price','remark', 'num','date')
->>>>>>> dabf7fab24c879f50cbd4e93414e94bb56cce1a4
+    list_display = ('id','memberName', 'scheduleName','foodName','price','remark', 'num','date','finish')
     list_filter = ('date',)
     date_hierarchy = 'date'
     ordering = ('-date',)
 class DrinkOrderAdmin(admin.ModelAdmin):
-<<<<<<< HEAD
-    list_display = ('memberName', 'scheduleName','drinking','price','remark', 'num','date','finish')
-=======
-    list_display = ('id', 'memberName', 'scheduleName','drinking','price','remark', 'num','date')
->>>>>>> dabf7fab24c879f50cbd4e93414e94bb56cce1a4
+    list_display = ('id','memberName', 'scheduleName','drinking','price','remark', 'num','date','finish')
     list_filter = ('date',)
     date_hierarchy = 'date'
     ordering = ('-date',)
