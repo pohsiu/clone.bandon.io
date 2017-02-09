@@ -38,16 +38,14 @@ urlpatterns = [
     
     url(r'^detail/(?P<pk>[0-9]+)/$', views.mark_detail),
     url(r'^log/(?P<pk>[0-9]+)/$',views.mark_log),
+    url(r'^todayOrder/(?P<pk>[0-9]+)/$',views.mark_todayOrder),
     url(r'^$', views.mark2),
     
     
     #form selection json temp html 
     url(r'^mark/json_models' , views.filter_json),
     
-    #example part
-    # url(r'^select/', views.brand_model_select),
-    # url(r'^brand/(?P<brand>[-\w]+)/all_json_models/' , views.all_json_models),
-    #example part
+    
     
     ## backend part
     ## url part

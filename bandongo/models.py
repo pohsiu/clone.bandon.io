@@ -103,7 +103,7 @@ class FoodOrder(models.Model):
     date = models.DateTimeField(default=timezone.now)
     remark = models.CharField(max_length=10,blank=True)
     price = models.IntegerField(default=0)
-    
+    finish = models.BooleanField(default=False)
     
     def store(self):
         self.save()
@@ -118,6 +118,7 @@ class DrinkOrder(models.Model):
     date = models.DateTimeField(default=timezone.now)
     remark = models.CharField(max_length=10,blank=True)
     price = models.IntegerField(default=0)
+    finish = models.BooleanField(default=False)
     
     
     def store(self):

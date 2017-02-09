@@ -27,12 +27,12 @@ class CatalogAdmin(admin.ModelAdmin):
   
     
 class FoodOrderAdmin(admin.ModelAdmin):
-    list_display = ('memberName', 'scheduleName','foodName','price','remark', 'num','date')
+    list_display = ('memberName', 'scheduleName','foodName','price','remark', 'num','date','finish')
     list_filter = ('date',)
     date_hierarchy = 'date'
     ordering = ('-date',)
 class DrinkOrderAdmin(admin.ModelAdmin):
-    list_display = ('memberName', 'scheduleName','drinking','price','remark', 'num','date')
+    list_display = ('memberName', 'scheduleName','drinking','price','remark', 'num','date','finish')
     list_filter = ('date',)
     date_hierarchy = 'date'
     ordering = ('-date',)

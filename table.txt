@@ -57,5 +57,5 @@ CREATE TABLE saving
 
 
 git add .
-git add -m "comment"
+git add commit -m "comment"
 git push 
