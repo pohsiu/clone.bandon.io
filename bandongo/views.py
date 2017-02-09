@@ -206,8 +206,8 @@ def mark_log(request,pk):
         foods_total = 0
     if drinks_total == None:
         drinks_total = 0
-    foods_logs = FoodOrder.objects.filter(memberName=pk).order_by('date')
-    drinks_logs = DrinkOrder.objects.filter(memberName=pk).order_by('date')
+    foods_logs = FoodOrder.objects.filter(memberName=pk, finish=True).order_by('date')
+    drinks_logs = DrinkOrder.objects.filter(memberName=pk, finish=True).order_by('date')
     cost_total = foods_total + drinks_total
     total_sum = save_total - cost_total
     
@@ -216,9 +216,13 @@ def mark_log(request,pk):
 
 def mark_todayOrder(request,pk):
     de_member =  get_object_or_404(Member, pk=pk)
-    
-    return render(request, 'bandongo/mark_todayOrder.html',{'de_member':de_member})
+    today_foods = FoodOrder.objects.filter(memberName=pk, finish=False).order_by('date')
+    today_drinks = DrinkOrder.objects.filter(memberName=pk, finish=False).order_by('date')
+    return render(request, 'bandongo/mark_todayOrder.html',{'de_member':de_member,'today_foods':today_foods,'today_drinks':today_drinks})
 
+def delete_food(request):
+    FoodOrder.objects.get(id=request.POST['id']).delete()
+    return HttpResponse("Delete Success")
 
 def mark2(request):
     if request.method == "POST":

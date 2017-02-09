@@ -9,12 +9,12 @@
         <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
         <link href='https://fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="{% static 'css/bandon.css' %}">
+        <script src="{% static 'js/bootbox.min.js' %}"></script>
         {% block script %}
         {% endblock %}
     </head>
     <body>
     <div class="page-header">
-        <a href="{% url 'bandongo.views.member_new' %}" class="top-menu"><span class="glyphicon glyphicon-plus"></span></a>
         <h1><a href="/">Bandongo</a></h1>
     </div>
     <div class="content">

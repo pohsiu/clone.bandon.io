@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^todayOrder/(?P<pk>[0-9]+)/$',views.mark_todayOrder),
     url(r'^$', views.mark2),
     
+    url(r'^frontend/delete_food$', views.delete_food),
     
     #form selection json temp html 
     url(r'^mark/json_models' , views.filter_json),
