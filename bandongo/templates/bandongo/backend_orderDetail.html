@@ -34,17 +34,19 @@
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Department</th>
                     <th>Food</th>
                     <th>Count</th>
                     <th>Price</th>
                 </tr>
             </thead>
             <tbody>
-            {% for bag in bags %}
+            {% for bag in foodBags %}
             <tr><td colspan="4">Bag {{ forloop.counter }}</td></tr>
             	{% for order in bag %}
                 <tr>
                     <td>{{ order.memberName.name }}</td>
+                    <td>{{ order.memberName.remark.name }}</td>
                 	<td>{{ order.foodName.name }}</td>
                     <td>{{ order.num }}</td>
                     <td>{{ order.price }}</td>
@@ -53,8 +55,40 @@
             {% endfor %}
             </tbody>
             <tr>
-                <td colspan="3">total price</td>
-                <td>{{ total_price }}</td>
+                <td colspan="4">total price</td>
+                <td>{{ foodTotalPrice }}</td>
+            </tr>
+        </table>
+        <div><h1>Drink Orders</h1></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Department</th>
+                    <th>Drink</th>
+                    <th>Sugar and Ice</th>
+                    <th>Count</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for bag in drinkBags %}
+            <tr><td colspan="4">Bag {{ forloop.counter }}</td></tr>
+                {% for order in bag %}
+                <tr>
+                    <td>{{ order.memberName.name }}</td>
+                    <td>{{ order.memberName.remark.name }}</td>
+                    <td>{{ order.drinking }}</td>
+                    <td>{{ order.remark }}</td>
+                    <td>{{ order.num }}</td>
+                    <td>{{ order.price }}</td>
+                </tr>
+                {% endfor %}
+            {% endfor %}
+            </tbody>
+            <tr>
+                <td colspan="5">total price</td>
+                <td>{{ drinkTotalPrice }}</td>
             </tr>
         </table>
     {% else %}

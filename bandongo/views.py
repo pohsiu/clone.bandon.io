@@ -290,8 +290,8 @@ def orderPage(request):
     try:
         schedule=Schedule.objects.get(finish=False)
         catalogs=Catalog.objects.filter(foodShop=schedule.food)
-        bags=[]
-        orders=[]
+        foodBags=[]
+        foodOrders=[]
         for catalog in catalogs:
             tempOrders=FoodOrder.objects.filter(scheduleName=schedule, foodName=catalog)
             count=0
@@ -300,10 +300,11 @@ def orderPage(request):
                 count+=tempOrder.num
                 price+=tempOrder.price
             if count > 0:
-                orders.append({"foodName": catalog.name, "count": count, 'price': price})
-        total_price=0
+                foodOrders.append({"foodName": catalog.name, "count": count, 'price': price})
+        
+        foodTotalPrice=0
         for i in range(3):
-            bags.append([])
+            foodBags.append([])
             for catalog in catalogs:
                 tempOrders=FoodOrder.objects.filter(scheduleName=schedule, foodName=catalog, memberName__remark__bag=(i+1))
                 count=0
@@ -312,9 +313,17 @@ def orderPage(request):
                     count+=tempOrder.num
                     price+=tempOrder.price
                 if count > 0:
-                    bags[i].append({"foodName": catalog.name, "count": count, 'price': price})
-                    total_price+=price
-        return render(request, 'bandongo/backend_order.html',{'schedule': schedule, 'bags': bags, 'orders': orders, 'total_price': total_price})
+                    foodBags[i].append({"foodName": catalog.name, "count": count, 'price': price})
+                    foodTotalPrice+=price
+
+        drinkBags=[]
+        drinkTotalPrice=0
+        for i in range(3):
+            tempOrders=DrinkOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1)).order_by('drinking')
+            drinkBags.append(tempOrders)
+            print tempOrders
+            drinkTotalPrice+=sum(map(lambda order: order.price, tempOrders))
+        return render(request, 'bandongo/backend_order.html',{'schedule': schedule, 'foodBags': foodBags, 'foodOrders': foodOrders, 'foodTotalPrice': foodTotalPrice, 'drinkBags': drinkBags, 'drinkTotalPrice': drinkTotalPrice})
     except ObjectDoesNotExist:
         return render(request, 'bandongo/backend_order.html',{'schedule': None})
 
@@ -322,14 +331,24 @@ def orderDetailPage(request, id):
     checkExpire()
     try:
         schedule=Schedule.objects.get(id=id)
-        bags=[]
-        total_price=0
+        foodBags=[]
+        drinkBags=[]
+        foodTotalPrice=0
+        drinkTotalPrice=0
+
         for i in range(3):
             orders=FoodOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1))
             for order in orders:
-                total_price+=order.price
-            bags.append(orders)
-        return render(request, 'bandongo/backend_orderDetail.html',{'schedule': schedule, 'bags': bags, 'total_price': total_price})
+                foodTotalPrice+=order.price
+            foodBags.append(orders)
+        
+        for i in range(3):
+            orders=DrinkOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1))
+            for order in orders:
+                drinkTotalPrice+=order.price
+            drinkBags.append(orders)
+        
+        return render(request, 'bandongo/backend_orderDetail.html',{'schedule': schedule, 'foodBags': foodBags, 'foodTotalPrice': foodTotalPrice, 'drinkBags': drinkBags, 'drinkTotalPrice': drinkTotalPrice})
     except ObjectDoesNotExist:
         return render(request, 'bandongo/backend_orderDetail.html',{'schedule': None})
 
