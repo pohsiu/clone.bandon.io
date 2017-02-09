@@ -5,9 +5,10 @@
         <title>Backend</title>
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.min.css' %}">
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-select.min.css' %}">
+        <script src="{% static 'js/jquery/jquery-3.1.1.min.js' %}"></script>
         <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/js/bootstrap-select.min.js"></script>
+        <script src="{% static 'bootstrap/js/bootstrap-select.min.js' %}"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {% block js %}{% endblock %}
         {% block css %}{% endblock %}
@@ -45,14 +46,14 @@
                   <li><a href="#">Edit department</a></li>
                 </ul>
               </li>
-              <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Member
-                <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="#">Add member</a></li>
-                  <li><a href="#">Edit member</a></li>
-                </ul>
-              </li>
+              <!--<li class="dropdown">-->
+              <!--  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Member-->
+              <!--  <span class="caret"></span></a>-->
+              <!--  <ul class="dropdown-menu">-->
+              <!--    <li><a href="#">Add member</a></li>-->
+              <!--    <li><a href="#">Edit member</a></li>-->
+              <!--  </ul>-->
+              <!--</li>-->
               <li><a href="/backend/order">Order</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">

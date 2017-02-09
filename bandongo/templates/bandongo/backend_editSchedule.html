@@ -3,38 +3,46 @@
 {% block js %}<script src="{% static 'js/backend_editSchedule.js' %}"></script>{% endblock %}
 {% block content %}
 <div class="container">
-    {% if nonFinish == 1 %}
+    {% if schedule %}
     <div><h1>Edit Schedule</h1></div>
         <table class="table">
             <thead>
                 <tr>
-                    <th>pk</th>
+                    <th>id</th>
                     <th>name</th>
                     <th>Shop</th>
+                    <th>Food</th>
                     <th>Drink</th>
                     <th>Due Date Time</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td id="pk">{{ pk }}</td>
-                    <td id="name"><input type="text" class="form-control" id="schedule_name" value="{{ name }}"></td>
+                    <td id="id">{{ schedule.id }}</td>
+                    <td id="name" style="width: 20%"><input type="text" class="form-control" id="schedule_name" value="{{ schedule.name }}"></td>
                     <td>
-                        <select id="bandon" class="selectpicker">
+                        <select id="bandon" class="selectpicker" data-width="fit">
                             {% for shop in shops %}
-                                <option value="{{shop.name}}" {{shop.selected}}>{{shop.name}}</option>
+                                <option value="{{forloop.counter0}}" {{shop.selected}}>{{shop.name}}</option>
                             {% endfor %}
                         </select>
                     </td>
                     <td>
-                        <select id="drink" class="selectpicker">
+                        <select id="catalog" class="selectpicker" data-width="fit" multiple>
+                            {% for catalog in catalogs %}
+                                <option value="{{catalog.id}}" {{catalog.selected}}>{{catalog.name}}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                    <td>
+                        <select id="drink" class="selectpicker"  data-width="fit">
                             {% for drink in drinks %}
-                                <option value="{{drink.name}}" {{drink.selected}}>{{drink.name}}</option>
+                                <option value="{{drink.id}}" {{drink.selected}}>{{drink.name}}</option>
                             {% endfor %}
                         </select>
                     </td>
                     <td>
-                        <input type="datetime-local" class="form-control" style="width: 60%;" id="dueDatetime" value="{{ datetime }}">
+                        <input type="datetime-local" class="form-control" id="dueDatetime" value="{{ schedule.date }}">
                     </td>
                 </tr>
             </tbody>

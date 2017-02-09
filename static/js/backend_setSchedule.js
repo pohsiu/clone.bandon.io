@@ -1,3 +1,5 @@
+var shops;
+var catalogs;
 $( document ).ready(function() {
     document.getElementById("dueDatetime").value=nowString();
     
@@ -5,11 +7,6 @@ $( document ).ready(function() {
     $.getJSON(url, function(res) {
         shops=res.shops;
         catalogs=res.catalogs;
-        
-        for (var i = 0; i < catalogs[0].length; i++) {
-            $("#catalog").append($("<option></option>").attr("value", catalogs[0][i].id).text(catalogs[0][i].name));
-        }
-        $("#catalog option:first").attr('selected', 'selected').selectpicker('refresh');
     });
     $("#bandon").change(function() {
         $("#catalog option").remove();
@@ -23,7 +20,7 @@ $( document ).ready(function() {
 });
 function submit() {
     var name=$("#schedule_name").val();
-    var bandon=$("#bandon").val();
+    var bandon=shops[$("#bandon").val()].id;
     var drink=$("#drink").val();
     var dueDatetime=$("#dueDatetime").val();
     var catalogs=$("#catalog").selectpicker('val');

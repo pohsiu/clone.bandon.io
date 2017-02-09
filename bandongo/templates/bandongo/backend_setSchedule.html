@@ -4,7 +4,6 @@
 <script src="{% static 'js/backend_setSchedule.js' %}"></script>
 {% endblock %}
 {% block css %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.2/css/bootstrap-select.min.css">
 {% endblock %}
 {% block content %}
 <div class="container">
@@ -22,6 +21,9 @@
             {% endfor %}
         </select>
         <select class="selectpicker" id="catalog" multiple>
+            {% for catalog in catalogs %}
+                <option value="{{catalog.id}}">{{catalog.name}}</option>
+            {% endfor %}
         </select>
     </div>
     <div><h3>Drink</h3></div>
@@ -29,7 +31,7 @@
         <!--choose shop-->
         <select id="drink" style="width: 20%;" class="selectpicker">
             {% for drink in drinks %}
-                <option value="{{drink.name}}">{{drink.name}}</option>
+                <option value="{{drink.id}}">{{drink.name}}</option>
             {% endfor %}
         </select>
     </div>

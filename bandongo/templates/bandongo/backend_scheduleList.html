@@ -7,9 +7,10 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>pk</th>
+                    <th>id</th>
                     <th>name</th>
                     <th>Shop</th>
+                    <th>Food</th>
                     <th>Drink</th>
                     <th>Due Date Time</th>
                     <th>Expired</th>
@@ -19,10 +20,11 @@
             <tbody>
                 {% for schedule in schedules %}
                 <tr>
-                    <td>{{ schedule.pk }}</td>
-                    <td><a href="schedule/{{ schedule.pk }}">{{ schedule.name }}</a></td>
+                    <td>{{ schedule.id }}</td>
+                    <td><a href="schedule/{{ schedule.id }}">{{ schedule.name }}</a></td>
                     <td>{{ schedule.food.name }}</td>
-                    <td>{{ schedule.beverage.name }}</td>
+                    <td>{{ schedule.catalogs }}</td>
+                    <td>{{ schedule.drink.name }}</td>
                     <td>{{ schedule.date }}</td>
                     <td>{{ schedule.expire }}</td>
                     <td>{{ schedule.finish }}</td>

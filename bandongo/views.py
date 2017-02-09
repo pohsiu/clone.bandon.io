@@ -244,60 +244,85 @@ def mark2(request):
 def setSchedulePage(request):
     drinks=Drink.objects.all()
     shops=Food.objects.all()
+<<<<<<< HEAD
     return render(request, 'bandongo/backend_setSchedule.html',{'drinks':drinks, 'shops': shops})
+=======
+    catalogs=Catalog.objects.filter(foodShop=shops[0])
+    return render(request, 'bandongo/backend_setSchedule.html',{'drinks':drinks, 'shops': shops, 'catalogs': catalogs})
+>>>>>>> dabf7fab24c879f50cbd4e93414e94bb56cce1a4
 
 def editSchedulePage(request):
     nonFinish=Schedule.objects.filter(finish=False)
     if len(nonFinish)==0:
-        return render(request, 'bandongo/backend_editSchedule.html',{'nonFinish':len(nonFinish)})
+        return render(request, 'bandongo/backend_editSchedule.html',{})
     elif len(nonFinish)==1:
         shops=Food.objects.all()
         drinks=Drink.objects.all()
         for index in range(len(shops)):
             if shops[index]==nonFinish[0].food:
                 shops[index].selected="selected"
+                catalogs=Catalog.objects.filter(foodShop=shops[index])
+                for index2 in range(len(catalogs)):
+                    if catalogs[index2].choosed:
+                        catalogs[index2].selected="selected"
+                    else:
+                        catalogs[index2].selected=""
             else:
                 shops[index].selected=""
         for index in range(len(drinks)):
-            if drinks[index]==nonFinish[0].beverage:
+            if drinks[index]==nonFinish[0].drink:
                 drinks[index].selected="selected"
             else:
                 drinks[index].selected=""
-        
-        return render(request, 'bandongo/backend_editSchedule.html',{'name': nonFinish[0].name, 'pk': nonFinish[0].pk, 'shops':shops, 'drinks':drinks, 'nonFinish': len(nonFinish), 'datetime': nonFinish[0].date.strftime("%Y-%m-%dT%H:%M")})
+        nonFinish[0].date=nonFinish[0].date.strftime("%Y-%m-%dT%H:%M")
+        return render(request, 'bandongo/backend_editSchedule.html',{'schedule': nonFinish[0], 'shops':shops, 'catalogs': catalogs, 'drinks':drinks})
     else:
         print "bugbugbugbug"
 
 def scheduleListPage(request):
     schedules=Schedule.objects.all()
-    return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules})
+    for i in range(len(schedules)):
+        catalogs=Catalog.objects.filter(foodShop=schedules[i].food, choosed=True)
+        schedules[i].catalogs=""
+        for catalog in catalogs:
+            schedules[i].catalogs+=catalog.name+", "
+        
+    return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules, 'catalogs': catalogs})
 
 def orderPage(request):
     checkExpire()
     try:
         schedule=Schedule.objects.get(finish=False)
-        catalogs=Catalog.objects.filter(shop_name=schedule.food)
+        catalogs=Catalog.objects.filter(foodShop=schedule.food)
         bags=[]
         orders=[]
         for catalog in catalogs:
+<<<<<<< HEAD
             tempOrders=FoodOrder.objects.filter(schedule_name=schedule, catalog_name=catalog)
+=======
+            tempOrders=FoodOrder.objects.filter(scheduleName=schedule, foodName=catalog)
+>>>>>>> dabf7fab24c879f50cbd4e93414e94bb56cce1a4
             count=0
             price=0
             for tempOrder in tempOrders:
-                count+=tempOrder.ordernum
-                price+=tempOrder.orderprice
+                count+=tempOrder.num
+                price+=tempOrder.price
             if count > 0:
                 orders.append({"food_name": catalog.name, "count": count, 'price': price})
         total_price=0
         for i in range(3):
             bags.append([])
             for catalog in catalogs:
+<<<<<<< HEAD
                 tempOrders=FoodOrder.objects.filter(schedule_name=schedule, catalog_name=catalog, member_name__member_mark__bag=(i+1))
+=======
+                tempOrders=FoodOrder.objects.filter(scheduleName=schedule, foodName=catalog, memberName__remark__bag=(i+1))
+>>>>>>> dabf7fab24c879f50cbd4e93414e94bb56cce1a4
                 count=0
                 price=0
                 for tempOrder in tempOrders:
-                    count+=tempOrder.ordernum
-                    price+=tempOrder.ordernum*catalog.price
+                    count+=tempOrder.num
+                    price+=tempOrder.price
                 if count > 0:
                     bags[i].append({"food_name": catalog.name, "count": count, 'price': price})
                     total_price+=price
@@ -305,13 +330,17 @@ def orderPage(request):
     except ObjectDoesNotExist:
         return render(request, 'bandongo/backend_order.html',{'schedule': None})
 
-def orderDetailPage(request, pk):
+def orderDetailPage(request, id):
     checkExpire()
     try:
-        schedule=Schedule.objects.get(pk=pk)
+        schedule=Schedule.objects.get(id=id)
         bags=[]
         for i in range(3):
+<<<<<<< HEAD
             orders=FoodOrder.objects.filter(schedule_name=schedule, member_name__member_mark__bag=(i+1))
+=======
+            orders=FoodOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1))
+>>>>>>> dabf7fab24c879f50cbd4e93414e94bb56cce1a4
             bags.append(orders)
         return render(request, 'bandongo/backend_orderDetail.html',{'schedule': schedule, 'bags': bags})
     except ObjectDoesNotExist:
@@ -327,11 +356,11 @@ def editMemberPage(request, pk):
     return render(request, 'bandongo/backend_editMember.html',{'categories': categories, 'member': member})
 
 def memberListPage(request):
-    members=Member.objects.order_by('member_mark')
+    members=Member.objects.order_by('remark')
     return render(request, 'bandongo/backend_memberList.html',{'members': members})
 
 def addValuePage(request):
-    admins=Member.objects.filter(member_auth='admin')
+    admins=Member.objects.filter(auth='admin')
     return render(request, 'bandongo/backend_addValue.html',{'admins': admins})
 
 ## function part
@@ -340,7 +369,11 @@ def setSchedule(request):
     nonFinish=len(Schedule.objects.filter(finish=False))
     dueDatetime=parse_datetime(request.POST["dueDatetime"])
     bandon=Food.objects.get(id=request.POST["bandon"])
+<<<<<<< HEAD
     drink=Drink.objects.get(name=request.POST["drink"])
+=======
+    drink=Drink.objects.get(id=request.POST["drink"])
+>>>>>>> dabf7fab24c879f50cbd4e93414e94bb56cce1a4
     catalogs=request.POST.getlist("cata[]")
     if nonFinish==0:
         Schedule.objects.create(name=request.POST["schedule_name"], food=bandon, beverage=drink, date=dueDatetime)
@@ -351,16 +384,27 @@ def setSchedule(request):
             temp.save()
         return HttpResponse("Registered Schedule Successfully")
     else:
-        return HttpResponse("Another schedule has not expired.")
+        return HttpResponse("Another schedule is not finished.")
 
 def editSchedule(request):
-    nonFinish=len(Schedule.objects.filter(finish=False))
-    schedule=Schedule.objects.get(pk=request.POST["pk"])
+    schedule=Schedule.objects.get(id=request.POST["id"])
     schedule.date=parse_datetime(request.POST["dueDatetime"])
+<<<<<<< HEAD
     schedule.food=Food.objects.get(name=request.POST["bandon"])
     schedule.beverage=Drink.objects.get(name=request.POST["drink"])
     schedule.name=request.POST["schedule_name"]
+=======
+    schedule.food=Food.objects.get(id=request.POST["bandon"])
+    schedule.drink=Drink.objects.get(id=request.POST["drink"])
+    schedule.name=request.POST["name"]
+>>>>>>> dabf7fab24c879f50cbd4e93414e94bb56cce1a4
     schedule.save();
+    
+    catalogs=request.POST.getlist("catalogs[]")
+    for catalog in catalogs:
+        temp=Catalog.objects.get(id=catalog)
+        temp.choosed=True
+        temp.save()
 
     return HttpResponse("Edit Schedule Successfully")
 
@@ -375,12 +419,12 @@ def finishSchedule(request):
         return HttpResponse("Finish Schedule Successfully")
 
 def addMember(request):
-    category=Category.objects.get(name=request.POST["category"])
+    category=Category.objects.get(id=request.POST["category"])
     Member.objects.create(name=request.POST["name"], phone=request.POST["phone"], email=request.POST["email"], remark=category)
     return HttpResponse("Add Member Successfully")
 
 def editMember(request):
-    member=Member.objects.get(pk=request.POST["pk"])
+    member=Member.objects.get(id=request.POST["id"])
     member.name=request.POST["name"]
     member.member_phone=request.POST["phone"]
     member.member_email=request.POST["email"]
@@ -417,5 +461,5 @@ def getShopCat(request):
     shops=Food.objects.all()
     catalogs=[]
     for shop in shops:
-        catalogs.append(list(Catalog.objects.filter(shop_name=shop).values()))
+        catalogs.append(list(Catalog.objects.filter(foodShop=shop).values()))
     return JsonResponse({'shops': list(shops.values()), 'catalogs': catalogs})

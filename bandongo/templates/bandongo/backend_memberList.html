@@ -7,7 +7,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>pk</th>
+                <th>id</th>
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Email</th>
@@ -19,13 +19,13 @@
         <tbody>
             {% for member in members %}
             <tr>
-                <td>{{ member.pk }}</td>
-                <td><a href="member/{{ member.pk }}">{{ member.name }}</a></td>
-                <td>{{ member.member_phone }}</td>
-                <td>{{ member.member_email }}</td>
-                <td>{{ member.member_mark }}</td>
-                <td>{{ member.member_auth }}</td>
-                <td>{{ member.member_saving }}</td>
+                <td>{{ member.id }}</td>
+                <td><a href="member/{{ member.id }}">{{ member.name }}</a></td>
+                <td>{{ member.phone }}</td>
+                <td>{{ member.email }}</td>
+                <td>{{ member.remark }}</td>
+                <td>{{ member.auth }}</td>
+                <td>{{ member.saving }}</td>
             </tr>
             {% endfor %}
         </tbody>
