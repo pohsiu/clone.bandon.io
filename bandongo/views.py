@@ -51,7 +51,7 @@ def member_detail(request, pk):
 
 
 def member_edit(request, pk):
-    member = get_object_or_404(Member, pk=pk)
+    member = get_object_or_404(Member, id=pk)
     if request.method == "POST":
         form = MemberForm(request.POST, instance=member)
         if form.is_valid():
@@ -337,9 +337,9 @@ def addMemberPage(request):
     categories=Category.objects.all()
     return render(request, 'bandongo/backend_addMember.html',{'categories': categories})
 
-def editMemberPage(request, pk):
+def editMemberPage(request, id):
     categories=Category.objects.all()
-    member=Member.objects.get(pk=pk)
+    member=Member.objects.get(id=id)
     return render(request, 'bandongo/backend_editMember.html',{'categories': categories, 'member': member})
 
 def memberListPage(request):
@@ -348,7 +348,10 @@ def memberListPage(request):
 
 def addValuePage(request):
     admins=Member.objects.filter(auth='admin')
-    return render(request, 'bandongo/backend_addValue.html',{'admins': admins})
+    categories=Category.objects.all()
+    members=Member.objects.filter(remark=categories[0])
+    return render(request, 'bandongo/backend_addValue.html',{'admins': admins, 'categories': categories, 'members': members})
+
 
 ## function part
 def setSchedule(request):
@@ -359,7 +362,7 @@ def setSchedule(request):
     drink=Drink.objects.get(id=request.POST["drink"])
     catalogs=request.POST.getlist("cata[]")
     if nonFinish==0:
-        Schedule.objects.create(name=request.POST["schedule_name"], food=bandon, beverage=drink, date=dueDatetime)
+        Schedule.objects.create(name=request.POST["schedule_name"], food=bandon, drink=drink, date=dueDatetime)
         Catalog.objects.all().update(choosed=False)
         for catalog in catalogs:
             temp=Catalog.objects.get(id=catalog)
@@ -387,7 +390,7 @@ def editSchedule(request):
 
 def finishSchedule(request):
     checkExpire()
-    schedule=Schedule.objects.get(pk=request.POST["pk"])
+    schedule=Schedule.objects.get(id=request.POST["id"])
     if not schedule.expire:
         return HttpResponse("The schedule is not expired.")
     else:
@@ -403,19 +406,19 @@ def addMember(request):
 def editMember(request):
     member=Member.objects.get(id=request.POST["id"])
     member.name=request.POST["name"]
-    member.member_phone=request.POST["phone"]
-    member.member_email=request.POST["email"]
-    member.member_mark=Category.objects.get(pk=request.POST["category"])
+    member.phone=request.POST["phone"]
+    member.email=request.POST["email"]
+    member.remark=Category.objects.get(id=request.POST["category"])
     member.save()
     return HttpResponse("Edit Member Successfully")
 
 def addValue(request):
-    member=Member.objects.get(pk=request.POST["member"])
+    member=Member.objects.get(id=request.POST["member"])
     value=request.POST["value"]
-    admin=Member.objects.get(pk=request.POST["admin"])
+    admin=Member.objects.get(id=request.POST["admin"])
     comment=request.POST["comment"]
     
-    Savelog.objects.create(memberName=member, money=value, admin_name=admin, comment=comment)
+    Savelog.objects.create(memberName=member, money=value, adminName=admin, comment=comment)
     member.member_saving+=int(value)
     member.save()
     return HttpResponse("Add Value Successfully")

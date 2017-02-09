@@ -7,8 +7,14 @@
     <div><h3>Member</h3></div>
     <div>
         <select id="category" style="width: 20%;" class="selectpicker">
+            {% for category in categories %}
+                <option value="{{forloop.counter0}}">{{category.name}}</option>
+            {% endfor %}
         </select>
         <select id="member" style="width: 20%;" class="selectpicker">
+            {% for member in members %}
+                <option value="{{member.id}}">{{member.name}}</option>
+            {% endfor %}
         </select>
     </div>
     <div><h3>Value</h3></div>

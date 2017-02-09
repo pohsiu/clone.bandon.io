@@ -5,33 +5,16 @@ $( document ).ready(function() {
     $.getJSON(url, function(res) {
         categories=res.categories;
         members=res.members;
-        // alert(JSON.stringify(members[0][0]));
-        
-        options="<option value='Z' select>選擇姓名</option>"
-        for(var i=0; i<categories.length; i++) {
-            options+="<option value='"+i+"'>"+categories[i].name+"</option>";
-        }
-        $("#category").html(options);
-        
-        $("#member").html("<option>選擇姓名</option>");
-        $("#member").attr('disabled', true);
     });
     $("#category").change(function() {
-        if ($(this).val() == 'Z') {
-             $("#member").html("<option>選擇姓名</option>");
-             $("#member").attr('disabled', true);
+        var cate = $(this).val();
+        
+        $("#member option").remove();
+        for (var i = 0; i < members[cate].length; i++) {
+            $("#member").append($("<option></option>").attr("value", members[cate][i].id).text(members[cate][i].name));
         }
-        else {
-            var brand = $(this).val();
-            
-            var options = '<option value="Z">選擇姓名</option>';
-            for (var i = 0; i < members[brand].length; i++) {
-                options += '<option value="' + members[brand][i].id + '">'  + members[brand][i].name + '</option>';
-            }
-            $("#member").html(options);
-            $("#member option:first").attr('selected', 'selected');
-            $("#member").attr('disabled', false);
-        }
+        $("#member option:first").attr('selected', 'selected');
+        $("#member").selectpicker('refresh');
     });
 });
 function submit() {
