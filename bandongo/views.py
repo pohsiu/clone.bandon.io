@@ -422,7 +422,9 @@ def checkExpire():
     for schedule in nonExpire:
         if schedule.date<datetime.now():
             nonExpire[0].expire=True
-            nonExpire[0].save()
+        else:
+            nonExpire[0].expire=False
+        nonExpire[0].save()
 
 def getCateMem(request):
     categories=Category.objects.all()
