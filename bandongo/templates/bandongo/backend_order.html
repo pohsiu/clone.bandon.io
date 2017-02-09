@@ -43,7 +43,7 @@
                 </tr>
             </thead>
             <tbody>
-            {% for bag in bags %}
+            {% for bag in foodBags %}
             <tr><td colspan="3">Bag {{ forloop.counter }}</td></tr>
             	{% for order in bag %}
                 <tr>
@@ -55,7 +55,7 @@
             {% endfor %}
             <tr>
                 <td colspan="2">total price</td>
-                <td>{{ total_price }}</td>
+                <td>{{ foodTotalPrice }}</td>
             </tr>
             </tbody>
         </table>
@@ -69,7 +69,7 @@
                 </tr>
             </thead>
             <tbody>
-        	{% for order in orders %}
+        	{% for order in foodOrders %}
             <tr>
             	<td>{{ order.foodName }}</td>
                 <td>{{ order.count }}</td>
@@ -78,7 +78,35 @@
             {% endfor %}
             <tr>
                 <td colspan="2">total price</td>
-                <td>{{ total_price }}</td>
+                <td>{{ foodTotalPrice }}</td>
+            </tr>
+            </tbody>
+        </table>
+        <div><h1>Drink Orders</h1></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Drink</th>
+                    <th>Sugar and Ice</th>
+                    <th>Count</th>
+                    <th>Price</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for bag in drinkBags %}
+            <tr><td colspan="3">Bag {{ forloop.counter }}</td></tr>
+                {% for order in bag %}
+                <tr>
+                    <td>{{ order.drinking }}</td>
+                    <td>{{ order.remark }}</td>
+                    <td>{{ order.count }}</td>
+                    <td>{{ order.price }}</td>
+                </tr>
+                {% endfor %}
+            {% endfor %}
+            <tr>
+                <td colspan="3">total price</td>
+                <td>{{ drinkTotalPrice }}</td>
             </tr>
             </tbody>
         </table>

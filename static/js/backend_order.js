@@ -1,8 +1,8 @@
 function finish() {
-    var pk=$("#pk").html();
+    var id=$("#id").html();
     $.post(
         "finishSchedule",
-        {pk: pk},
+        {id: id},
         function(response) {
           alert(response);
           window.location.href = "/backend/scheduleListPage";
