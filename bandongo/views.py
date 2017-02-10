@@ -226,9 +226,17 @@ def delete_food(request):
 
 def mark2(request):
     if request.method == "POST":
-        member_pk = request.POST['member_name']
-        return redirect('bandongo.views.mark_detail', pk=member_pk)
-    
+        if request.POST.get('member_name') != None:
+            
+            member_pk = request.POST.get('member_name')
+            return redirect('bandongo.views.mark_detail', pk=member_pk)
+        else:
+            mark_list = list(Category.objects.all().values())
+            for i in range(len(mark_list)):
+                mark_list[i]['index']=i
+           
+            # mark_list = Member.objects.values_list('member_mark',flat=True).distinct()
+            return render(request, 'bandongo/mark_select.html',{'mark_list':mark_list})
     mark_list = list(Category.objects.all().values())
     for i in range(len(mark_list)):
         mark_list[i]['index']=i

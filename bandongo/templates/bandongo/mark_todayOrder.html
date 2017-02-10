@@ -1,4 +1,4 @@
-{% extends 'bandongo/base.html' %}
+{% extends 'bandongo/frontend_base.html' %}
 {% load staticfiles %}
 
 {% block script %}
@@ -44,19 +44,15 @@ function getConfirmation()
 {% endblock %}
 
 
-{% block content %}
-    <h1>{{ de_member.name }}, {{ de_member.email }}, {{ de_member.phone }}</h1>
-    <h1>
-        <a href="{% url 'bandongo.views.mark_detail' pk=de_member.pk %}">訂餐頁面</a>;
-        <a href="{% url 'bandongo.views.mark_log' pk=de_member.pk %}">帳戶記錄</a>;
-        <a href="{% url 'bandongo.views.mark_todayOrder' pk=de_member.pk %}">查看本日訂單</a>
-    </h1>
+{% block subcontent %}
+    
+    
     <h1>今日訂單</h1>
     {% if today_foods %}
      <table style="width:100%">
       <tr>
         <th></th>
-        <th>日期</th>
+        <!--<th>日期</th>-->
         <th>品項</th>
         <th>數量</th>
         <th>金額</th>
@@ -68,7 +64,7 @@ function getConfirmation()
     {% for foods in today_foods %}
        <tr id="order{{foods.id}}">
         <td>{{foods.scheduleName}}</td>
-        <td>{{foods.date}}</td>
+        <!--<td>{{foods.date}}</td>-->
         <td>{{foods.foodName}}</td>
         <td>{{foods.num}}</td>
         <td>{{foods.price}}</td>
@@ -82,7 +78,7 @@ function getConfirmation()
     {% for drinks in today_drinks %}
       <tr>
         <td>{{drinks.scheduleName}}</td>
-        <td>{{drinks.date}}</td>
+        <!--<td>{{drinks.date}}</td>-->
         <td>{{drinks.drinking}}</td>
         <td>{{drinks.num}}</td>
         <td>{{drinks.price}}</td>
@@ -97,7 +93,7 @@ function getConfirmation()
     {% if cost_total %}
        <tr>
          <th></th>
-         <th></th>
+         <!--<th></th>-->
          <th></th>
          <th>小計</th>
          <th>
