@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from models import Member, Savelog, Food, Drink, Schedule, Catalog, FoodOrder, DrinkOrder
 from models import Category
 
-from .forms import MemberForm, PicForm
+from .forms import MemberForm, PicForm, CatalogForm
 from django.shortcuts import render_to_response, RequestContext
 
 from django.http import HttpResponse, HttpResponseRedirect
@@ -391,6 +391,10 @@ def homePicPage(request):
     form = PicForm()
     return render(request, 'bandongo/backend_homePic.html',{'form': form})
 
+def addCatalogPage(request):
+    form = CatalogForm()
+    return render(request, 'bandongo/backend_addCatalog.html',{'form': form})
+
 
 ## function part
 def setSchedule(request):
@@ -500,7 +504,7 @@ def getShopCat(request):
         catalogs.append(list(Catalog.objects.filter(foodShop=shop).values()))
     return JsonResponse({'shops': list(shops.values()), 'catalogs': catalogs})
     
-def homePic(request):
+def setHomePic(request):
     form = PicForm(request.POST, request.FILES)
     if form.is_valid():
         path="/home/ubuntu/workspace/static/pic/homePic"
@@ -509,6 +513,19 @@ def homePic(request):
             default_storage.delete(picPath)
         homePicPath="/home/ubuntu/workspace/static/pic/homePic/"+form.cleaned_data['homePic'].name
         default_storage.save(homePicPath, form.cleaned_data['homePic'])
-        return HttpResponse("<script>alert('set home picture successfully')</script>")
+        return HttpResponseRedirect("/")
+    else:
+        return HttpResponse("<script>alert('not valid upload')</script>")
+
+def addCatalog(request):
+    form = CatalogForm(request.POST, request.FILES)
+    if form.is_valid():
+        # path="/home/ubuntu/workspace/static/pic/homePic"
+        # if len(os.listdir(path))>0:
+        #     picPath=path+"/"+os.listdir(path)[0]
+        #     default_storage.delete(picPath)
+        # homePicPath="/home/ubuntu/workspace/static/pic/homePic/"+form.cleaned_data['homePic'].name
+        # default_storage.save(homePicPath, form.cleaned_data['homePic'])
+        return HttpResponseRedirect("/backend/addCatalogPage")
     else:
         return HttpResponse("<script>alert('not valid upload')</script>")

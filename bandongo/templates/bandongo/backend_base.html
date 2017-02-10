@@ -9,6 +9,7 @@
         <script src="{% static 'js/jquery/jquery-3.1.1.min.js' %}"></script>
         <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
         <script src="{% static 'bootstrap/js/bootstrap-select.min.js' %}"></script>
+        <script src="{% static 'bootstrap/js/bootstrap-filestyle.min.js' %}"></script>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {% block js %}{% endblock %}
         {% block css %}{% endblock %}
@@ -46,7 +47,15 @@
                   <li><a href="#">Edit department</a></li>
                 </ul>
               </li>
-              <li><a href="/backend/homePic">Home Pic</a></li>
+              <li class="dropdown">
+                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Catalog
+                <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                  <li><a href="/backend/addCatalogPage">Add catalog</a></li>
+                  <li><a href="/backend/catalogListPage">Catalog List</a></li>
+                </ul>
+              </li>
+              <li><a href="/backend/homePicPage">Home Pic</a></li>
               <li><a href="/backend/order">Order</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
