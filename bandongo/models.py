@@ -47,7 +47,7 @@ class Savelog(models.Model):
 #Shop information
 class Food(models.Model):
     name = models.CharField(max_length=10)
-    pic = models.URLField(blank=True) #shop picture loading path
+    pic = models.ImageField(blank=True) #shop picture loading path
     telephone = models.CharField(max_length=15)
     address = models.CharField(max_length=50)
     remark = models.CharField(max_length=15,blank=True)
@@ -58,7 +58,7 @@ class Food(models.Model):
  
 class Drink(models.Model):
     name = models.CharField(max_length=10)
-    pic = models.URLField(blank=True)
+    pic = models.ImageField(blank=True)
     telephone = models.CharField(max_length=15)
     address =models.CharField(max_length=50)
     remark = models.CharField(max_length=15,blank=True)
@@ -82,7 +82,7 @@ class Schedule(models.Model):
 class Catalog(models.Model):
     foodShop = models.ForeignKey(Food)
     name = models.CharField(max_length=10)
-    pic = models.URLField(blank=True)
+    pic = models.ImageField(blank=True)
     price = models.IntegerField()
     choosed = models.BooleanField(default=False)
     
