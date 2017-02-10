@@ -516,12 +516,7 @@ def setHomePic(request):
 def addCatalog(request):
     form = CatalogForm(request.POST, request.FILES)
     if form.is_valid():
-        # path="/home/ubuntu/workspace/static/pic/homePic"
-        # if len(os.listdir(path))>0:
-        #     picPath=path+"/"+os.listdir(path)[0]
-        #     default_storage.delete(picPath)
-        # homePicPath="/home/ubuntu/workspace/static/pic/homePic/"+form.cleaned_data['homePic'].name
-        # default_storage.save(homePicPath, form.cleaned_data['homePic'])
+        form.save()
         return HttpResponseRedirect("/backend/addCatalogPage")
     else:
         return HttpResponse("<script>alert('not valid upload')</script>")
