@@ -3,7 +3,7 @@
 
 {% block script %}
 <script>
-function getConfirmation()
+function getConfirmationFoods()
 {
     var id = document.getElementById("foods_id").value;
     bootbox.confirm({
@@ -24,6 +24,42 @@ function getConfirmation()
         {
             $.post(
                 "/frontend/delete_food",
+                {id:id},
+                function(response) {
+                    alert(response);
+                    $("#order"+String(id)).remove();
+                }
+            );
+        }
+        else
+        {
+            console.log("False");
+        }
+        console.log('This was logged in the callback: ' + result);
+    }
+});
+}
+function getConfirmationDrinks()
+{
+    var id = document.getElementById("drinks_id").value;
+    bootbox.confirm({
+    title: "Bandongo, 取消訂單",
+    message: " 確定要取消訂單嗎?",
+    buttons: {
+        cancel: {
+            label: '<i class="fa fa-times"></i> 取消',
+            
+        },
+        confirm: {
+            label: '<i class="fa fa-check"></i> 確認',
+            
+        }
+    },
+    callback: function (result) {
+        if(result == true)
+        {
+            $.post(
+                "/frontend/delete_drink",
                 {id:id},
                 function(response) {
                     alert(response);
@@ -70,20 +106,21 @@ function getConfirmation()
         <td>{{foods.price}}</td>
         <td>{{foods.remark}}</td>
         <input type="hidden" id="foods_id" value="{{foods.id}}"/>
-        <td><input type="image" onclick="getConfirmation()" src="{% static 'icon/x_icon.png' %}" alt="Submit" width="12" height="12"></td>
+        <td><input type="image" onclick="getConfirmationFoods()" src="{% static 'icon/x_icon.png' %}" alt="Submit" width="12" height="12"></td>
       </tr>
     {% endfor %}
     {% endif %}   
     {% if today_drinks %}
     {% for drinks in today_drinks %}
-      <tr>
+      <tr id="order{{drinks.id}}">
         <td>{{drinks.scheduleName}}</td>
         <!--<td>{{drinks.date}}</td>-->
         <td>{{drinks.drinking}}</td>
         <td>{{drinks.num}}</td>
         <td>{{drinks.price}}</td>
         <td>{{drinks.remark}}</td>
-        
+        <input type="hidden" id="drinks_id" value="{{drinks.id}}"/>
+        <td><input type="image" onclick="getConfirmationDrinks()" src="{% static 'icon/x_icon.png' %}" alt="Submit" width="12" height="12"></td>
       </tr>
     
     {% endfor %}

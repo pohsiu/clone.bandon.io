@@ -9,41 +9,42 @@
     
     {% elif schedule_name %}
         <form action="" method="POST" class="post-form" accept-charset="utf-8">
-        
-            <table style="width:100%">
-            <tr>
-                <th colspan="1">{{schedule_name}}</th>
-                <th colspan="1">{{list_food.0.foodShop}}</th>
-                <th colspan="1">價格</th>
-                <th colspan="1">數量</th>
+            {% if list_food.0.foodShop != "休" %}
+                <table style="width:100%">
                 
-            </tr>
-            <input type="hidden" name="food-len" value="{{ list_food|length }}"/>
-            <input type="hidden" name="schedule" value="{{schedule_name}}"/>
-            {% for foods in list_food %}
                 <tr>
-                    <td><input type="hidden" name="food-name{{ forloop.counter }}" value="{{ foods.name }}"/>{{foods.name}}</td>
-                    <td>Food_pic</td>
-                    <td>{{foods.price}}</td>
-                    <td>
-                        <select name="food-num{{ forloop.counter }}"/>
-                        <option value="0">0</option>
-                        <option value="1">1</option>
-                      	<option value="2">2</option>
-                      	<option value="3">3</option>
-                      	<option value="4">4</option>
-                        <option value="5">5</option>
-                      	</select>
-                    </td>
+                    <th colspan="1">{{schedule_name}}</th>
+                    <th colspan="1">{{list_food.0.foodShop}}</th>
+                    <th colspan="1">價格</th>
+                    <th colspan="1">數量</th>
                     
                 </tr>
+                <input type="hidden" name="food-len" value="{{ list_food|length }}"/>
+                <input type="hidden" name="schedule" value="{{schedule_name}}"/>
+                {% for foods in list_food %}
+                    <tr>
+                        <td><input type="hidden" name="food-name{{ forloop.counter }}" value="{{ foods.name }}"/>{{foods.name}}</td>
+                        <td>Food_pic</td>
+                        <td>{{foods.price}}</td>
+                        <td>
+                            <select name="food-num{{ forloop.counter }}"/>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                          	<option value="2">2</option>
+                          	<option value="3">3</option>
+                          	<option value="4">4</option>
+                            <option value="5">5</option>
+                          	</select>
+                        </td>
+                        
+                    </tr>
+                    
+                {% endfor %}
                 
-            {% endfor %}
-            
-            </table>
+                </table>
+            {% endif %}
         
-        
-        
+            {% if pic_beverage.0.name != "休" %}
             <table style="width:100%">
             <tr>
                 <th colspan="1">{{schedule_name}}</th>
@@ -51,9 +52,10 @@
             </tr>
             <tr>
                 <th colspan="4">
+                <div class="col-xs-12">
+                <img src="{{pic_beverage.0.pic}}"  class="center-block image-fill">
                 
-                <img src="{{pic_beverage.0.pic}}" />
-                   
+                </div>  
                 </th>
             </tr>
             <tr>
@@ -89,6 +91,11 @@
                 </th>
             </tr>
             
+            
+            </table>
+            {% endif %}
+            
+            <table style="width:100%">
             <tr>
                 <th></th>
                 <th></th>
