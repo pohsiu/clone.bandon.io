@@ -61,6 +61,7 @@ urlpatterns = [
     url(r'^backend/memberListPage$', views.memberListPage),
     url(r'^backend/addValuePage$', views.addValuePage),
     url(r'^backend/member/([0-9]+)$', views.editMemberPage),
+    url(r'^backend/homePic$', views.homePicPage),
 
     ## function part
     url(r'^backend/setSchedule$', views.setSchedule),
@@ -69,6 +70,7 @@ urlpatterns = [
     url(r'^backend/addMember$', views.addMember),
     url(r'^backend/editMember$', views.editMember),
     url(r'^backend/addValue$', views.addValue),
+    url(r'^backend/uploadHomePic$', views.homePic),
     
     url(r'^getCateMem$', views.getCateMem),
     url(r'^getShopCat$', views.getShopCat),
