@@ -1,0 +1,14 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Upload Home Picture</h1></div>
+    <form enctype="multipart/form-data" action="/backend/uploadHomePic" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <br>
+    <input class="btn btn-info" type="submit" value="Submit" />
+</form>
+</div>
+{% endblock %}

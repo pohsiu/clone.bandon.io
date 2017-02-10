@@ -2,10 +2,10 @@ from django.shortcuts import render, get_object_or_404
 from models import Member, Savelog, Food, Drink, Schedule, Catalog, FoodOrder, DrinkOrder
 from models import Category
 
-from .forms import MemberForm
+from .forms import MemberForm, PicForm
 from django.shortcuts import render_to_response, RequestContext
 
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 
 from django.core.urlresolvers import reverse
@@ -13,15 +13,15 @@ from django.shortcuts import redirect
 
 from django.db.models import Sum
 
-
-
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 
 from datetime import datetime
 from datetime import date #detail index used
 from django.utils.dateparse import parse_datetime
-
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+import os
 
 def member_new(request):
     if request.method == "POST":
@@ -240,9 +240,13 @@ def mark2(request):
     mark_list = list(Category.objects.all().values())
     for i in range(len(mark_list)):
         mark_list[i]['index']=i
-   
+    path="/home/ubuntu/workspace/static/pic/homePic"
+    if len(os.listdir(path))>0:
+        picPath="/static/pic/homePic/"+os.listdir(path)[0]
+    else:
+        picPath=None
     # mark_list = Member.objects.values_list('member_mark',flat=True).distinct()
-    return render(request, 'bandongo/mark_select.html',{'mark_list':mark_list})
+    return render(request, 'bandongo/mark_select.html',{'mark_list':mark_list, 'homePicPath': picPath})
 
 
 
@@ -379,6 +383,10 @@ def addValuePage(request):
     members=Member.objects.filter(remark=categories[0])
     return render(request, 'bandongo/backend_addValue.html',{'admins': admins, 'categories': categories, 'members': members})
 
+def homePicPage(request):
+    form = PicForm()
+    return render(request, 'bandongo/backend_homePic.html',{'form': form})
+
 
 ## function part
 def setSchedule(request):
@@ -487,3 +495,16 @@ def getShopCat(request):
     for shop in shops:
         catalogs.append(list(Catalog.objects.filter(foodShop=shop).values()))
     return JsonResponse({'shops': list(shops.values()), 'catalogs': catalogs})
+    
+def homePic(request):
+    form = PicForm(request.POST, request.FILES)
+    if form.is_valid():
+        path="/home/ubuntu/workspace/static/pic/homePic"
+        if len(os.listdir(path))>0:
+            picPath=path+"/"+os.listdir(path)[0]
+            default_storage.delete(picPath)
+        homePicPath="/home/ubuntu/workspace/static/pic/homePic/"+form.cleaned_data['homePic'].name
+        default_storage.save(homePicPath, form.cleaned_data['homePic'])
+        return HttpResponse("<script>alert('set home picture successfully')</script>")
+    else:
+        return HttpResponse("<script>alert('not valid upload')</script>")
