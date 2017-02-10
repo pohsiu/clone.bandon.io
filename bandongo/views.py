@@ -224,6 +224,10 @@ def delete_food(request):
     FoodOrder.objects.get(id=request.POST['id']).delete()
     return HttpResponse("Delete Success")
 
+def delete_drink(request):
+    DrinkOrder.objects.get(id=request.POST['id']).delete()
+    return HttpResponse("Delete Success")
+
 def mark2(request):
     if request.method == "POST":
         if request.POST.get('member_name') != None:

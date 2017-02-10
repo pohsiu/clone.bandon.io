@@ -14,7 +14,7 @@
 
     <!-- Bootstrap Core CSS -->
     
-    <link href="{% static 'front_bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!--<link href="{% static 'front_bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">-->
     <link href="{% static 'front_bootstrap/css/nav.css' %}" rel = "stylesheet">
     
 
@@ -52,6 +52,7 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="defaultNavbar1">
                     <ul class="nav navbar-nav navbar-right">
+                        <li><a href="/">回身份切換</a></li>
                         <li><a href="{% url 'bandongo.views.mark_detail' pk=de_member.pk %}">訂餐頁面</a></li>
                         <li><a href="{% url 'bandongo.views.mark_log' pk=de_member.pk %}">帳戶記錄</a></li>
                         <li><a href="{% url 'bandongo.views.mark_todayOrder' pk=de_member.pk %}">查看本日訂單</a></li>

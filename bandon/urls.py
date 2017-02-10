@@ -42,6 +42,7 @@ urlpatterns = [
     url(r'^$', views.mark2),
     
     url(r'^frontend/delete_food$', views.delete_food),
+    url(r'^frontend/delete_drink$', views.delete_drink),
     
     #form selection json temp html 
     url(r'^mark/json_models' , views.filter_json),
