@@ -2,7 +2,7 @@
 
 {% block subcontent %}
    
-    <h1>存款紀錄</h1>
+    <h2>存款紀錄</h2>
     {% if savelogs %}
     
     
@@ -34,7 +34,7 @@
     
     <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp你沒存錢, 快點存</p>
     {% endif %}
-    <h1>消費紀錄</h1>
+    <h2>消費紀錄</h2>
     <table style="width:100%">
     {% if foods_logs %}
     
@@ -97,6 +97,6 @@
     
     
     {% if total_sum %}
-    <h1>餘額:{{ total_sum }}</h1>
+    <p>餘額:{{ total_sum }}</p>
     {% endif %}
 {% endblock %}
