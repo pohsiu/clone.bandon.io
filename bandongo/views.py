@@ -423,6 +423,21 @@ def finishSchedule(request):
     else:
         schedule.finish=True
         schedule.save();
+        fOrders=FoodOrder.objects.filter(scheduleName=schedule)
+        dOrders=DrinkOrder.objects.filter(scheduleName=schedule)
+        for order in fOrders:
+            member=order.memberName
+            member.saving-=order.price
+            member.save()
+            order.finish=True
+            order.save()
+        for order in dOrders:
+            member=order.memberName
+            member.saving-=order.price
+            member.save()
+            order.finish=True
+            order.save()
+        
         return HttpResponse("Finish Schedule Successfully")
 
 def addMember(request):
