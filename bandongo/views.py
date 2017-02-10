@@ -200,8 +200,8 @@ def mark_log(request,pk):
     if save_total == None:
         save_total = 0
     savelogs = Savelog.objects.filter(memberName=pk).order_by('tranDate')
-    foods_total = FoodOrder.objects.filter(memberName=pk).aggregate(foods_total=Sum('price'))['foods_total']
-    drinks_total = DrinkOrder.objects.filter(memberName=pk).aggregate(drinks_total=Sum('price'))['drinks_total']
+    foods_total = FoodOrder.objects.filter(memberName=pk,finish=True).aggregate(foods_total=Sum('price'))['foods_total']
+    drinks_total = DrinkOrder.objects.filter(memberName=pk,finish=True).aggregate(drinks_total=Sum('price'))['drinks_total']
     if foods_total == None:
         foods_total = 0
     if drinks_total == None:
