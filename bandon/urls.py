@@ -37,9 +37,9 @@ urlpatterns = [
     
     
     url(r'^detail/(?P<pk>[0-9]+)/$', views.mark_detail),
-    url(r'^log/(?P<pk>[0-9]+)/$',views.mark_log),
-    url(r'^todayOrder/(?P<pk>[0-9]+)/$',views.mark_todayOrder),
-    url(r'^$', views.mark2),
+    url(r'^log/(?P<pk>[0-9]+)/$',views.member_log),
+    url(r'^todayOrder/(?P<pk>[0-9]+)/$',views.today_order),
+    url(r'^$', views.mark_select),
     
     url(r'^frontend/delete_food$', views.delete_food),
     url(r'^frontend/delete_drink$', views.delete_drink),

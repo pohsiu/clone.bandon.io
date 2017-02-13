@@ -81,65 +81,7 @@ def filter_json(request):
         
     return JsonResponse({'member_list': models, 'mark_list': marks})
     
-def mark_detail_backup(request, pk):
-    de_member = get_object_or_404(Member, pk=pk)
-    now = datetime.now()
-    finish_order = 'Y'
-    if request.method =="POST":
-        schedule = Schedule.objects.get(name=request.POST['schedule'])
-        if request.POST['order-type'] == u'food':   # test the form type
-            food_len = int(request.POST['food-len'])
-            finish_order='food'
-            for i in range(1, food_len+1):
-                if request.POST['food-num'+unicode(i)] != '0':
-                    # foodremark = ''
-                    # if request.POST['food-remark'+unicode(i)] != '':
-                    #     foodremark = request.POST['food-remark'+unicode(i)]
-                    price = int(request.POST['food-price'+unicode(i)])
-                    num = int(request.POST['food-num'+unicode(i)])
-                    count    = price * num
-                    name = Catalog.objects.get(name=request.POST['food-name'+unicode(i)])
-                    FoodOrder.objects.create(memberName=de_member,scheduleName=schedule,foodName=name,num=num,date=now,price=count)
-                    
-            # print type(food_len)
-            return render(request, 'bandongo/mark_detail.html', {'de_member': de_member,'finish_order':finish_order})
-        elif request.POST['order-type'] == u'beverage':
-            finish_order='beverage'
-            if request.POST.get('drink-name'):
-                drink = request.POST['drink-name']
-                remark = request.POST['sugar']+request.POST['ice']
-                price = request.POST['drink-price']
-                DrinkOrder.objects.create(memberName=de_member,scheduleName=schedule,drinking=drink,num=1,remark=remark,date=now,price=price)
-            
-            return render(request, 'bandongo/mark_detail.html', {'de_member': de_member,'finish_order':finish_order})
-        else:    
-            return render(request, 'bandongo/mark_detail.html', {'de_member': de_member})
-        
-            
-    
-    else:
-        #order index
-        #===get today's schedule part===
-        
-        schedules = Schedule.objects.filter(expire=False)
-        schedule_name = None
-        if schedules:
-            duedate = schedules[0].date
-            if now < duedate:
-                id_food = schedules[0].food
-                id_beverage = schedules[0].drink.name
-                list_food = Catalog.objects.filter(foodShop = id_food, choosed=True)
-                pic_beverage = Drink.objects.filter(name = id_beverage)
-                schedule_name = schedules[0].name
-            else:
-                list_food=''
-                pic_beverage=''
-        else:
-            list_food=''
-            pic_beverage=''
-        
-        
-        return render(request, 'bandongo/mark_detail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name})
+
     
 
 def mark_detail(request, pk):
@@ -166,7 +108,7 @@ def mark_detail(request, pk):
             price = request.POST['drink-price']
             DrinkOrder.objects.create(memberName=de_member,scheduleName=schedule,drinking=drink,num=1,remark=remark,date=now,price=price)
         
-        return render(request, 'bandongo/mark_detail.html', {'de_member': de_member,'finish_order':finish_order})
+        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'finish_order':finish_order})
        
     
     else:
@@ -191,9 +133,9 @@ def mark_detail(request, pk):
             pic_beverage=''
         
         
-        return render(request, 'bandongo/mark_detail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name})
+        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name})
 
-def mark_log(request,pk):
+def member_log(request,pk):
     de_member = get_object_or_404(Member, pk=pk)
     
     save_total = Savelog.objects.filter(memberName=pk).aggregate(save_total=Sum('money'))['save_total']
@@ -211,14 +153,14 @@ def mark_log(request,pk):
     cost_total = foods_total + drinks_total
     total_sum = save_total - cost_total
     
-    return render(request, 'bandongo/mark_log.html',{'de_member':de_member,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'foods_logs':foods_logs,'drinks_logs':drinks_logs,'total_sum':total_sum})
+    return render(request, 'bandongo/frontend_memberLog.html',{'de_member':de_member,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'foods_logs':foods_logs,'drinks_logs':drinks_logs,'total_sum':total_sum})
 
 
-def mark_todayOrder(request,pk):
+def today_order(request,pk):
     de_member =  get_object_or_404(Member, pk=pk)
     today_foods = FoodOrder.objects.filter(memberName=pk, finish=False).order_by('date')
     today_drinks = DrinkOrder.objects.filter(memberName=pk, finish=False).order_by('date')
-    return render(request, 'bandongo/mark_todayOrder.html',{'de_member':de_member,'today_foods':today_foods,'today_drinks':today_drinks})
+    return render(request, 'bandongo/frontend_todayOrder.html',{'de_member':de_member,'today_foods':today_foods,'today_drinks':today_drinks})
 
 def delete_food(request):
     FoodOrder.objects.get(id=request.POST['id']).delete()
@@ -228,7 +170,7 @@ def delete_drink(request):
     DrinkOrder.objects.get(id=request.POST['id']).delete()
     return HttpResponse("Delete Success")
 
-def mark2(request):
+def mark_select(request):
     if request.method == "POST":
         if request.POST.get('member_name') != None:
             
@@ -240,7 +182,7 @@ def mark2(request):
                 mark_list[i]['index']=i
            
             # mark_list = Member.objects.values_list('member_mark',flat=True).distinct()
-            return render(request, 'bandongo/mark_select.html',{'mark_list':mark_list})
+            return render(request, 'bandongo/frontend_markSelect.html',{'mark_list':mark_list})
     mark_list = list(Category.objects.all().values())
     for i in range(len(mark_list)):
         mark_list[i]['index']=i
@@ -250,7 +192,7 @@ def mark2(request):
     else:
         picPath=None
     # mark_list = Member.objects.values_list('member_mark',flat=True).distinct()
-    return render(request, 'bandongo/mark_select.html',{'mark_list':mark_list, 'homePicPath': picPath})
+    return render(request, 'bandongo/frontend_markSelect.html',{'mark_list':mark_list, 'homePicPath': picPath})
 
 
 

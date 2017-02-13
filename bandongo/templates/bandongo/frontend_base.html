@@ -54,8 +54,8 @@
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="/">回身份切換</a></li>
                         <li><a href="{% url 'bandongo.views.mark_detail' pk=de_member.pk %}">訂餐頁面</a></li>
-                        <li><a href="{% url 'bandongo.views.mark_log' pk=de_member.pk %}">帳戶記錄</a></li>
-                        <li><a href="{% url 'bandongo.views.mark_todayOrder' pk=de_member.pk %}">查看本日訂單</a></li>
+                        <li><a href="{% url 'bandongo.views.member_log' pk=de_member.pk %}">帳戶記錄</a></li>
+                        <li><a href="{% url 'bandongo.views.today_order' pk=de_member.pk %}">查看本日訂單</a></li>
                     </ul>
                 </div>
                 <!-- /.navbar-collapse -->
