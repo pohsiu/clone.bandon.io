@@ -4,12 +4,12 @@ from django.utils import timezone
 # from django.contrib.auth.models import User
 
 
-
+BAGS=[(1, 1), (2, 2), (3, 3)]
 
 #category
 class Category(models.Model):
     name = models.CharField(max_length=10)
-    bag = models.IntegerField()
+    bag = models.IntegerField(choices=BAGS)
     def __unicode__(self):
         return u'%s '% (self.name)
 
@@ -82,7 +82,7 @@ class Schedule(models.Model):
 class Catalog(models.Model):
     foodShop = models.ForeignKey(Food)
     name = models.CharField(max_length=10)
-    pic = models.ImageField(blank=True)
+    pic = models.ImageField(upload_to="static/pic/catalogPic/",blank=True)
     price = models.IntegerField()
     choosed = models.BooleanField(default=False)
     

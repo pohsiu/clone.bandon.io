@@ -7,12 +7,18 @@ class MemberForm(forms.ModelForm):
         fields = ('name','phone','remark','saving')
 
 class PicForm(forms.Form):
-    homePic = forms.ImageField(label='Home Picture', widget=forms.FileInput(attrs={'class': 'filestyle'}))
+    homePic = forms.ImageField(label='Home Picture', widget=forms.ClearableFileInput(attrs={'class': 'filestyle'}))
 
 class CatalogForm(forms.ModelForm):
     class Meta:
         model = Catalog
         fields = ['foodShop', 'name', 'pic', 'price']
+        widgets = {
+            'foodShop': forms.Select(attrs={'class': 'form-control'}),
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'pic': forms.ClearableFileInput(attrs={'class': 'filestyle'}),
+            'price': forms.TextInput(attrs={'class': 'form-control'}),
+        }
 
 
 

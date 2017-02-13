@@ -13,8 +13,18 @@ $( document ).ready(function() {
         for (var i = 0; i < members[cate].length; i++) {
             $("#member").append($("<option></option>").attr("value", members[cate][i].id).text(members[cate][i].name));
         }
+        $("#saving").html(members[cate][0].saving);
         $("#member option:first").attr('selected', 'selected');
         $("#member").selectpicker('refresh');
+    });
+    $("#member").change(function() {
+        var cate = $("#category").val();
+        var saving=0;
+        for (var i = 0; i < members[cate].length; i++) {
+            if(members[cate][i].id==$(this).val())
+                saving=members[cate][i].saving
+        }
+        $("#saving").html(saving);
     });
 });
 function submit() {

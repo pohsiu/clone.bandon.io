@@ -12,3 +12,26 @@ function submit() {
         }
     );
 }
+
+function deleteMem() {
+    var id=$("#id").html();
+    if(confirm("Are you sure you want to delete?")) {
+        $.post(
+            "/backend/deleteMember",
+            {id:id},
+            function(response) {
+              if(response=="saving") {
+                  alert("Please return the saving.");
+                  window.location.href="/backend/addValuePage";
+              } else {
+                  alert("Delete successfully.");
+                  window.location.replace("/backend/memberListPage");
+              }
+            }
+        );
+    }
+    else {
+        alert("Cancel the deletion.");
+    }
+    
+}

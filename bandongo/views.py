@@ -277,7 +277,7 @@ def orderPage(request):
         drinkBags=[]
         drinkTotalPrice=0
         for i in range(3):
-            tempOrders=DrinkOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1)).order_by('drinking')
+            tempOrders=DrinkOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1)).order_by('drinking', 'remark')
             drinkBags.append(tempOrders)
             print tempOrders
             drinkTotalPrice+=sum(map(lambda order: order.price, tempOrders))
@@ -412,6 +412,14 @@ def editMember(request):
     member.save()
     return HttpResponse("Edit Member Successfully")
 
+def deleteMember(request):
+    member=Member.objects.get(id=request.POST["id"])
+    if not member.saving == 0:
+        return HttpResponse("saving")
+    else:
+        member.delete()
+        return HttpResponse("success")
+
 def addValue(request):
     member=Member.objects.get(id=request.POST["member"])
     value=request.POST["value"]
@@ -462,12 +470,7 @@ def setHomePic(request):
 def addCatalog(request):
     form = CatalogForm(request.POST, request.FILES)
     if form.is_valid():
-        # path="/home/ubuntu/workspace/static/pic/homePic"
-        # if len(os.listdir(path))>0:
-        #     picPath=path+"/"+os.listdir(path)[0]
-        #     default_storage.delete(picPath)
-        # homePicPath="/home/ubuntu/workspace/static/pic/homePic/"+form.cleaned_data['homePic'].name
-        # default_storage.save(homePicPath, form.cleaned_data['homePic'])
+        form.save()
         return HttpResponseRedirect("/backend/addCatalogPage")
     else:
         return HttpResponse("<script>alert('not valid upload')</script>")
