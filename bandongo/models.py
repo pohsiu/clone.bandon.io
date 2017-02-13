@@ -46,7 +46,7 @@ class Savelog(models.Model):
 
 #Shop information
 class Food(models.Model):
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=15)
     pic = models.ImageField(blank=True) #shop picture loading path
     telephone = models.CharField(max_length=15)
     address = models.CharField(max_length=50)
@@ -57,7 +57,7 @@ class Food(models.Model):
         return u'%s '% (self.name)
  
 class Drink(models.Model):
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=15)
     pic = models.ImageField(blank=True)
     telephone = models.CharField(max_length=15)
     address =models.CharField(max_length=50)
@@ -81,7 +81,7 @@ class Schedule(models.Model):
 #Product Food Menu
 class Catalog(models.Model):
     foodShop = models.ForeignKey(Food)
-    name = models.CharField(max_length=10)
+    name = models.CharField(max_length=15)
     pic = models.ImageField(upload_to="static/pic/catalogPic/",blank=True)
     price = models.IntegerField()
     choosed = models.BooleanField(default=False)
@@ -101,7 +101,7 @@ class FoodOrder(models.Model):
     foodName = models.ForeignKey(Catalog)
     num = models.IntegerField(default=1) #single product ordering num 
     date = models.DateTimeField(default=timezone.now)
-    remark = models.CharField(max_length=10,blank=True)
+    remark = models.CharField(max_length=20,blank=True)
     price = models.IntegerField(default=0)
     finish = models.BooleanField(default=False)
     
@@ -113,10 +113,10 @@ class FoodOrder(models.Model):
 class DrinkOrder(models.Model):
     memberName = models.ForeignKey(Member)
     scheduleName = models.ForeignKey(Schedule)
-    drinking = models.CharField(max_length=10)
+    drinking = models.CharField(max_length=15)
     num = models.IntegerField(default=1) #single product ordering num 
     date = models.DateTimeField(default=timezone.now)
-    remark = models.CharField(max_length=10,blank=True)
+    remark = models.CharField(max_length=20,blank=True)
     price = models.IntegerField(default=0)
     finish = models.BooleanField(default=False)
     

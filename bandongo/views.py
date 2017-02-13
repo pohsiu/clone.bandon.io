@@ -104,7 +104,7 @@ def mark_detail(request, pk):
         
         if request.POST.get('drink-name'):
             drink = request.POST['drink-name']
-            remark = request.POST['sugar']+request.POST['ice']
+            remark = request.POST['sugar']+request.POST['ice']+request.POST['drink-comment']
             price = request.POST['drink-price']
             DrinkOrder.objects.create(memberName=de_member,scheduleName=schedule,drinking=drink,num=1,remark=remark,date=now,price=price)
         
