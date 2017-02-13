@@ -58,7 +58,7 @@ class Food(models.Model):
  
 class Drink(models.Model):
     name = models.CharField(max_length=15)
-    pic = models.ImageField(blank=True)
+    pic = models.ImageField(upload_to="static/pic/catalogPic/",blank=True)
     telephone = models.CharField(max_length=15)
     address =models.CharField(max_length=50)
     remark = models.CharField(max_length=15,blank=True)

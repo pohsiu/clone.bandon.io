@@ -58,7 +58,10 @@
   </nav>
     </div>
     {% if homePicPath %}
-    <img src="{{homePicPath}}" style="width:300px; length:300px">
+    <div class="container">
+      <img src="{{homePicPath}}" class="img-responsive"  width="240" height="240"> 
+    </div>
+    <!--<p>{{homePicPath}}</p>-->
     {% endif %}
     <div id="wrapper">
 
