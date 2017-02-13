@@ -335,7 +335,7 @@ def orderPage(request):
         drinkBags=[]
         drinkTotalPrice=0
         for i in range(3):
-            tempOrders=DrinkOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1)).order_by('drinking')
+            tempOrders=DrinkOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1)).order_by('drinking', 'remark')
             drinkBags.append(tempOrders)
             print tempOrders
             drinkTotalPrice+=sum(map(lambda order: order.price, tempOrders))
@@ -469,6 +469,14 @@ def editMember(request):
     member.remark=Category.objects.get(id=request.POST["category"])
     member.save()
     return HttpResponse("Edit Member Successfully")
+
+def deleteMember(request):
+    member=Member.objects.get(id=request.POST["id"])
+    if not member.saving == 0:
+        return HttpResponse("saving")
+    else:
+        member.delete()
+        return HttpResponse("success")
 
 def addValue(request):
     member=Member.objects.get(id=request.POST["member"])

@@ -3,7 +3,7 @@
 {% block js %}<script src="{% static 'js/backend_editMember.js' %}"></script>{% endblock %}
 {% block content %}
 <div class="container">
-    <div><h1>Add Member</h1></div>
+    <div><h1>Edit Member</h1></div>
     <div><h3>id</h3></div>
     <div id="id">{{ member.id }}</div>
     <div><h3>Name</h3></div>
@@ -32,6 +32,7 @@
     </div>
     <div style="margin-top: 20px">
         <button class="btn btn-default" onclick="submit();">Submit</button>
+        <button class="btn btn-default" onclick="deleteMem();">Delete</button>
     </div>
 </div>
 {% endblock %}

@@ -70,6 +70,7 @@ urlpatterns = [
     url(r'^backend/finishSchedule$', views.finishSchedule),
     url(r'^backend/addMember$', views.addMember),
     url(r'^backend/editMember$', views.editMember),
+    url(r'^backend/deleteMember$', views.deleteMember),
     url(r'^backend/addValue$', views.addValue),
     url(r'^backend/setHomePic$', views.setHomePic),
     url(r'^backend/addCatalog$', views.addCatalog),
