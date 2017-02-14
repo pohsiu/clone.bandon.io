@@ -1,5 +1,21 @@
 {% extends 'bandongo/frontend_base.html' %}
 {% load staticfiles %}
+
+ {% block script %}
+ <!-- Latest compiled and minified CSS -->
+
+
+
+
+  <link rel="stylesheet" href="{%static 'front_bootstrap/css/bootstrap-select.min.css' %}">
+  <link rel="stylesheet" href="{%static 'front_bootstrap/css/bootstrap-select.css' %}">
+  <script src="{% static 'front_bootstrap/js/jquery.min.js' %}"></script>
+  <script src="{% static 'front_bootstrap/js/3.3.4/bootstrap.min.js' %}"></script>
+  <script src="{% static 'front_bootstrap/js/bootstrap-select.js' %}"></script>
+
+{% endblock %}
+
+
 {% block subcontent %}
     
     
@@ -27,7 +43,7 @@
                         <td>Food_pic</td>
                         <td>{{foods.price}}</td>
                         <td>
-                            <select name="food-num{{ forloop.counter }}"/>
+                            <select name="food-num{{ forloop.counter }}" class ="selectpicker show-tick form-control"/>
                             <option value="0">0</option>
                             <option value="1">1</option>
                           	<option value="2">2</option>
@@ -53,7 +69,7 @@
             <tr>
                 <th colspan="4">
                 <div class="container">
-                  <img src="/static/{{pic_beverage.0.pic}}" class="img-responsive" alt="Cinque Terre" width="600" height="400"> 
+                  <img src="/{{pic_beverage.0.pic}}" class="img-responsive" alt="Cinque Terre" width="600" height="400"> 
                 </div>
                 
                 <!--<div class="col-xs-12">-->
@@ -70,16 +86,23 @@
                 </th>
             </tr>
             <tr>
+                <div class =  'col-xs-12'>
       	        <td>甜度冰塊</td>
-                <th colspan="3">
-                  <select name="sugar"/>
+      	        
+      	        <div class="container">
+                <!--<th colspan="1">-->
+                <td>
+                  <select name="sugar" class="selectpicker show-tick form-control"/>
                   <option value="無糖">無糖</option>
                   <option value="微糖">微糖</option>
                   <option value="半糖">半糖</option>
                   <option value="少糖">少糖</option>
                   <option value="正常甜">正常甜</option>
                   </select>
-                  <select name="ice"/>
+                </td>
+                <td>
+                
+                  <select name="ice" class="selectpicker show-tick form-control"/>
                   <option value="去冰">去冰</option>
                   <option value="少冰">少冰</option>
                   <option value="微冰">微冰</option>
@@ -87,7 +110,10 @@
                   <option value="正常冰">正常冰</option>
                   <option value="熱的">熱的</option>
                   </select>
-                </th>
+                </td> 
+                </div>
+                <!--</th>-->
+                </div>
             </tr>
             <tr>
       	        <td>備註</td>
@@ -108,12 +134,13 @@
             
             <table style="width:100%">
             <tr>
-                <th></th>
-                <th></th>
-                <th></th>
-                <th>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td>
                     <button type="submit" class="save btn btn-default">送出</button>
-                </th>
+                </td>
             </tr>
             </table>
         </form>
@@ -121,6 +148,8 @@
         <h2>統計截止，不便之處請見諒</h2>
     {% endif %}
     
-    
+
+
+
 {% endblock %}
 
