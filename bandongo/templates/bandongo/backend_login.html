@@ -1,0 +1,17 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}
+{% endblock %}
+{% block css %}
+{% endblock %}
+{% block content %}
+<div class="container">
+    <form action="" method="post">
+        <label for="account">Account</label>
+        <input type="text" name="username" value="" id="username" class="form-control" style="width: 30%;"> <br>
+        <label for="password">Password</label>
+        <input type="password" name="password" value="" id="password" class="form-control" style="width: 30%;"> <br>
+        <input type="submit" value="登入" class="btn btn-default">
+    </form>
+</div>
+{% endblock %}
