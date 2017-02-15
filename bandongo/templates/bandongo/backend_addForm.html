@@ -5,7 +5,7 @@
 <div class="container">
     <div><h1>Add Catalog</h1></div>
     <div id="form" style="width:50%">
-        <form enctype="multipart/form-data" action="/backend/addCatalog" method="post">
+        <form enctype="multipart/form-data" action="/backend/{{next}}" method="post">
             {% csrf_token %}
             {{ form }}
             <br>

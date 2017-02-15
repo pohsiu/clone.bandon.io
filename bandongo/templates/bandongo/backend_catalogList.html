@@ -1,0 +1,32 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Catalog List</h1></div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Name</th>
+                <th>Picture</th>
+                <th>Price</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for catalog in catalogs %}
+            <tr>
+                <td>{{ catalog.id }}</td>
+                <td><a href="/backend/catalog/{{ catalog.id }}">{{ catalog.name }}</a></td>
+                <td>
+                    {% if catalog.pic %}
+                    <img src="/{{ catalog.pic }}" class="img-responsive"  width="240" height="240">
+                    {% endif %}
+                </td>
+                <td>{{ catalog.price }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

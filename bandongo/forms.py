@@ -1,5 +1,5 @@
 from django import forms
-from models import Member, Catalog
+from models import Member, Catalog, Food
 
 class MemberForm(forms.ModelForm):
     class Meta:
@@ -18,6 +18,18 @@ class CatalogForm(forms.ModelForm):
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'pic': forms.ClearableFileInput(attrs={'class': 'filestyle'}),
             'price': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+        
+class FoodForm(forms.ModelForm):
+    class Meta:
+        model = Food
+        fields = ['name', 'pic', 'telephone', 'address', 'remark']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'pic': forms.ClearableFileInput(attrs={'class': 'filestyle'}),
+            'telephone': forms.NumberInput(attrs={'class': 'form-control'}),
+            'address': forms.TextInput(attrs={'class': 'form-control'}),
+            'remark': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
 
