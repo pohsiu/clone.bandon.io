@@ -7,8 +7,8 @@
 
 
 
-  <link rel="stylesheet" href="{%static 'front_bootstrap/css/bootstrap-select.min.css' %}">
-  <link rel="stylesheet" href="{%static 'front_bootstrap/css/bootstrap-select.css' %}">
+  <link rel="stylesheet" href="{%static 'bootstrap/css/bootstrap-select.min.css' %}">
+  
   <script src="{% static 'front_bootstrap/js/jquery.min.js' %}"></script>
   <script src="{% static 'front_bootstrap/js/3.3.4/bootstrap.min.js' %}"></script>
   <script src="{% static 'front_bootstrap/js/bootstrap-select.js' %}"></script>
@@ -26,7 +26,7 @@
     {% elif schedule_name %}
         <form action="" method="POST" class="post-form" accept-charset="utf-8">
             {% if list_food.0.foodShop != "休" %}
-                <table style="width:100%">
+                <table class="col-xs-12">
                 
                 <tr>
                     <th colspan="1">{{schedule_name}}</th>
@@ -40,7 +40,11 @@
                 {% for foods in list_food %}
                     <tr>
                         <td><input type="hidden" name="food-name{{ forloop.counter }}" value="{{ foods.name }}"/>{{foods.name}}</td>
-                        <td>Food_pic</td>
+                        <td>
+                        <!--<div class="container">-->
+                          <img src="/{{foods.pic}}" class="img-responsive img-circle" alt="Cinque Terre" width="600" height="240"> 
+                        <!--</div>-->
+                        </td>
                         <td>{{foods.price}}</td>
                         <td>
                             <select name="food-num{{ forloop.counter }}" class ="selectpicker show-tick form-control"/>
@@ -61,7 +65,7 @@
             {% endif %}
         
             {% if pic_beverage.0.name != "休" %}
-            <table style="width:100%">
+            <table class="col-xs-12">
             <tr>
                 <th colspan="1">{{schedule_name}}</th>
                 <th colspan="3">{{pic_beverage.0.name}}</th>
@@ -69,7 +73,7 @@
             <tr>
                 <th colspan="4">
                 <div class="container">
-                  <img src="/{{pic_beverage.0.pic}}" class="img-responsive" alt="Cinque Terre" width="600" height="400"> 
+                  <img src="/{{pic_beverage.0.pic}}" class="img-responsive" alt="Cinque Terre" width="500" height="360"> 
                 </div>
                 
                 <!--<div class="col-xs-12">-->
@@ -81,28 +85,28 @@
             </tr>
             <tr>
                 <td>喝什麼</td>
-                <th colspan="3">
+                <td colspan="3">
         	        <input type="text" name="drink-name"/>
-                </th>
+                </td>
             </tr>
+            
             <tr>
-                <div class =  'col-xs-12'>
+                <div class="container">
       	        <td>甜度冰塊</td>
       	        
-      	        <div class="container">
+      	        
                 <!--<th colspan="1">-->
                 <td>
-                  <select name="sugar" class="selectpicker show-tick form-control"/>
+                
+                  <select name="sugar" class="selectpicker show-tick form-control" data-width="auto"/>
                   <option value="無糖">無糖</option>
                   <option value="微糖">微糖</option>
                   <option value="半糖">半糖</option>
                   <option value="少糖">少糖</option>
                   <option value="正常甜">正常甜</option>
                   </select>
-                </td>
-                <td>
                 
-                  <select name="ice" class="selectpicker show-tick form-control"/>
+                  <select name="ice" class="selectpicker show-tick form-control" data-width="auto"/>
                   <option value="去冰">去冰</option>
                   <option value="少冰">少冰</option>
                   <option value="微冰">微冰</option>
@@ -113,7 +117,7 @@
                 </td> 
                 </div>
                 <!--</th>-->
-                </div>
+                
             </tr>
             <tr>
       	        <td>備註</td>
