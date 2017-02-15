@@ -47,7 +47,7 @@ class Savelog(models.Model):
 #Shop information
 class Food(models.Model):
     name = models.CharField(max_length=15)
-    pic = models.ImageField(blank=True) #shop picture loading path
+    pic = models.ImageField(upload_to="static/pic/food/",blank=True) #shop picture loading path
     telephone = models.CharField(max_length=15)
     address = models.CharField(max_length=50)
     remark = models.CharField(max_length=15,blank=True)
