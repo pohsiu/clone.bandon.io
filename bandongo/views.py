@@ -4,6 +4,8 @@ from models import Category
 
 from .forms import MemberForm, PicForm, CatalogForm
 from django.shortcuts import render_to_response, RequestContext
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
 
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
@@ -199,12 +201,38 @@ def mark_select(request):
 
 ## backend_part
 ## page part
+def homePage(request):
+    return render(request, 'bandongo/backend_home.html',{})
+
+def login(request):
+    if request.user.is_authenticated(): 
+        return HttpResponseRedirect('/backend')
+
+    username = request.POST.get('username', '')
+    password = request.POST.get('password', '')
+    
+    user = auth.authenticate(username=username, password=password)
+    if user is not None and user.is_staff:
+        auth.login(request, user)
+        if request.GET['next']:
+            return HttpResponseRedirect(request.GET['next'])
+        else:
+            return HttpResponseRedirect('/backend')
+    else:
+        return render(request, 'bandongo/backend_login.html',{})
+
+def logout(request):
+    auth.logout(request)
+    return HttpResponseRedirect('/backend/')
+
+@login_required(login_url='/backend/login/')
 def setSchedulePage(request):
     drinks=Drink.objects.all()
     shops=Food.objects.all()
     catalogs=Catalog.objects.filter(foodShop=shops[0])
     return render(request, 'bandongo/backend_setSchedule.html',{'drinks':drinks, 'shops': shops, 'catalogs': catalogs})
 
+@login_required(login_url='/backend/login/')
 def editSchedulePage(request):
     nonFinish=Schedule.objects.filter(finish=False)
     if len(nonFinish)==0:
@@ -233,6 +261,7 @@ def editSchedulePage(request):
     else:
         print "bugbugbugbug"
 
+@login_required(login_url='/backend/login/')
 def scheduleListPage(request):
     schedules=Schedule.objects.all()
     for i in range(len(schedules)):
@@ -243,6 +272,7 @@ def scheduleListPage(request):
         
     return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules, 'catalogs': catalogs})
 
+@login_required(login_url='/backend/login/')
 def orderPage(request):
     checkExpire()
     try:
@@ -285,6 +315,7 @@ def orderPage(request):
     except ObjectDoesNotExist:
         return render(request, 'bandongo/backend_order.html',{'schedule': None})
 
+@login_required(login_url='/backend/login/')
 def orderDetailPage(request, id):
     checkExpire()
     try:
@@ -310,35 +341,42 @@ def orderDetailPage(request, id):
     except ObjectDoesNotExist:
         return render(request, 'bandongo/backend_orderDetail.html',{'schedule': None})
 
+@login_required(login_url='/backend/login/')
 def addMemberPage(request):
     categories=Category.objects.all()
     return render(request, 'bandongo/backend_addMember.html',{'categories': categories})
 
+@login_required(login_url='/backend/login/')
 def editMemberPage(request, id):
     categories=Category.objects.all()
     member=Member.objects.get(id=id)
     return render(request, 'bandongo/backend_editMember.html',{'categories': categories, 'member': member})
 
+@login_required(login_url='/backend/login/')
 def memberListPage(request):
     members=Member.objects.order_by('remark')
     return render(request, 'bandongo/backend_memberList.html',{'members': members})
 
+@login_required(login_url='/backend/login/')
 def addValuePage(request):
     admins=Member.objects.filter(auth='admin')
     categories=Category.objects.all()
     members=Member.objects.filter(remark=categories[0])
     return render(request, 'bandongo/backend_addValue.html',{'admins': admins, 'categories': categories, 'members': members})
 
+@login_required(login_url='/backend/login/')
 def homePicPage(request):
     form = PicForm()
     return render(request, 'bandongo/backend_homePic.html',{'form': form})
 
+@login_required(login_url='/backend/login/')
 def addCatalogPage(request):
     form = CatalogForm()
     return render(request, 'bandongo/backend_addCatalog.html',{'form': form})
 
 
 ## function part
+@login_required(login_url='/backend/login/')
 def setSchedule(request):
     checkExpire()
     nonFinish=len(Schedule.objects.filter(finish=False))
@@ -357,6 +395,7 @@ def setSchedule(request):
     else:
         return HttpResponse("Another schedule is not finished.")
 
+@login_required(login_url='/backend/login/')
 def editSchedule(request):
     schedule=Schedule.objects.get(id=request.POST["id"])
     schedule.date=parse_datetime(request.POST["dueDatetime"])
@@ -373,6 +412,7 @@ def editSchedule(request):
 
     return HttpResponse("Edit Schedule Successfully")
 
+@login_required(login_url='/backend/login/')
 def finishSchedule(request):
     checkExpire()
     schedule=Schedule.objects.get(id=request.POST["id"])
@@ -398,11 +438,13 @@ def finishSchedule(request):
         
         return HttpResponse("Finish Schedule Successfully")
 
+@login_required(login_url='/backend/login/')
 def addMember(request):
     category=Category.objects.get(id=request.POST["category"])
     Member.objects.create(name=request.POST["name"], phone=request.POST["phone"], email=request.POST["email"], remark=category)
     return HttpResponse("Add Member Successfully")
 
+@login_required(login_url='/backend/login/')
 def editMember(request):
     member=Member.objects.get(id=request.POST["id"])
     member.name=request.POST["name"]
@@ -412,6 +454,7 @@ def editMember(request):
     member.save()
     return HttpResponse("Edit Member Successfully")
 
+@login_required(login_url='/backend/login/')
 def deleteMember(request):
     member=Member.objects.get(id=request.POST["id"])
     if not member.saving == 0:
@@ -420,6 +463,7 @@ def deleteMember(request):
         member.delete()
         return HttpResponse("success")
 
+@login_required(login_url='/backend/login/')
 def addValue(request):
     member=Member.objects.get(id=request.POST["member"])
     value=request.POST["value"]
@@ -431,6 +475,30 @@ def addValue(request):
     member.save()
     return HttpResponse("Add Value Successfully")
 
+@login_required(login_url='/backend/login/')
+def setHomePic(request):
+    form = PicForm(request.POST, request.FILES)
+    if form.is_valid():
+        path="/home/ubuntu/workspace/static/pic/homePic"
+        if len(os.listdir(path))>0:
+            picPath=path+"/"+os.listdir(path)[0]
+            default_storage.delete(picPath)
+        homePicPath="/home/ubuntu/workspace/static/pic/homePic/"+form.cleaned_data['homePic'].name
+        default_storage.save(homePicPath, form.cleaned_data['homePic'])
+        return HttpResponseRedirect("/")
+    else:
+        return HttpResponse("<script>alert('not valid upload')</script>")
+
+@login_required(login_url='/backend/login/')
+def addCatalog(request):
+    form = CatalogForm(request.POST, request.FILES)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/backend/addCatalogPage")
+    else:
+        return HttpResponse("<script>alert('not valid upload')</script>")
+        
+        
 def checkExpire():
     nonExpire=Schedule.objects.filter(expire=False)
     for schedule in nonExpire:
@@ -453,24 +521,3 @@ def getShopCat(request):
     for shop in shops:
         catalogs.append(list(Catalog.objects.filter(foodShop=shop).values()))
     return JsonResponse({'shops': list(shops.values()), 'catalogs': catalogs})
-    
-def setHomePic(request):
-    form = PicForm(request.POST, request.FILES)
-    if form.is_valid():
-        path="/home/ubuntu/workspace/static/pic/homePic"
-        if len(os.listdir(path))>0:
-            picPath=path+"/"+os.listdir(path)[0]
-            default_storage.delete(picPath)
-        homePicPath="/home/ubuntu/workspace/static/pic/homePic/"+form.cleaned_data['homePic'].name
-        default_storage.save(homePicPath, form.cleaned_data['homePic'])
-        return HttpResponseRedirect("/")
-    else:
-        return HttpResponse("<script>alert('not valid upload')</script>")
-
-def addCatalog(request):
-    form = CatalogForm(request.POST, request.FILES)
-    if form.is_valid():
-        form.save()
-        return HttpResponseRedirect("/backend/addCatalogPage")
-    else:
-        return HttpResponse("<script>alert('not valid upload')</script>")

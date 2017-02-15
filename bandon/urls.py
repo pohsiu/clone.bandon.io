@@ -51,18 +51,20 @@ urlpatterns = [
     
     ## backend part
     ## url part
-    url(r'^backend/$', views.setSchedulePage),
-    url(r'^backend/setSchedulePage$', views.setSchedulePage),
-    url(r'^backend/editSchedulePage$', views.editSchedulePage),
-    url(r'^backend/scheduleListPage$', views.scheduleListPage),
-    url(r'^backend/order$', views.orderPage),
-    url(r'^backend/schedule/([0-9]+)$', views.orderDetailPage),
-    url(r'^backend/addMemberPage$', views.addMemberPage),
-    url(r'^backend/memberListPage$', views.memberListPage),
-    url(r'^backend/addValuePage$', views.addValuePage),
-    url(r'^backend/member/([0-9]+)$', views.editMemberPage),
-    url(r'^backend/homePicPage$', views.homePicPage),
-    url(r'^backend/addCatalogPage$', views.addCatalogPage),
+    url(r'^backend/$', views.homePage),
+    url(r'^backend/login/$', views.login),
+    url(r'^backend/logout/$', views.logout),
+    url(r'^backend/setSchedulePage/$', views.setSchedulePage),
+    url(r'^backend/editSchedulePage/$', views.editSchedulePage),
+    url(r'^backend/scheduleListPage/$', views.scheduleListPage),
+    url(r'^backend/order/$', views.orderPage),
+    url(r'^backend/schedule/([0-9]+)/$', views.orderDetailPage),
+    url(r'^backend/addMemberPage/$', views.addMemberPage),
+    url(r'^backend/memberListPage/$', views.memberListPage),
+    url(r'^backend/addValuePage/$', views.addValuePage),
+    url(r'^backend/member/([0-9]+)/$', views.editMemberPage),
+    url(r'^backend/homePicPage/$', views.homePicPage),
+    url(r'^backend/addCatalogPage/$', views.addCatalogPage),
 
     ## function part
     url(r'^backend/setSchedule$', views.setSchedule),

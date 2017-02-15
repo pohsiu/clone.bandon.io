@@ -1,0 +1,16 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}
+{% endblock %}
+{% block css %}
+{% endblock %}
+{% block content %}
+<div class="container">
+        {% if request.user.is_authenticated %}
+            <div><h1>Notifications</h1></div>
+        {% else %}
+            <h3>Please <a href="/backend/login">login</a> to access bandongo backend service.</h3>
+        {% endif %}
+</html>
+</div>
+{% endblock %}
