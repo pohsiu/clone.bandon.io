@@ -9,9 +9,9 @@
 
   <link rel="stylesheet" href="{%static 'bootstrap/css/bootstrap-select.min.css' %}">
   
-  <script src="{% static 'front_bootstrap/js/jquery.min.js' %}"></script>
-  <script src="{% static 'front_bootstrap/js/3.3.4/bootstrap.min.js' %}"></script>
-  <script src="{% static 'front_bootstrap/js/bootstrap-select.js' %}"></script>
+  <!--<script src="{% static 'front_bootstrap/js/jquery.min.js' %}"></script>-->
+  <!--<script src="{% static 'front_bootstrap/js/3.3.4/bootstrap.min.js' %}"></script>-->
+  <script src="{% static 'bootstrap/js/bootstrap-select.min.js' %}"></script>
 
 {% endblock %}
 
@@ -42,7 +42,7 @@
                         <td><input type="hidden" name="food-name{{ forloop.counter }}" value="{{ foods.name }}"/>{{foods.name}}</td>
                         <td>
                         <!--<div class="container">-->
-                          <img src="/{{foods.pic}}" class="img-responsive img-circle" alt="Cinque Terre" width="600" height="240"> 
+                          <img src="/{{foods.pic}}" class="img-responsive img-circle col-xs-12"  width="600" height="240"> 
                         <!--</div>-->
                         </td>
                         <td>{{foods.price}}</td>
@@ -73,7 +73,7 @@
             <tr>
                 <th colspan="4">
                 <div class="container">
-                  <img src="/{{pic_beverage.0.pic}}" class="img-responsive" alt="Cinque Terre" width="500" height="360"> 
+                  <img src="/{{pic_beverage.0.pic}}" class="img-responsive" width="500" height="360"> 
                 </div>
                 
                 <!--<div class="col-xs-12">-->
