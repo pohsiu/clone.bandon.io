@@ -214,7 +214,7 @@ def login(request):
     user = auth.authenticate(username=username, password=password)
     if user is not None and user.is_staff:
         auth.login(request, user)
-        if request.GET['next']:
+        if request.GET.get('next'):
             return HttpResponseRedirect(request.GET['next'])
         else:
             return HttpResponseRedirect('/backend')
