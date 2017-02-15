@@ -372,7 +372,7 @@ def homePicPage(request):
 @login_required(login_url='/backend/login/')
 def addCatalogPage(request):
     form = CatalogForm()
-    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'next': "addCatalog"})
+    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'next': "addCatalog", 'title': 'Add Catalog'})
 
 @login_required(login_url='/backend/login/')
 def catalogListPage(request):
@@ -380,9 +380,20 @@ def catalogListPage(request):
     return render(request, 'bandongo/backend_catalogList.html',{'catalogs': catalogs})
 
 @login_required(login_url='/backend/login/')
+def editCatalogPage(request, id):
+    catalog=Catalog.objects.get(id=id)
+    form = CatalogForm(instance=catalog)
+    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Catalog', 'action': 'editCatalog/'+id+'/'})
+
+@login_required(login_url='/backend/login/')
 def addFoodShopPage(request):
     form = FoodForm()
-    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'next': "addFood"})
+    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'action': "addFood", 'title': 'Add Food Shop'})
+
+@login_required(login_url='/backend/login/')
+def shopListPage(request):
+    shops = Food.objects.all()
+    return render(request, 'bandongo/backend_shopList.html',{'shops': shops})
 
 
 ## function part
@@ -507,7 +518,17 @@ def addCatalog(request):
         return HttpResponseRedirect("/backend/addCatalogPage")
     else:
         return HttpResponse("<script>alert('not valid upload')</script>")
-        
+
+def editCatalog(request, id):
+    catalog=Catalog.objects.get(id=id)
+    form = CatalogForm(request.POST, request.FILES, instance=catalog)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/backend/catalogListPage")
+    else:
+        return HttpResponse("<script>alert('not valid form')</script>")
+
+
         
 def checkExpire():
     nonExpire=Schedule.objects.filter(expire=False)

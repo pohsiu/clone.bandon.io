@@ -1,0 +1,36 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Food Shop List</h1></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Name</th>
+                    <th>Picture</th>
+                    <th>Telephone</th>
+                    <th>Address</th>
+                    <th>Remark</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for shop in shops %}
+                <tr>
+                    <td>{{ shop.id }}</td>
+                    <td><a href="/backend/shop/{{ shop.id }}">{{ shop.name }}</a></td>
+                    <td>
+                        {% if shop.pic %}
+                        <img src="/{{ shop.pic }}" class="img-responsive"  width="240" height="240">
+                        {% endif %}
+                    </td>
+                    <td>{{ shop.telephone }}</td>
+                    <td>{{ shop.address }}</td>
+                    <td>{{ shop.remark }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+{% endblock %}

@@ -19,62 +19,70 @@
           <div class="container-fluid">
             <div class="navbar-header">
               <a class="navbar-brand" href="/backend">Bandongo Backend</a>
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+              <span class="sr-only">Toggle</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span></button>
             </div>
             {% if request.user.is_authenticated %}
-            <ul class="nav navbar-nav">
-              <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Schedule
-                <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="/backend/setSchedulePage">Set Schedule</a></li>
-                  <li><a href="/backend/editSchedulePage">Edit Schedule</a></li>
-                  <li><a href="/backend/scheduleListPage">Schedule List</a></li>
-                </ul>
-              </li>
-              <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Member
-                <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="/backend/addMemberPage">Add Member</a></li>
-                  <li><a href="/backend/memberListPage">Member List</a></li>
-                  <li><a href="/backend/addValuePage">Add value</a></li>
-                </ul>
-              </li>
-              <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Departments
-                <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="#">Add department</a></li>
-                  <li><a href="#">Department List</a></li>
-                </ul>
-              </li>
-              <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Food Shop
-                <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="/backend/addFoodShopPage">Add shop</a></li>
-                  <li><a href="#">Shop List</a></li>
-                </ul>
-              </li>
-              <li class="dropdown">
-                <a class="dropdown-toggle" data-toggle="dropdown" href="#">Catalog
-                <span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="/backend/addCatalogPage">Add catalog</a></li>
-                  <li><a href="/backend/catalogListPage">Catalog List</a></li>
-                </ul>
-              </li>
-              <li><a href="/backend/homePicPage">Home Pic</a></li>
-              <li><a href="/backend/order">Order</a></li>
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-              <li><a href="/backend/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
-            </ul>
-            {% else %}
-            <ul class="nav navbar-nav navbar-right">
-              <li><a href="/backend/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
-            </ul>
-            {% endif %}
+            <div class="collapse navbar-collapse" id="myNavbar">
+              <ul class="nav navbar-nav">
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Schedule
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/backend/setSchedulePage">Set Schedule</a></li>
+                    <li><a href="/backend/editSchedulePage">Edit Schedule</a></li>
+                    <li><a href="/backend/scheduleListPage">Schedule List</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Member
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/backend/addMemberPage">Add Member</a></li>
+                    <li><a href="/backend/memberListPage">Member List</a></li>
+                    <li><a href="/backend/addValuePage">Add value</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Departments
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Add department</a></li>
+                    <li><a href="#">Department List</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Food Shop
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/backend/addFoodShopPage">Add shop</a></li>
+                    <li><a href="/backend/shopListPage">Shop List</a></li>
+                  </ul>
+                </li>
+                <li class="dropdown">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#">Catalog
+                  <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="/backend/addCatalogPage">Add catalog</a></li>
+                    <li><a href="/backend/catalogListPage">Catalog List</a></li>
+                  </ul>
+                </li>
+                <li><a href="/backend/homePicPage">Home Pic</a></li>
+                <li><a href="/backend/order">Order</a></li>
+              </ul>
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="/backend/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
+              </ul>
+              {% else %}
+              <ul class="nav navbar-nav navbar-right">
+                <li><a href="/backend/login"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+              </ul>
+              {% endif %}
+            </div>
+            
           </div>
         </nav>
         {% block content %}

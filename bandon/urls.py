@@ -66,8 +66,10 @@ urlpatterns = [
     url(r'^backend/homePicPage/$', views.homePicPage),
     url(r'^backend/addCatalogPage/$', views.addCatalogPage),
     url(r'^backend/catalogListPage/$', views.catalogListPage),
+    url(r'^backend/catalog/([0-9]+)/$', views.editCatalogPage),
     url(r'^backend/addFoodShopPage/$', views.addFoodShopPage),
-
+    url(r'^backend/shopListPage/$', views.shopListPage),
+    
     ## function part
     url(r'^backend/setSchedule$', views.setSchedule),
     url(r'^backend/editSchedule$', views.editSchedule),
@@ -78,6 +80,7 @@ urlpatterns = [
     url(r'^backend/addValue$', views.addValue),
     url(r'^backend/setHomePic$', views.setHomePic),
     url(r'^backend/addCatalog$', views.addCatalog),
+    url(r'^backend/editCatalog/([0-9]+)/$', views.editCatalog),
     
     url(r'^getCateMem$', views.getCateMem),
     url(r'^getShopCat$', views.getShopCat),
