@@ -24,7 +24,7 @@ function submit() {
     var dueDatetime=$("#dueDatetime").val();
     var id=$("#id").html();
     $.post(
-        "editSchedule",
+        "/backend/editSchedule",
         {id: id, name: name, bandon: bandon, catalogs: catalogs, drink : drink, dueDatetime: dueDatetime},
         function(response) {
           alert(response);

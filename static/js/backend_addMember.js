@@ -4,7 +4,7 @@ function submit() {
     var email=$("#email").val();
     var category=$("#category").val();
     $.post(
-        "addMember",
+        "/backend/addMember",
         {name: name, phone: phone, email: email, category: category},
         function(response) {
           alert(response);

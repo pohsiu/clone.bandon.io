@@ -1,7 +1,7 @@
 function finish() {
     var id=$("#id").html();
     $.post(
-        "finishSchedule",
+        "/backend/finishSchedule",
         {id: id},
         function(response) {
           alert(response);

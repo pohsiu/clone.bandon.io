@@ -33,7 +33,7 @@ function submit() {
     var admin=$("#admin").val();
     var comment=$("#comment").val();
     $.post(
-        "addValue",
+        "/backend/addValue",
         {member: member, value: value, admin: admin, comment: comment},
         function(response) {
           alert(response);
