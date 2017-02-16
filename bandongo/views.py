@@ -374,7 +374,7 @@ def homePicPage(request):
 @login_required(login_url='/backend/login/')
 def addCatalogPage(request):
     form = CatalogForm()
-    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'next': "addCatalog", 'title': 'Add Catalog'})
+    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'action': "addCatalog", 'title': 'Add Catalog'})
 
 @login_required(login_url='/backend/login/')
 def catalogListPage(request):
