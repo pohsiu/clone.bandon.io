@@ -385,7 +385,7 @@ def catalogListPage(request):
 def editCatalogPage(request, id):
     catalog=Catalog.objects.get(id=id)
     form = CatalogForm(instance=catalog)
-    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Catalog', 'action': 'editCatalog/'+id+'/'})
+    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Catalog', 'action': 'editCatalog/'+id})
 
 @login_required(login_url='/backend/login/')
 def addFoodShopPage(request):
@@ -401,7 +401,7 @@ def shopListPage(request):
 def editShopPage(request, id):
     shop=Food.objects.get(id=id)
     form = FoodForm(instance=shop)
-    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Shop', 'action': 'editShop/'+id+'/'})
+    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Shop', 'action': 'editShop/'+id})
 
 
 ## function part
@@ -538,6 +538,11 @@ def editCatalog(request, id):
     else:
         return HttpResponse("<script>alert('not valid form')</script>")
 
+def deleteCatalog(request):
+    catalog=Catalog.objects.get(id=request.POST["id"])
+    catalog.delete()
+    return HttpResponse("Deleted successfully.")
+
 @login_required(login_url='/backend/login/')
 def addFood(request):
     form = FoodForm(request.POST, request.FILES)
@@ -555,6 +560,11 @@ def editShop(request, id):
         return HttpResponseRedirect("/backend/shopListPage")
     else:
         return HttpResponse("<script>alert('not valid form')</script>")
+
+def deleteFood(request):
+    food=Food.objects.get(id=request.POST["id"])
+    food.delete()
+    return HttpResponse("Deleted successfully.")
 
 def checkExpire():
     nonExpire=Schedule.objects.filter(expire=False)

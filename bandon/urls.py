@@ -81,9 +81,11 @@ urlpatterns = [
     url(r'^backend/addValue$', views.addValue),
     url(r'^backend/setHomePic$', views.setHomePic),
     url(r'^backend/addCatalog$', views.addCatalog),
-    url(r'^backend/editCatalog/([0-9]+)/$', views.editCatalog),
+    url(r'^backend/editCatalog/([0-9]+)$', views.editCatalog),
+    url(r'^backend/deleteCatalog$', views.deleteCatalog),
     url(r'^backend/addFood$', views.addFood),
-    url(r'^backend/editShop/([0-9]+)/$', views.editShop),
+    url(r'^backend/editShop/([0-9]+)$', views.editShop),
+    url(r'^backend/deleteFood$', views.deleteFood),
     
     url(r'^getCateMem$', views.getCateMem),
     url(r'^getShopCat$', views.getShopCat),

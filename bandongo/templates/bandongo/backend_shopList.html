@@ -13,11 +13,12 @@
                     <th>Telephone</th>
                     <th>Address</th>
                     <th>Remark</th>
+                    <th>Delete</th>
                 </tr>
             </thead>
             <tbody>
                 {% for shop in shops %}
-                <tr>
+                <tr id="{{ shop.id }}">
                     <td>{{ shop.id }}</td>
                     <td><a href="/backend/shop/{{ shop.id }}">{{ shop.name }}</a></td>
                     <td>
@@ -28,6 +29,18 @@
                     <td>{{ shop.telephone }}</td>
                     <td>{{ shop.address }}</td>
                     <td>{{ shop.remark }}</td>
+                    <td>
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="
+                        $.post(
+                            '/backend/deleteFood',
+                            {id: {{shop.id}} },
+                            function(response) {
+                              alert(response);
+                              $('#{{shop.id}}').remove();
+                            }
+                        );">
+                    </span>
+                </td>
                 </tr>
                 {% endfor %}
             </tbody>

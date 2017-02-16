@@ -11,11 +11,12 @@
                 <th>Name</th>
                 <th>Picture</th>
                 <th>Price</th>
+                <th>Delete</th>
             </tr>
         </thead>
         <tbody>
             {% for catalog in catalogs %}
-            <tr>
+            <tr id="{{ catalog.id }}">
                 <td>{{ catalog.id }}</td>
                 <td><a href="/backend/catalog/{{ catalog.id }}">{{ catalog.name }}</a></td>
                 <td>
@@ -24,6 +25,18 @@
                     {% endif %}
                 </td>
                 <td>{{ catalog.price }}</td>
+                <td>
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="
+                        $.post(
+                            '/backend/deleteCatalog',
+                            {id: {{catalog.id}} },
+                            function(response) {
+                              alert(response);
+                              $('#{{catalog.id}}').remove();
+                            }
+                        );">
+                    </span>
+                </td>
             </tr>
             {% endfor %}
         </tbody>
