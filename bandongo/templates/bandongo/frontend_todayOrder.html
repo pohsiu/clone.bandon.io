@@ -84,9 +84,8 @@ function getConfirmationDrinks()
     
     
     <h1>今日訂單</h1>
-    {% if today_foods %}
-     <table style="width:100%">
-      <tr>
+    <table style="width:100%">
+        <tr>
         <th></th>
         <!--<th>日期</th>-->
         <th>品項</th>
@@ -96,6 +95,9 @@ function getConfirmationDrinks()
         <th>取消</th>
         
       </tr>
+    {% if today_foods %}
+     
+      
      <input type="hidden" id="foods_len" value="{{ today_foods|length }}"/>
     {% for foods in today_foods %}
        <tr id="order{{foods.id}}">
