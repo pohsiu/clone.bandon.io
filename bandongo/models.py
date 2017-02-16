@@ -126,7 +126,20 @@ class DrinkOrder(models.Model):
     def __unicode__(self):
         return u'%s '% (self.memberName)
         
+class Notification(models.Model):
+    classification = models.IntegerField()
+    # 1: no savings
+    # 2: messages
+    subject = models.ForeignKey(Member)
+    content = models.CharField(max_length=50)
+    date = models.DateTimeField(default=timezone.now)
+    read = models.BooleanField(default=False)
+    
+    
+    def store(self):
+        self.save()
+    def __unicode__(self):
+        return u'%s '% (self.memberName)
         
-
         
 
