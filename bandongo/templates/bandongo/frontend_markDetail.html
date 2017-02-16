@@ -7,11 +7,39 @@
 
 
 
-  <link rel="stylesheet" href="{%static 'bootstrap/css/bootstrap-select.min.css' %}">
-  
+    <link rel="stylesheet" href="{%static 'bootstrap/css/bootstrap-select.min.css' %}">
+    <style>
+    #clockdiv{
+    font-family: sans-serif;
+    color: #fff;
+    display: inline-block;
+    font-weight: 100;
+    text-align: center;
+    font-size: 30px;
+    }
+    
+    #clockdiv > div{
+    padding: 10px;
+    border-radius: 3px;
+    background: #00BF96;
+    display: inline-block;
+    }
+    
+    #clockdiv div > span{
+    padding: 15px;
+    border-radius: 3px;
+    background: #00816A;
+    display: inline-block;
+    }
+    
+    .smalltext{
+    padding-top: 5px;
+    font-size: 16px;
+    }
+    </style>
   <!--<script src="{% static 'front_bootstrap/js/jquery.min.js' %}"></script>-->
   <!--<script src="{% static 'front_bootstrap/js/3.3.4/bootstrap.min.js' %}"></script>-->
-  <script src="{% static 'bootstrap/js/bootstrap-select.min.js' %}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap-select.min.js' %}"></script>
 
 {% endblock %}
 
@@ -24,9 +52,30 @@
         <h1>you have finished the food-order, yoyoyo</h1>
     
     {% elif schedule_name %}
-        {% if due_date %}
-            <h2>截止時間:{{due_date}}</h2>
-        {% endif %}
+        
+<div id="clockdiv">
+<div>
+<span>{% if due_date %}
+    {{due_date}}
+{% endif %}</span>
+<div class="smalltext">截止時間
+</div>
+</div>
+<div>
+<span class="hours"></span>
+<div class="smalltext">Hours</div>
+</div>
+<div>
+<span class="minutes"></span>
+<div class="smalltext">Minutes</div>
+</div>
+<div>
+<span class="seconds"></span>
+<div class="smalltext">Seconds</div>
+</div>
+</div>
+                
+       
         <form action="" method="POST" class="post-form" accept-charset="utf-8">
             {% if list_food.0.foodShop != "休" %}
                 <table class="col-xs-12">
@@ -164,3 +213,56 @@
 
 {% endblock %}
 
+{% block script2 %}
+<script>
+function getTimeRemaining(endtime) {
+  var t = Date.parse(endtime) - Date.parse(new Date());
+  var seconds = Math.floor((t / 1000) % 60);
+  var minutes = Math.floor((t / 1000 / 60) % 60);
+  var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+//   var days = Math.floor(t / (1000 * 60 * 60 * 24));
+  return {
+    'total': t,
+    // 'days': days,
+    'hours': hours,
+    'minutes': minutes,
+    'seconds': seconds
+  };
+}
+
+function initializeClock(id, endtime) {
+  var clock = document.getElementById(id);
+//   var daysSpan = clock.querySelector('.days');
+  var hoursSpan = clock.querySelector('.hours');
+  var minutesSpan = clock.querySelector('.minutes');
+  var secondsSpan = clock.querySelector('.seconds');
+
+  function updateClock() {
+    var t = getTimeRemaining(endtime);
+
+    // daysSpan.innerHTML = t.days;
+    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+    if (t.total <= 0) {
+      clearInterval(timeinterval);
+    }
+  }
+
+  updateClock();
+  var timeinterval = setInterval(updateClock, 1000);
+}
+
+// var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
+var duedate = "{{ due_date }}";
+
+initializeClock('clockdiv', duedate);
+</script>
+
+
+
+
+
+
+{% endblock %}
