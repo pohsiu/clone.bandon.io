@@ -395,6 +395,12 @@ def shopListPage(request):
     shops = Food.objects.all()
     return render(request, 'bandongo/backend_shopList.html',{'shops': shops})
 
+@login_required(login_url='/backend/login/')
+def editShopPage(request, id):
+    shop=Food.objects.get(id=id)
+    form = FoodForm(instance=shop)
+    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Shop', 'action': 'editShop/'+id+'/'})
+
 
 ## function part
 @login_required(login_url='/backend/login/')
@@ -552,3 +558,12 @@ def getShopCat(request):
     for shop in shops:
         catalogs.append(list(Catalog.objects.filter(foodShop=shop).values()))
     return JsonResponse({'shops': list(shops.values()), 'catalogs': catalogs})
+    
+def editShop(request, id):
+    shop=Food.objects.get(id=id)
+    form = FoodForm(request.POST, request.FILES, instance=shop)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/backend/shopListPage")
+    else:
+        return HttpResponse("<script>alert('not valid form')</script>")
