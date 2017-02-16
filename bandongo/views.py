@@ -464,6 +464,8 @@ def finishSchedule(request):
             member.save()
             order.finish=True
             order.save()
+        FoodOrder.objects.filter(scheduleName=schedule).update(finish=True)
+        DrinkOrder.objects.filter(scheduleName=schedule).update(finish=True)
         
         return HttpResponse("Finish Schedule Successfully")
 
@@ -541,7 +543,7 @@ def addFood(request):
     form = FoodForm(request.POST, request.FILES)
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect("/backend/addShopPage")
+        return HttpResponseRedirect("/backend/addFoodShopPage")
     else:
         return HttpResponse("<script>alert('not valid upload')</script>")
 
