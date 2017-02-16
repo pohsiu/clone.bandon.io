@@ -28,7 +28,7 @@ function submit() {
         alert("invalid time");
     } else {
         $.post(
-            "setSchedule",
+            "/backend/setSchedule",
             {cata: catalogs, schedule_name: name, bandon : bandon, drink : drink, dueDatetime: dueDatetime},
             function(response) {
               alert(response);
