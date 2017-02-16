@@ -42,8 +42,12 @@
                         <td><input type="hidden" name="food-name{{ forloop.counter }}" value="{{ foods.name }}"/>{{foods.name}}</td>
                         <td>
                         <!--<div class="container">-->
-                          <img src="/{{foods.pic}}" class="img-responsive img-circle col-xs-12"  width="600" height="240"> 
+                        {% if foods.pic %}
+                          <img src="/{{foods.pic}}" class="img-responsive img-circle col-xs-12"  width="400" height="200"> 
                         <!--</div>-->
+                        {% else %}
+                          <p>暫時沒圖</p>
+                        {% endif%}
                         </td>
                         <td>{{foods.price}}</td>
                         <td>
