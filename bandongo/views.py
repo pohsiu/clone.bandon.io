@@ -190,7 +190,8 @@ def mark_select(request):
     for i in range(len(mark_list)):
         mark_list[i]['index']=i
     path="/home/ubuntu/workspace/static/pic/homePic"
-    if len(os.listdir(path))>0:
+
+    if os.path.exists(path) and len(os.listdir(path))>0:
         picPath="/static/pic/homePic/"+os.listdir(path)[0]
     else:
         picPath=None
@@ -535,8 +536,24 @@ def editCatalog(request, id):
     else:
         return HttpResponse("<script>alert('not valid form')</script>")
 
+@login_required(login_url='/backend/login/')
+def addFood(request):
+    form = FoodForm(request.POST, request.FILES)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/backend/addShopPage")
+    else:
+        return HttpResponse("<script>alert('not valid upload')</script>")
 
-        
+def editShop(request, id):
+    shop=Food.objects.get(id=id)
+    form = FoodForm(request.POST, request.FILES, instance=shop)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/backend/shopListPage")
+    else:
+        return HttpResponse("<script>alert('not valid form')</script>")
+
 def checkExpire():
     nonExpire=Schedule.objects.filter(expire=False)
     for schedule in nonExpire:
@@ -559,12 +576,3 @@ def getShopCat(request):
     for shop in shops:
         catalogs.append(list(Catalog.objects.filter(foodShop=shop).values()))
     return JsonResponse({'shops': list(shops.values()), 'catalogs': catalogs})
-    
-def editShop(request, id):
-    shop=Food.objects.get(id=id)
-    form = FoodForm(request.POST, request.FILES, instance=shop)
-    if form.is_valid():
-        form.save()
-        return HttpResponseRedirect("/backend/shopListPage")
-    else:
-        return HttpResponse("<script>alert('not valid form')</script>")
