@@ -16,7 +16,7 @@
       </tr>
     {% for savings in savelogs %}
       <tr>
-        <td>{{savings.tranDate}}</td>
+        <td>{{savings.tranDate|date:'Y-m-d H:i' }}</td>
         <td>{{savings.adminName}}</td>
         <td>{{savings.money}}</td>
         <td>{{savings.comment}}</td>

@@ -24,6 +24,9 @@
         <h1>you have finished the food-order, yoyoyo</h1>
     
     {% elif schedule_name %}
+        {% if due_date %}
+            <h2>截止時間:{{due_date}}</h2>
+        {% endif %}
         <form action="" method="POST" class="post-form" accept-charset="utf-8">
             {% if list_food.0.foodShop != "休" %}
                 <table class="col-xs-12">

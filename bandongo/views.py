@@ -119,6 +119,7 @@ def mark_detail(request, pk):
         
         schedules = Schedule.objects.filter(expire=False)
         schedule_name = None
+        duedate = None
         if schedules:
             duedate = schedules[0].date
             if now < duedate:
@@ -134,8 +135,8 @@ def mark_detail(request, pk):
             list_food=''
             pic_beverage=''
         
-        
-        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name})
+        duedate = duedate.strftime('%Y-%m-%d,%H:%M')
+        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name,'due_date':duedate})
 
 def member_log(request,pk):
     de_member = get_object_or_404(Member, pk=pk)
