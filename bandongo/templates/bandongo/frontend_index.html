@@ -14,8 +14,7 @@
 
     <!-- Bootstrap Core CSS -->
     
-    <link href="{% static 'front_bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
    
    
 
@@ -28,13 +27,11 @@
     
     
     <!-- jQuery -->
-    <script src="{% static 'front_bootstrap/js/jquery.js'%}"></script>
-    <script src="{% static 'js/jquery-3.1.1.min.js' %}"></script>
+    <script src="{% static 'js/jquery/jquery-3.1.1.min.js' %}"></script>
     
     <!-- Bootstrap Core JavaScript -->
-    <script src="{% static 'front_bootstrap/js/bootstrap.min.js'%}"></script>
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/bootbox.min.js' %}"></script>
-    <script src="{% static 'front_bootstrap/css/nav.css' %}"></script>
     <!-- Menu Toggle Script -->
     
     
@@ -46,20 +43,20 @@
     
     <div class="">
         <nav class="navbar navbar-default">
-    <div class="container">
-      <!-- Brand and toggle get grouped for better mobile display -->
-      <div class="navbar-header">
-        
-        <a class="navbar-brand" href="/">新竹地檢署訂餐系統</a>
-      <!-- Collect the nav links, forms, and other content for toggling -->
-      
-    </div>
-    <!-- /.container-fluid -->
-  </nav>
+            <div class="container">
+              <!-- Brand and toggle get grouped for better mobile display -->
+              <div class="navbar-header">
+                
+                <a class="navbar-brand" href="/">新竹地檢署訂餐系統</a>
+              <!-- Collect the nav links, forms, and other content for toggling -->
+              
+            </div>
+            <!-- /.container-fluid -->
+         </nav>
     </div>
     {% if homePicPath %}
     <div class="container">
-      <img src="{{homePicPath}}" class="img-responsive"  width="300" height="360"> 
+      <img src="{{homePicPath}}" class="img-responsive"  width="300" height="360" style="margin-bottom: 10px;"> 
     </div>
     <!--<p>{{homePicPath}}</p>-->
     {% endif %}
@@ -68,10 +65,10 @@
         
 
         <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <div class="container-fluid">
-                <div class="row">
-                    <div class="col-lg-12">
+        <!--<div id="page-content-wrapper">-->
+        <!--    <div class="container-fluid">-->
+        <!--        <div class="row">-->
+        <!--            <div class="col-lg-12">-->
                         
                         
                         {% block content %}
@@ -90,5 +87,5 @@
     
 
 </body>
-
+<footer style="margin-top: 60px; padding-top: 10px; padding-bottom:10px; background-color:#383838; color: #f5f5f5; text-align: center;">&copy; Copyrights 2017</footer>
 </html>
