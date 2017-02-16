@@ -190,7 +190,8 @@ def mark_select(request):
     for i in range(len(mark_list)):
         mark_list[i]['index']=i
     path="/home/ubuntu/workspace/static/pic/homePic"
-    if len(os.listdir(path))>0:
+
+    if os.path.exists(path) and len(os.listdir(path))>0:
         picPath="/static/pic/homePic/"+os.listdir(path)[0]
     else:
         picPath=None
@@ -373,7 +374,7 @@ def homePicPage(request):
 @login_required(login_url='/backend/login/')
 def addCatalogPage(request):
     form = CatalogForm()
-    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'next': "addCatalog", 'title': 'Add Catalog'})
+    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'action': "addCatalog", 'title': 'Add Catalog'})
 
 @login_required(login_url='/backend/login/')
 def catalogListPage(request):
@@ -384,7 +385,7 @@ def catalogListPage(request):
 def editCatalogPage(request, id):
     catalog=Catalog.objects.get(id=id)
     form = CatalogForm(instance=catalog)
-    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Catalog', 'action': 'editCatalog/'+id+'/'})
+    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Catalog', 'action': 'editCatalog/'+id})
 
 @login_required(login_url='/backend/login/')
 def addFoodShopPage(request):
@@ -400,7 +401,7 @@ def shopListPage(request):
 def editShopPage(request, id):
     shop=Food.objects.get(id=id)
     form = FoodForm(instance=shop)
-    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Shop', 'action': 'editShop/'+id+'/'})
+    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Shop', 'action': 'editShop/'+id})
 
 
 ## function part
@@ -463,6 +464,8 @@ def finishSchedule(request):
             member.save()
             order.finish=True
             order.save()
+        FoodOrder.objects.filter(scheduleName=schedule).update(finish=True)
+        DrinkOrder.objects.filter(scheduleName=schedule).update(finish=True)
         
         return HttpResponse("Finish Schedule Successfully")
 
@@ -535,8 +538,34 @@ def editCatalog(request, id):
     else:
         return HttpResponse("<script>alert('not valid form')</script>")
 
+def deleteCatalog(request):
+    catalog=Catalog.objects.get(id=request.POST["id"])
+    catalog.delete()
+    return HttpResponse("Deleted successfully.")
 
-        
+@login_required(login_url='/backend/login/')
+def addFood(request):
+    form = FoodForm(request.POST, request.FILES)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/backend/addFoodShopPage")
+    else:
+        return HttpResponse("<script>alert('not valid upload')</script>")
+
+def editShop(request, id):
+    shop=Food.objects.get(id=id)
+    form = FoodForm(request.POST, request.FILES, instance=shop)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/backend/shopListPage")
+    else:
+        return HttpResponse("<script>alert('not valid form')</script>")
+
+def deleteFood(request):
+    food=Food.objects.get(id=request.POST["id"])
+    food.delete()
+    return HttpResponse("Deleted successfully.")
+
 def checkExpire():
     nonExpire=Schedule.objects.filter(expire=False)
     for schedule in nonExpire:
@@ -559,12 +588,3 @@ def getShopCat(request):
     for shop in shops:
         catalogs.append(list(Catalog.objects.filter(foodShop=shop).values()))
     return JsonResponse({'shops': list(shops.values()), 'catalogs': catalogs})
-    
-def editShop(request, id):
-    shop=Food.objects.get(id=id)
-    form = FoodForm(request.POST, request.FILES, instance=shop)
-    if form.is_valid():
-        form.save()
-        return HttpResponseRedirect("/backend/shopListPage")
-    else:
-        return HttpResponse("<script>alert('not valid form')</script>")
