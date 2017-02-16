@@ -27,7 +27,7 @@ class FoodForm(forms.ModelForm):
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),
             'pic': forms.ClearableFileInput(attrs={'class': 'filestyle'}),
-            'telephone': forms.NumberInput(attrs={'class': 'form-control'}),
+            'telephone': forms.TextInput(attrs={'class': 'form-control'}),
             'address': forms.TextInput(attrs={'class': 'form-control'}),
             'remark': forms.TextInput(attrs={'class': 'form-control'}),
         }
