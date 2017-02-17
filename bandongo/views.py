@@ -173,6 +173,12 @@ def delete_drink(request):
     return HttpResponse("Delete Success")
 
 def mark_select(request):
+    path="/home/ubuntu/workspace/static/pic/homePic"
+    if os.path.exists(path) and len(os.listdir(path))>0:
+        picPath="/static/pic/homePic/"+os.listdir(path)[0]
+    else:
+        picPath=None
+    
     if request.method == "POST":
         if request.POST.get('member_name') != None:
             
@@ -184,16 +190,13 @@ def mark_select(request):
                 mark_list[i]['index']=i
            
             # mark_list = Member.objects.values_list('member_mark',flat=True).distinct()
-            return render(request, 'bandongo/frontend_markSelect.html',{'mark_list':mark_list})
+            return render(request, 'bandongo/frontend_markSelect.html',{'mark_list':mark_list,'homePicPath': picPath})
     mark_list = list(Category.objects.all().values())
     for i in range(len(mark_list)):
         mark_list[i]['index']=i
-    path="/home/ubuntu/workspace/static/pic/homePic"
+    
 
-    if os.path.exists(path) and len(os.listdir(path))>0:
-        picPath="/static/pic/homePic/"+os.listdir(path)[0]
-    else:
-        picPath=None
+    
     # mark_list = Member.objects.values_list('member_mark',flat=True).distinct()
     return render(request, 'bandongo/frontend_markSelect.html',{'mark_list':mark_list, 'homePicPath': picPath})
 

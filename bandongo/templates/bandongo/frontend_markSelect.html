@@ -52,13 +52,24 @@
                 // alert(strUser);
             });
             });
-        </script>    
+        </script>
+        <script>
+            function validateForm() {
+                var name = document.forms["markform"]["member_name"].value;
+                var mark = document.forms["markform"]["mark"].value;// bootbox.alert(name);
+                if (name == "Z" || mark == "Z") {
+                    bootbox.alert("請選擇科室姓名");
+                    return false;
+                }
+            }
+        </script>
+
 {% endblock %}
         
         
 {% block content%}
 <div class="container">
-    <form action="" method="POST" accept-charset="utf-8">{% csrf_token %}
+    <form name="markform" action="" onsubmit="return validateForm()" method="POST" accept-charset="utf-8">{% csrf_token %}
         <div class="form-group">
             <label for="mark">科室：</label>
             <select class="custom-select form-control" name="mark" id="mark" style="width: auto">
