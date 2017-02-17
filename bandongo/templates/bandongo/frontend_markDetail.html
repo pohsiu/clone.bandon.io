@@ -40,7 +40,31 @@
   <!--<script src="{% static 'front_bootstrap/js/jquery.min.js' %}"></script>-->
   <!--<script src="{% static 'front_bootstrap/js/3.3.4/bootstrap.min.js' %}"></script>-->
     <script src="{% static 'bootstrap/js/bootstrap-select.min.js' %}"></script>
-
+    <script>
+        function orderForm() {
+            var foodlen = document.forms["orderform"]["food-len"].value;
+            var lock = 0;
+            
+            
+            var drinkname = document.forms["orderform"]["drink-name"].value;
+            var strindex;
+            var foodnum;
+            
+            for (var i = 1; i <= foodlen; i++) {
+                strindex = i.toString();
+                foodnum = document.forms["orderform"]["food-num"+strindex].value;
+               
+                if(foodnum != "0"){
+                    lock = 1;
+                }
+            }
+            
+            if (drinkname == "" && lock == 0) {
+                bootbox.alert("請選擇餐點");
+                return false;
+            }
+        }
+    </script>
 {% endblock %}
 
 {% block article %}
@@ -58,28 +82,28 @@
         
 <div id="clockdiv">
 <div>
-<span>{% if due_date %}
-    {{due_date}}
-{% endif %}</span>
-<div class="smalltext">截止時間
-</div>
-</div>
-<div>
-<span class="hours"></span>
-<div class="smalltext">Hours</div>
-</div>
-<div>
-<span class="minutes"></span>
-<div class="smalltext">Minutes</div>
-</div>
-<div>
-<span class="seconds"></span>
-<div class="smalltext">Seconds</div>
-</div>
-</div>
+        <span>{% if due_date %}
+            {{due_date}}
+        {% endif %}</span>
+        <div class="smalltext">截止時間
+        </div>
+        </div>
+        <div>
+        <span class="hours"></span>
+        <div class="smalltext">Hours</div>
+        </div>
+        <div>
+        <span class="minutes"></span>
+        <div class="smalltext">Minutes</div>
+        </div>
+        <div>
+        <span class="seconds"></span>
+        <div class="smalltext">Seconds</div>
+        </div>
+        </div>
                 
        
-        <form action="" method="POST" class="post-form" accept-charset="utf-8">
+        <form name="orderform" onsubmit="return orderForm()" action="" method="POST" class="post-form" accept-charset="utf-8">
             {% if list_food.0.foodShop != "休" %}
                 <table class="col-xs-12">
                 
@@ -193,6 +217,8 @@
             
             
             </table>
+            {% else %}
+                <input type="hidden" name="drink-name" value=""/>
             {% endif %}
             
             <table style="width:100%">
