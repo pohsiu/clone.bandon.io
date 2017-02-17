@@ -101,7 +101,6 @@ def mark_detail(request, pk):
                 num = int(request.POST['food-num'+unicode(i)])
                 count    = price * num
                 name = catalog
-                # print price
                 FoodOrder.objects.create(memberName=de_member,scheduleName=schedule,foodName=name,num=num,date=now,price=count)
         
         if request.POST.get('drink-name'):
@@ -134,8 +133,8 @@ def mark_detail(request, pk):
         else:
             list_food=''
             pic_beverage=''
-        
-        duedate = duedate.strftime("%Y/%m/%d, %H:%M")
+        if duedate != None:
+            duedate = duedate.strftime("%Y/%m/%d, %H:%M")
         return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name,'due_date':duedate})
 
 def member_log(request,pk):
@@ -311,7 +310,6 @@ def orderPage(request):
         for i in range(3):
             tempOrders=DrinkOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1)).order_by('drinking', 'remark')
             drinkBags.append(tempOrders)
-            print tempOrders
             drinkTotalPrice+=sum(map(lambda order: order.price, tempOrders))
         return render(request, 'bandongo/backend_order.html',{'schedule': schedule, 'foodBags': foodBags, 'foodOrders': foodOrders, 'foodTotalPrice': foodTotalPrice, 'drinkBags': drinkBags, 'drinkTotalPrice': drinkTotalPrice})
     except ObjectDoesNotExist:
