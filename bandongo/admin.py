@@ -43,7 +43,7 @@ class FoodAdmin(admin.ModelAdmin):
 class DrinkAdmin(admin.ModelAdmin):
     list_display = ('id', 'name','pic','telephone','address','remark')
 class ScheduleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'food','drink','date','expire','finish')
+    list_display = ('id', 'name', 'food','drink','date','expire', 'arrived', 'finish')
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'bag')
 class NotificationAdmin(admin.ModelAdmin):

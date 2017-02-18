@@ -73,6 +73,7 @@ class Schedule(models.Model):
     drink = models.ForeignKey(Drink, blank=True)
     date = models.DateTimeField() 
     expire = models.BooleanField(default=False)
+    arrived = models.BooleanField(default=False)
     finish = models.BooleanField(default=False)
     
     def __unicode__(self):
