@@ -1,0 +1,72 @@
+{% extends 'bandongo/frontend_base.html' %}
+{% load staticfiles %}
+
+
+
+
+{% block subcontent %}
+    
+   
+    
+    <h1>訂餐統計</h1>
+    <table style="width:100%">
+        <tr>
+        <th></th>
+        <!--<th>日期</th>-->
+        <th>品項</th>
+        <th>數量</th>
+        <th>金額</th>
+        <th>備註</th>
+        <th>取消</th>
+        
+      </tr>
+    {% if today_foods %}
+     
+      
+    
+    {% for foods in today_foods %}
+       <tr id="order{{foods.id}}">
+        <td>{{foods.scheduleName}}</td>
+        <!--<td>{{foods.date}}</td>-->
+        <td>{{foods.foodName}}</td>
+        <td>{{foods.num}}</td>
+        <td>{{foods.price}}</td>
+        <td>{{foods.remark}}</td>
+        <input type="hidden" id="foods_id" value="{{foods.id}}"/>
+        <td><input type="image" onclick="getConfirmationFoods()" src="{% static 'icon/x_icon.png' %}" alt="Submit" width="12" height="12"></td>
+      </tr>
+    {% endfor %}
+    {% endif %}   
+    {% if today_drinks %}
+    {% for drinks in today_drinks %}
+      <tr id="order{{drinks.id}}">
+        <td>{{drinks.scheduleName}}</td>
+        <!--<td>{{drinks.date}}</td>-->
+        <td>{{drinks.drinking}}</td>
+        <td>{{drinks.num}}</td>
+        <td>{{drinks.price}}</td>
+        <td>{{drinks.remark}}</td>
+        <input type="hidden" id="drinks_id" value="{{drinks.id}}"/>
+        <td><input type="image" onclick="getConfirmationDrinks()" src="{% static 'icon/x_icon.png' %}" alt="Submit" width="12" height="12"></td>
+      </tr>
+    
+    {% endfor %}
+    {% endif %}
+    
+    
+    {% if cost_total %}
+       <tr>
+         <th></th>
+         <!--<th></th>-->
+         <th></th>
+         <th>小計</th>
+         <th>
+             {{cost_total}}
+         </th>
+    
+    {% endif %}
+    
+    
+    </table>
+    
+{% endblock %}

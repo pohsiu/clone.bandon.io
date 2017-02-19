@@ -200,7 +200,19 @@ def mark_select(request):
     # mark_list = Member.objects.values_list('member_mark',flat=True).distinct()
     return render(request, 'bandongo/frontend_markSelect.html',{'mark_list':mark_list, 'homePicPath': picPath})
 
-
+def today_statistic(request, pk):
+    de_member =  get_object_or_404(Member, pk=pk)
+    today = datetime.date(datetime.now())
+    schedules = Schedule.objects.filter(date__date = today) #get latest record
+    empty = False;
+    if not schedules:
+        foods = None;
+        drinks = None;
+        empty = True;
+    else:
+        foods = FoodOrder.objects.filter(scheduleName=schedules[0])
+        drinks = DrinkOrder.objects.filter(scheduleName=schedules[0])
+    return render(request, 'bandongo/frontend_todayStatistic.html',{'schedules':schedules,'de_member':de_member, 'foods':foods, 'drinks':drinks, 'empty':empty})
 
 
 ## backend_part
