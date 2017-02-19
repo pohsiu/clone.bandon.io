@@ -1,3 +1,4 @@
+# coding=UTF8
 from django.shortcuts import render, get_object_or_404
 from models import Member, Savelog, Food, Drink, Schedule, Catalog, FoodOrder, DrinkOrder
 from models import Category
@@ -162,15 +163,43 @@ def today_order(request,pk):
     de_member =  get_object_or_404(Member, pk=pk)
     today_foods = FoodOrder.objects.filter(memberName=pk, finish=False).order_by('date')
     today_drinks = DrinkOrder.objects.filter(memberName=pk, finish=False).order_by('date')
-    return render(request, 'bandongo/frontend_todayOrder.html',{'de_member':de_member,'today_foods':today_foods,'today_drinks':today_drinks})
+    # order_duedate = None
+    # if not today_foods:
+    #     print "empty orders"
+    # else:
+    #     order_duedate = Schedule.objects.filter(name=today_foods[0].scheduleName)[0].date
+    #     order_duedate = order_duedate.strftime('%Y/%m/%d:')
+    return render(request, 'bandongo/frontend_todayOrder.html',{'de_member':de_member,'today_foods':today_foods,'today_drinks':today_drinks })
 
 def delete_food(request):
-    FoodOrder.objects.get(id=request.POST['id']).delete()
-    return HttpResponse("Delete Success")
+    now = datetime.now()
+    order = FoodOrder.objects.get(id=request.POST['id'])
+    order_duedate = Schedule.objects.filter(name=order.scheduleName)[0].date
+    failmessage = "截止日期已過"
+    success = "刪除成功"
+    if now > order_duedate:
+        FoodOrder.objects.get(id=request.POST['id']).delete()
+        return HttpResponse(failmessage)
+    else:
+        return HttpResponse(success)
+
+
+
+
 
 def delete_drink(request):
-    DrinkOrder.objects.get(id=request.POST['id']).delete()
-    return HttpResponse("Delete Success")
+    now = datetime.now()
+    order = FoodOrder.objects.get(id=request.POST['id'])
+    order_duedate = Schedule.objects.filter(name=order.scheduleName)[0].date
+    failmessage = "截止日期已過"
+    success = "刪除成功"
+    
+    if now > order_duedate:
+        DrinkOrder.objects.get(id=request.POST['id']).delete()
+        return HttpResponse(failmessage)
+    else:
+        return HttpResponse(success)
+    
 
 def mark_select(request):
     path="/home/ubuntu/workspace/static/pic/homePic"
