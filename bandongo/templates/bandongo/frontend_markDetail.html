@@ -80,29 +80,31 @@
     
     {% elif schedule_name %}
         
-<div id="clockdiv">
-<div>
-        <span>{% if due_date %}
-            {{due_date}}
-        {% endif %}</span>
-        <div class="smalltext">截止時間
-        </div>
-        </div>
-        <div>
-        <span class="hours"></span>
-        <div class="smalltext">Hours</div>
-        </div>
-        <div>
-        <span class="minutes"></span>
-        <div class="smalltext">Minutes</div>
-        </div>
-        <div>
-        <span class="seconds"></span>
-        <div class="smalltext">Seconds</div>
-        </div>
-        </div>
-                
-       
+<!--<div id="clockdiv">-->
+<!--<div>-->
+<!--<span>{% if due_date %}-->
+<!--{{due_date}}-->
+<!--{% endif %}</span>-->
+<!--<div class="smalltext">截止時間-->
+<!--</div>-->
+<!--</div>-->
+<!--<div>-->
+<!--<span class="hours"></span>-->
+<!--<div class="smalltext">Hours</div>-->
+<!--</div>-->
+<!--<div>-->
+<!--<span class="minutes"></span>-->
+<!--<div class="smalltext">Minutes</div>-->
+<!--</div>-->
+<!--<div>-->
+<!--<span class="seconds"></span>-->
+<!--<div class="smalltext">Seconds</div>-->
+<!--</div>-->
+<!--</div>-->
+        {%if due_date %}
+            <h2>截止時間:{{due_date | date:'m/d H:i'}}</h2>
+        {% endif %}
+           
         <form name="orderform" onsubmit="return orderForm()" action="" method="POST" class="post-form" accept-charset="utf-8">
             {% if list_food.0.foodShop != "休" %}
                 <table class="col-xs-12">

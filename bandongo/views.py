@@ -133,8 +133,8 @@ def mark_detail(request, pk):
         else:
             list_food=''
             pic_beverage=''
-        if duedate != None:
-            duedate = duedate.strftime("%Y/%m/%d, %H:%M")
+        # if duedate != None:
+        #     duedate = duedate.strftime("%Y/%m/%d, %H:%M")
         return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name,'due_date':duedate})
 
 def member_log(request,pk):
