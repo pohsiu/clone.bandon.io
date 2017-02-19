@@ -75,6 +75,7 @@ urlpatterns = [
     url(r'^backend/setSchedule$', views.setSchedule),
     url(r'^backend/editSchedule$', views.editSchedule),
     url(r'^backend/finishSchedule$', views.finishSchedule),
+    url(r'^backend/arriveSchedule$', views.arriveSchedule),
     url(r'^backend/addMember$', views.addMember),
     url(r'^backend/editMember$', views.editMember),
     url(r'^backend/deleteMember$', views.deleteMember),
