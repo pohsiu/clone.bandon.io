@@ -423,6 +423,11 @@ def addCatalogPage(request):
     return render(request, 'bandongo/backend_addForm.html',{'form': form, 'action': "addCatalog", 'title': 'Add Catalog'})
 
 @login_required(login_url='/backend/login/')
+def addCatalogBatchPage(request):
+    foodShops=Food.objects.all()
+    return render(request, 'bandongo/backend_addCatalogBatch.html',{'foodShops': foodShops})
+
+@login_required(login_url='/backend/login/')
 def catalogListPage(request):
     catalogs=Catalog.objects.all().order_by("foodShop")
     return render(request, 'bandongo/backend_catalogList.html',{'catalogs': catalogs})
@@ -586,6 +591,16 @@ def addCatalog(request):
         return HttpResponseRedirect("/backend/addCatalogPage")
     else:
         return HttpResponse("<script>alert('not valid upload')</script>")
+
+@login_required(login_url='/backend/login/')
+def addCatalogBatch(request):
+    shop=Food.objects.get(id=request.POST["shop"])
+    text=request.POST["input"]
+    for line in text.split('\n'):
+        temp=line.strip().split()
+        Catalog.objects.create(foodShop=shop, name=temp[0], price=temp[1])
+
+    return HttpResponse("Added successfully.")
 
 def editCatalog(request, id):
     catalog=Catalog.objects.get(id=id)

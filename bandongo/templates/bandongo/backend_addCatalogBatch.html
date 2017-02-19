@@ -1,0 +1,30 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}<script src="{% static 'js/backend_addCatalogBatch.js' %}"></script>{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Add Catalog in Batch</h1></div>
+    <div><h3>Food Shop</h3></div>
+    <div>
+        <select id="foodShop" style="width: 20%;" class="selectpicker">
+            {% for shop in foodShops %}
+                <option value="{{shop.id}}">{{shop.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div><h3>Input</h3></div>
+    <label>form</label><br>
+    "name"space"price"<br>
+    "name"space"price"<br>
+    ...<br>
+    <label>e.g.</label><br>
+    金山雞腿飯 100<br>
+    排骨飯 80<br><br>
+    <div>
+        <textarea id="input" style="width: 500px; height: 200px;"></textarea>
+    </div>
+    <div style="margin-top: 20px">
+        <button class="btn btn-default" onclick="submit();">Submit</button>
+    </div>
+</div>
+{% endblock %}
