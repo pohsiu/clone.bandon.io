@@ -72,9 +72,11 @@
     {% if s_latest %}
         {% if s_latest.0.arrived == False%}
             <h3>{{s_latest.0.name}}</h3>
+            <h4>本日精選店家：{{s_latest.0.food}}</h4>
             <h4>便當狀態：尚未抵達，請耐心等待</h4>
         {% elif s_latest.arrived == True %}
             <h3>{{s_latest.0.name}}</h3>
+            <h4>本日精選店家：{{s_latest.0.food}}</h4>
             <h4>便當狀態：已抵達，請徑行取餐</h4>
         {% endif %}
     {% endif%}

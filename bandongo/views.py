@@ -178,9 +178,10 @@ def delete_food(request):
     failmessage = "截止日期已過"
     success = "刪除成功"
     if now > order_duedate:
-        FoodOrder.objects.get(id=request.POST['id']).delete()
+        
         return HttpResponse(failmessage)
     else:
+        FoodOrder.objects.get(id=request.POST['id']).delete()
         return HttpResponse(success)
 
 
@@ -195,9 +196,10 @@ def delete_drink(request):
     success = "刪除成功"
     
     if now > order_duedate:
-        DrinkOrder.objects.get(id=request.POST['id']).delete()
+        
         return HttpResponse(failmessage)
     else:
+        DrinkOrder.objects.get(id=request.POST['id']).delete()
         return HttpResponse(success)
     
 
