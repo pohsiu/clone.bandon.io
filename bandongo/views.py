@@ -174,6 +174,10 @@ def delete_drink(request):
 
 def mark_select(request):
     path="/home/ubuntu/workspace/static/pic/homePic"
+    today = datetime.now()
+    s_latest = Schedule.objects.filter(date__date = today).order_by('-id')
+        
+    
     if os.path.exists(path) and len(os.listdir(path))>0:
         picPath="/static/pic/homePic/"+os.listdir(path)[0]
     else:
@@ -190,7 +194,7 @@ def mark_select(request):
                 mark_list[i]['index']=i
            
             # mark_list = Member.objects.values_list('member_mark',flat=True).distinct()
-            return render(request, 'bandongo/frontend_markSelect.html',{'mark_list':mark_list,'homePicPath': picPath})
+            return render(request, 'bandongo/frontend_markSelect.html',{'mark_list':mark_list,'homePicPath': picPath,'s_latest':s_latest})
     mark_list = list(Category.objects.all().values())
     for i in range(len(mark_list)):
         mark_list[i]['index']=i
@@ -198,7 +202,7 @@ def mark_select(request):
 
     
     # mark_list = Member.objects.values_list('member_mark',flat=True).distinct()
-    return render(request, 'bandongo/frontend_markSelect.html',{'mark_list':mark_list, 'homePicPath': picPath})
+    return render(request, 'bandongo/frontend_markSelect.html',{'mark_list':mark_list, 'homePicPath': picPath, 's_latest':s_latest})
 
 def today_statistic(request, pk):
     de_member =  get_object_or_404(Member, pk=pk)
