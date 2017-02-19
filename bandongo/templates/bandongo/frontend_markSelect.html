@@ -71,9 +71,11 @@
 <div class="container">
     {% if s_latest %}
         {% if s_latest.0.arrived == False%}
-            <h3>{{s_latest.0.name}}便當狀態：尚未抵達，請耐心等待</h3>
+            <h3>{{s_latest.0.name}}</h3>
+            <h4>便當狀態：尚未抵達，請耐心等待</h4>
         {% elif s_latest.arrived == True %}
-            <h3>{{s_latest.0.name}}便當狀態：已抵達，請徑行取餐</h3>
+            <h3>{{s_latest.0.name}}</h3>
+            <h4>便當狀態：已抵達，請徑行取餐</h4>
         {% endif %}
     {% endif%}
     <form name="markform" action="" onsubmit="return validateForm()" method="POST" accept-charset="utf-8">{% csrf_token %}

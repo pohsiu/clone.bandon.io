@@ -97,7 +97,7 @@ def mark_detail(request, pk):
         finish_order='passed'
         for i in range(1, food_len+1):
             if request.POST['food-num'+unicode(i)] != '0':
-                catalog = Catalog.objects.get(name=request.POST['food-name'+unicode(i)])
+                catalog = Catalog.objects.get(name=request.POST['food-name'+unicode(i)], foodShop=schedule.food)
                 price = catalog.price
                 num = int(request.POST['food-num'+unicode(i)])
                 count    = price * num
