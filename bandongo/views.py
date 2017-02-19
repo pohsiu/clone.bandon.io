@@ -446,8 +446,8 @@ def editSchedule(request):
 def finishSchedule(request):
     checkExpire()
     schedule=Schedule.objects.get(id=request.POST["id"])
-    if not schedule.expire:
-        return HttpResponse("The schedule is not expired.")
+    if not schedule.arrived:
+        return HttpResponse("The schedule is not arrived.")
     else:
         schedule.finish=True
         schedule.save();
@@ -469,6 +469,18 @@ def finishSchedule(request):
         DrinkOrder.objects.filter(scheduleName=schedule).update(finish=True)
         
         return HttpResponse("Finish Schedule Successfully")
+
+@login_required(login_url='/backend/login/')
+def arriveSchedule(request):
+    checkExpire()
+    schedule=Schedule.objects.get(id=request.POST["id"])
+    if not schedule.expire:
+        return HttpResponse("The schedule is not expired.")
+    else:
+        schedule.arrived=True
+        schedule.save();
+        
+        return HttpResponse("Bandon arrived.")
 
 @login_required(login_url='/backend/login/')
 def addMember(request):
