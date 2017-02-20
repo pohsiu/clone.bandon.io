@@ -190,7 +190,7 @@ def delete_food(request):
 
 def delete_drink(request):
     now = datetime.now()
-    order = FoodOrder.objects.get(id=request.POST['id'])
+    order = DrinkOrder.objects.get(id=request.POST['id'])
     order_duedate = Schedule.objects.filter(name=order.scheduleName)[0].date
     failmessage = "截止日期已過"
     success = "刪除成功"
@@ -206,7 +206,7 @@ def delete_drink(request):
 def mark_select(request):
     path="/home/ubuntu/workspace/static/pic/homePic"
     today = datetime.now()
-    s_latest = Schedule.objects.filter(date__date = today).order_by('-id')
+    s_latest = Schedule.objects.all().order_by('-id')
         
     
     if os.path.exists(path) and len(os.listdir(path))>0:
