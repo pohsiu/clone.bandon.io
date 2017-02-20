@@ -67,7 +67,7 @@ class Drink(models.Model):
         return u'%s '% (self.name)
 
 class Schedule(models.Model):
-    name = models.CharField(max_length=15)
+    name = models.CharField(max_length=50)
     comment = models.CharField(max_length=50, blank=True)
     food = models.ForeignKey(Food)
     drink = models.ForeignKey(Drink, blank=True)

@@ -69,16 +69,18 @@
         
 {% block content%}
 <div class="container">
+   
     {% if s_latest %}
-        {% if s_latest.0.arrived == False%}
+        {% if s_latest.0.arrived == False %}
             <h3>{{s_latest.0.name}}</h3>
             <h4>本日精選店家：{{s_latest.0.food}}</h4>
             <h4>便當狀態：尚未抵達，請耐心等待</h4>
-        {% elif s_latest.arrived == True %}
+        {% elif s_latest.0.arrived == True %}
             <h3>{{s_latest.0.name}}</h3>
             <h4>本日精選店家：{{s_latest.0.food}}</h4>
             <h4>便當狀態：已抵達，請徑行取餐</h4>
         {% endif %}
+         <h4 style="color:red;">小叮嚀:除一樓科室外，其餘請於便當抵達時至4樓記錄科自行取餐，謝謝您的配合</h4>
     {% endif%}
     <form name="markform" action="" onsubmit="return validateForm()" method="POST" accept-charset="utf-8">{% csrf_token %}
         <div class="form-group">
