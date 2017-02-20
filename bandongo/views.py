@@ -376,13 +376,13 @@ def orderDetailPage(request, id):
         drinkTotalPrice=0
 
         for i in range(3):
-            orders=FoodOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1))
+            orders=FoodOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1)).order_by('memberName__remark')
             for order in orders:
                 foodTotalPrice+=order.price
             foodBags.append(orders)
         
         for i in range(3):
-            orders=DrinkOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1))
+            orders=DrinkOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1)).order_by('memberName__remark')
             for order in orders:
                 drinkTotalPrice+=order.price
             drinkBags.append(orders)
