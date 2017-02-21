@@ -351,8 +351,11 @@ def orderPage(request):
                 foodOrders.append({"foodName": catalog.name, "count": count, 'price': price})
         
         foodTotalPrice=0
+        foodTotalCount=0
         for i in range(3):
-            foodBags.append([])
+            foodBags.append({})
+            foodBags[i]["orders"]=[]
+            foodBags[i]["count"]=0
             for catalog in catalogs:
                 tempOrders=FoodOrder.objects.filter(scheduleName=schedule, foodName=catalog, memberName__remark__bag=(i+1))
                 count=0
@@ -361,16 +364,23 @@ def orderPage(request):
                     count+=tempOrder.num
                     price+=tempOrder.price
                 if count > 0:
-                    foodBags[i].append({"foodName": catalog.name, "count": count, 'price': price})
+                    foodBags[i]["orders"].append({"foodName": catalog.name, "count": count, 'price': price})
+                    foodBags[i]["count"]+=count
                     foodTotalPrice+=price
+                    foodTotalCount+=count
 
         drinkBags=[]
         drinkTotalPrice=0
+        drinkTotalCount=0
         for i in range(3):
+            drinkBags.append({})
             tempOrders=DrinkOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1)).order_by('drinking', 'remark')
-            drinkBags.append(tempOrders)
+            drinkBags[i]["orders"]=tempOrders
+            drinkBags[i]["count"]=sum(map(lambda order: order.num, tempOrders))
             drinkTotalPrice+=sum(map(lambda order: order.price, tempOrders))
-        return render(request, 'bandongo/backend_order.html',{'schedule': schedule, 'foodBags': foodBags, 'foodOrders': foodOrders, 'foodTotalPrice': foodTotalPrice, 'drinkBags': drinkBags, 'drinkTotalPrice': drinkTotalPrice})
+            drinkTotalCount+=sum(map(lambda order: order.num, tempOrders))
+
+        return render(request, 'bandongo/backend_order.html',{'schedule': schedule, 'foodBags': foodBags, 'foodOrders': foodOrders, 'foodTotalPrice': foodTotalPrice, 'foodTotalCount': foodTotalCount, 'drinkBags': drinkBags, 'drinkTotalPrice': drinkTotalPrice, 'drinkTotalCount': drinkTotalCount})
     except ObjectDoesNotExist:
         return render(request, 'bandongo/backend_order.html',{'schedule': None})
 

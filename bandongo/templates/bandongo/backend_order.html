@@ -1,6 +1,7 @@
 {% extends "bandongo/backend_base.html" %}
 {% load staticfiles%}
 {% block js %}<script src="{% static 'js/backend_order.js' %}"></script>{% endblock %}
+{% block css %}<link rel="stylesheet" type="text/css" href="{% static 'css/backend_order.css' %}">{% endblock %}
 {% block content %}
 <div class="container">
 	{% if schedule %}
@@ -46,8 +47,11 @@
             </thead>
             <tbody>
             {% for bag in foodBags %}
-            <tr><td colspan="3">Bag {{ forloop.counter }}</td></tr>
-            	{% for order in bag %}
+            <tr style="font-weight: bold;">
+                <td>Bag {{ forloop.counter }}</td>
+                <td colspan="2">{{ bag.count }}</td>
+            </tr>
+            	{% for order in bag.orders %}
                 <tr>
                 	<td>{{ order.foodName }}</td>
                     <td>{{ order.count }}</td>
@@ -55,8 +59,9 @@
                 </tr>
                 {% endfor %}
             {% endfor %}
-            <tr>
-                <td colspan="2">total price</td>
+            <tr style="font-weight: bold;">
+                <td>Total</td>
+                <td>{{ foodTotalCount }}</td>
                 <td>{{ foodTotalPrice }}</td>
             </tr>
             </tbody>
@@ -78,8 +83,9 @@
                 <td>{{ order.price }}</td>
             </tr>
             {% endfor %}
-            <tr>
-                <td colspan="2">total price</td>
+            <tr style="font-weight: bold;">
+                <td>Total</td>
+                <td>{{ foodTotalCount }}</td>
                 <td>{{ foodTotalPrice }}</td>
             </tr>
             </tbody>
@@ -96,18 +102,22 @@
             </thead>
             <tbody>
             {% for bag in drinkBags %}
-            <tr><td colspan="3">Bag {{ forloop.counter }}</td></tr>
-                {% for order in bag %}
+            <tr style="font-weight: bold;">
+                <td colspan="2">Bag {{ forloop.counter }}</td>
+                <td colspan="2">{{ bag.count }}</td>
+            </tr>
+                {% for order in bag.orders %}
                 <tr>
                     <td>{{ order.drinking }}</td>
                     <td>{{ order.remark }}</td>
-                    <td>{{ order.count }}</td>
+                    <td>{{ order.num }}</td>
                     <td>{{ order.price }}</td>
                 </tr>
                 {% endfor %}
             {% endfor %}
-            <tr>
-                <td colspan="3">total price</td>
+            <tr style="font-weight: bold;">
+                <td>Total</td>
+                <td>{{ drinkTotalCount }}</td>
                 <td>{{ drinkTotalPrice }}</td>
             </tr>
             </tbody>
