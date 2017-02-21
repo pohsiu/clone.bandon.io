@@ -39,6 +39,7 @@ urlpatterns = [
     url(r'^detail/(?P<pk>[0-9]+)/$', views.mark_detail),
     url(r'^log/(?P<pk>[0-9]+)/$',views.member_log),
     url(r'^todayOrder/(?P<pk>[0-9]+)/$',views.today_order),
+    url(r'^todayStatistic/(?P<pk>[0-9]+)/$',views.today_statistic),
     url(r'^$', views.mark_select),
     
     url(r'^frontend/delete_food$', views.delete_food),

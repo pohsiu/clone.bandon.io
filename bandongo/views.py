@@ -238,16 +238,20 @@ def mark_select(request):
 def today_statistic(request, pk):
     de_member =  get_object_or_404(Member, pk=pk)
     today = datetime.date(datetime.now())
-    schedules = Schedule.objects.filter(date__date = today) #get latest record
+    schedules = Schedule.objects.filter(date__date = today).order_by('-id') #get latest record
     empty = False;
+    s_len = len(schedules)
     if not schedules:
         foods = None;
         drinks = None;
         empty = True;
     else:
-        foods = FoodOrder.objects.filter(scheduleName=schedules[0])
-        drinks = DrinkOrder.objects.filter(scheduleName=schedules[0])
-    return render(request, 'bandongo/frontend_todayStatistic.html',{'schedules':schedules,'de_member':de_member, 'foods':foods, 'drinks':drinks, 'empty':empty})
+        foods = {}
+        drinks = {}
+        for i in range(0, len(schedules)):
+            foods[i] = FoodOrder.objects.filter(scheduleName=schedules[i])
+            drinks[i] = DrinkOrder.objects.filter(scheduleName=schedules[i])
+    return render(request, 'bandongo/frontend_todayStatistic.html',{'schedules':schedules,'de_member':de_member, 'foods':foods, 'drinks':drinks, 'empty':empty,'s_len':range(s_len)})
 
 
 ## backend_part
@@ -567,7 +571,7 @@ def addValue(request):
     comment=request.POST["comment"]
     
     Savelog.objects.create(memberName=member, money=value, adminName=admin, comment=comment)
-    member.member_saving+=int(value)
+    member.saving+=int(value)
     member.save()
     return HttpResponse("Add Value Successfully")
 
