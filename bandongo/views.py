@@ -24,6 +24,8 @@ from datetime import date #detail index used
 from django.utils.dateparse import parse_datetime
 from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
+
+from django.db.models import Q
 import os
 
 def member_new(request):
@@ -238,8 +240,8 @@ def mark_select(request):
 def today_statistic(request, pk):
     de_member =  get_object_or_404(Member, pk=pk)
     today = datetime.date(datetime.now())
-    schedules = Schedule.objects.filter(date__date = today).order_by('-id') #get latest record
-    empty = False;
+    schedules = Schedule.objects.filter( Q(date__date = today) | Q(finish=False) ).order_by('-id') #get latest record
+    empty = False
     s_len = len(schedules)
     if not schedules:
         foods = None;
