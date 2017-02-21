@@ -447,7 +447,8 @@ def catalogListPage(request):
 def catalogChangePricePage(request):
     shops=Food.objects.all()
     catalogs=Catalog.objects.filter(foodShop=shops[0])
-    schedule=Schedule.objects.filter(finish=False)
+    schedule=Schedule.objects.get(finish=False)
+    print schedule
     return render(request, 'bandongo/backend_catalogChangePrice.html',{'shops': shops, 'catalogs': catalogs, 'schedule': schedule})
 
 @login_required(login_url='/backend/login/')
@@ -628,6 +629,16 @@ def editCatalog(request, id):
         return HttpResponseRedirect("/backend/catalogListPage")
     else:
         return HttpResponse("<script>alert('not valid form')</script>")
+
+def catalogChangePrice(request):
+    catalog=Catalog.objects.get(id=request.POST["catalog"])
+    catalog.price=request.POST["price"]
+    catalog.save()
+    if request.POST["influence"]=="true":
+        for order in FoodOrder.objects.filter(scheduleName__finish=False, foodName=catalog):
+            order.price=order.foodName.price*order.num
+            order.save()
+    return HttpResponse("Change price successfully.")
 
 def deleteCatalog(request):
     catalog=Catalog.objects.get(id=request.POST["id"])
