@@ -1,5 +1,6 @@
 <!-- mark_select.html -->
 
+
 {% extends 'bandongo/frontend_index_test.html' %}
 
 
@@ -69,7 +70,7 @@
         
 {% block content%}
 <div class="container">
-    <p style="color:red;">訂餐快訊：儲值服務已經開始囉，請至4樓紀錄科進行儲值</p>   
+    <p style="color:red;">訂餐快訊：儲值服務已經開始囉，請四樓紀錄科進行儲值</p>   
     {% if s_latest %}
         {% if s_latest.0.arrived == False %}
             <h3>{{s_latest.0.name}}</h3>
@@ -82,7 +83,7 @@
             <h4>本日精選飲料：{{s_latest.0.drink}}</h4>
             <h4>便當狀態：已抵達，請徑行取餐</h4>
         {% endif %}
-         <p style="color:red;">小叮嚀：除一樓科室外，其餘請於便當抵達時至4樓紀錄科自行取餐，謝謝您的配合</p>
+         <p style="color:red;">小叮嚀：除一樓科室外，其餘請於便當抵達時至四樓紀錄科自行取餐，謝謝您的配合</p>
     {% endif%}
     <form name="markform" action="" onsubmit="return validateForm()" method="POST" accept-charset="utf-8">{% csrf_token %}
         <div class="form-group">

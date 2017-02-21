@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bandongo',
-    'related_select'
 ]
 
 MIDDLEWARE_CLASSES = [
