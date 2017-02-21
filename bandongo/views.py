@@ -240,7 +240,7 @@ def mark_select(request):
 def today_statistic(request, pk):
     de_member =  get_object_or_404(Member, pk=pk)
     today = datetime.date(datetime.now())
-    schedules = Schedule.objects.filter( Q(date__date = today) | Q(finish=False) ).order_by('-id') #get latest record
+    schedules = Schedule.objects.filter(finish=False).order_by('-id') #get latest record
     empty = False
     s_len = len(schedules)
     if not schedules:
