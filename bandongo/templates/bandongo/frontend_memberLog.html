@@ -5,7 +5,7 @@
     {% if savelogs %}
         <div><h2>存款紀錄</h2></div>
         <table class="table">
-            <thead>
+            <thead style="background-color:#EDEDE4;">
                 <tr>
                     <th>存款日期</th>
                     <th>收款人</th>
@@ -35,7 +35,7 @@
        
     <div><h2>消費紀錄</h2></div>
         <table class="table">
-            <thead>
+            <thead style="background-color:#EDEDE4;">
                 <tr>
                     <th></th>
                     <th>品項</th>
@@ -74,5 +74,5 @@
             </tr>
             
         </table>
-    <div><h2>餘額：{{total_sum}}</h2></div>
+    <div><h2 style="color:#F74906">餘額：{{total_sum}}</h2></div>
 {% endblock %}
