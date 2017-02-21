@@ -488,8 +488,8 @@ def editSchedule(request):
     schedule.food=Food.objects.get(id=request.POST["bandon"])
     schedule.drink=Drink.objects.get(id=request.POST["drink"])
     schedule.name=request.POST["name"]
-    schedule.save();
-    
+    schedule.save()
+    checkExpire()
     catalogs=request.POST.getlist("catalogs[]")
     for catalog in catalogs:
         temp=Catalog.objects.get(id=catalog)
@@ -646,13 +646,13 @@ def deleteFood(request):
     return HttpResponse("Deleted successfully.")
 
 def checkExpire():
-    nonExpire=Schedule.objects.filter(expire=False)
-    for schedule in nonExpire:
+    nonFinish=Schedule.objects.filter(finish=False)
+    for schedule in nonFinish:
         if schedule.date<datetime.now():
-            nonExpire[0].expire=True
+            schedule.expire=True
         else:
-            nonExpire[0].expire=False
-        nonExpire[0].save()
+            schedule.expire=False
+        schedule.save()
 
 def getCateMem(request):
     categories=Category.objects.all()
