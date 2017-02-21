@@ -87,6 +87,7 @@ urlpatterns = [
     url(r'^backend/addCatalog$', views.addCatalog),
     url(r'^backend/addCatalogBatch$', views.addCatalogBatch),
     url(r'^backend/editCatalog/([0-9]+)$', views.editCatalog),
+    url(r'^backend/catalogChangePrice$', views.catalogChangePrice),
     url(r'^backend/deleteCatalog$', views.deleteCatalog),
     url(r'^backend/addFood$', views.addFood),
     url(r'^backend/editShop/([0-9]+)$', views.editShop),
