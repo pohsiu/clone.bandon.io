@@ -282,6 +282,7 @@ def logout(request):
 
 @login_required(login_url='/backend/login/')
 def setSchedulePage(request):
+    checkExpire()
     drinks=Drink.objects.all()
     shops=Food.objects.all()
     catalogs=Catalog.objects.filter(foodShop=shops[0])
@@ -289,6 +290,7 @@ def setSchedulePage(request):
 
 @login_required(login_url='/backend/login/')
 def editSchedulePage(request):
+    checkExpire()
     nonFinish=Schedule.objects.filter(finish=False)
     if len(nonFinish)==0:
         return render(request, 'bandongo/backend_editSchedule.html',{})
@@ -318,6 +320,7 @@ def editSchedulePage(request):
 
 @login_required(login_url='/backend/login/')
 def scheduleListPage(request):
+    checkExpire()
     schedules=Schedule.objects.all()
     for i in range(len(schedules)):
         catalogs=Catalog.objects.filter(foodShop=schedules[i].food, choosed=True)
@@ -437,6 +440,13 @@ def addCatalogBatchPage(request):
 def catalogListPage(request):
     catalogs=Catalog.objects.all().order_by("foodShop")
     return render(request, 'bandongo/backend_catalogList.html',{'catalogs': catalogs})
+
+@login_required(login_url='/backend/login/')
+def catalogChangePricePage(request):
+    shops=Food.objects.all()
+    catalogs=Catalog.objects.filter(foodShop=shops[0])
+    schedule=Schedule.objects.filter(finish=False)
+    return render(request, 'bandongo/backend_catalogChangePrice.html',{'shops': shops, 'catalogs': catalogs, 'schedule': schedule})
 
 @login_required(login_url='/backend/login/')
 def editCatalogPage(request, id):

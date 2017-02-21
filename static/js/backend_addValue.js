@@ -37,6 +37,9 @@ function submit() {
         {member: member, value: value, admin: admin, comment: comment},
         function(response) {
           alert(response);
+          var newSaving=parseInt($("#saving").html())+parseInt(value);
+          $("#saving").html(newSaving);
+          $("#value").val(0);
         }
     );
 }

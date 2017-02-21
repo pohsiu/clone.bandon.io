@@ -1,0 +1,35 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}<script src="{% static 'js/backend_catalogChangePrice.js' %}"></script>{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Change Price</h1></div>
+    <div><h3>Catalog</h3></div>
+    <div>
+        <select id="shop" style="width: 20%;" class="selectpicker">
+            {% for shop in shops %}
+                <option value="{{forloop.counter0}}">{{shop.name}}</option>
+            {% endfor %}
+        </select>
+        <select id="catalog" style="width: 20%;" class="selectpicker">
+            {% for catalog in catalogs %}
+                <option value="{{catalog.id}}">{{catalog.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div><h3>Price</h3></div>
+    <div>
+        <input type="number" step="100" class="form-control" style="width: 20%;" id="price" value="{{ catalogs.0.price }}">
+    </div>
+    {% if schedule %}
+    <div class="checkbox">
+        <label>
+            <input name="influence" type="checkbox" value="influence"> Influence to current unfinished shcedule {{ schedule.name }}?
+        </label>
+    </div>
+    {% endif %}
+    <div style="margin-top: 20px">
+        <button class="btn btn-default" onclick="submit();">Submit</button>
+    </div>
+</div>
+{% endblock %}
