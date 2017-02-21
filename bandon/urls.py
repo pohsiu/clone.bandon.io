@@ -68,6 +68,7 @@ urlpatterns = [
     url(r'^backend/addCatalogPage/$', views.addCatalogPage),
     url(r'^backend/addCatalogBatchPage/$', views.addCatalogBatchPage),
     url(r'^backend/catalogListPage/$', views.catalogListPage),
+    url(r'^backend/catalogChangePricePage/$', views.catalogChangePricePage),
     url(r'^backend/catalog/([0-9]+)/$', views.editCatalogPage),
     url(r'^backend/addFoodShopPage/$', views.addFoodShopPage),
     url(r'^backend/shopListPage/$', views.shopListPage),

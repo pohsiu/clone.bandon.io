@@ -442,6 +442,13 @@ def catalogListPage(request):
     return render(request, 'bandongo/backend_catalogList.html',{'catalogs': catalogs})
 
 @login_required(login_url='/backend/login/')
+def catalogChangePricePage(request):
+    shops=Food.objects.all()
+    catalogs=Catalog.objects.filter(foodShop=shops[0])
+    schedule=Schedule.objects.filter(finish=False)
+    return render(request, 'bandongo/backend_catalogChangePrice.html',{'shops': shops, 'catalogs': catalogs, 'schedule': schedule})
+
+@login_required(login_url='/backend/login/')
 def editCatalogPage(request, id):
     catalog=Catalog.objects.get(id=id)
     form = CatalogForm(instance=catalog)
