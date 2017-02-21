@@ -248,9 +248,9 @@ def today_statistic(request, pk):
     else:
         foods = {}
         drinks = {}
-        for i in range(0, len(schedules)):
-            foods[i] = FoodOrder.objects.filter(scheduleName=schedules[i])
-            drinks[i] = DrinkOrder.objects.filter(scheduleName=schedules[i])
+        for i in schedules:
+            foods[i.name] = FoodOrder.objects.filter(scheduleName=i).order_by('memberName__remark')
+            drinks[i.name] = DrinkOrder.objects.filter(scheduleName=i).order_by('memberName__remark')
     return render(request, 'bandongo/frontend_todayStatistic.html',{'schedules':schedules,'de_member':de_member, 'foods':foods, 'drinks':drinks, 'empty':empty,'s_len':range(s_len)})
 
 

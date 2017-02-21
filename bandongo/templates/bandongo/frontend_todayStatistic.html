@@ -6,40 +6,70 @@
 
 {% block subcontent %}
     {% if empty == False%}
-        <h1>訂餐統計</h1>
-        <table style="width:100%">
-            <tr>
-            <th></th>
-            <!--<th>日期</th>-->
-            <th>品項</th>
-            <th>數量</th>
-            <th>金額</th>
-            <th>備註</th>
-            <th>取消</th>
-            
-          </tr>
-       
-        {% for i in s_len %}
-            
-            {% for key,value in foods.items %}
-                {% for i in key.items %}
-            <tr>
-                <td>test</td>
-                <!--<td>{{foods.scheduleName}}</td>-->
-                <!--<td>{{foods.date}}</td>-->
-                <!--<td>{{foods.foodName}}</td>-->
-                <!--<td>{{foods.num}}</td>-->
-                <!--<td>{{foods.price}}</td>-->
-                <!--<td>{{foods.remark}}</td>-->
-            </tr>
-                {%endfor%}
-            {% endfor %}
         
-        {% endfor %}
-           
+        <div><h1>餐點統計</h1></div>
         
-        
-        
+        <table class="table">
+                {% for name, value in foods.items %}
+                    {% if value %}
+                        <thead>
+                            <tr><th style="background-color:#D3D3D3;" colspan="5">{{name}}</th></tr>
+                        
+                            <tr>
+                                <th>姓名</th>
+                                <th>科室</th>
+                                <th>品項</th>
+                                <th>數量</th>
+                                <th>金額</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                        {% for sub in value %}
+                            <tr>
+                                <td>{{ sub.memberName }}</td>
+                                <td>{{ sub.memberName.remark.name }}</td>
+                                <td>{{ sub.foodName }}</td>
+                                <td>{{ sub.num }}</td>
+                                <td>{{ sub.price }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </tbody>
         </table>
-    {%endif%}
+        <div><h1>飲料統計</h1></div>
+        <table class="table">
+            <tbody>
+                {% for name, value in drinks.items %}
+                    {% if value %}
+                        <thead>
+                            <tr><th style="background-color:#D3D3D3;" colspan="5">{{name}}</th></tr>
+                        
+                            <tr>
+                                <th>姓名</th>
+                                <th>科室</th>
+                                <th>品項</th>
+                                <th>數量</th>
+                                <th>金額</th>
+                            </tr>
+                        </thead>
+                        
+                        <tbody>
+                        {% for sub in value %}
+                            <tr>
+                                <td>{{ sub.memberName }}</td>
+                                <td>{{ sub.memberName.remark.name }}</td>
+                                <td>{{ sub.drinking }}</td>
+                                <td>{{ sub.num }}</td>
+                                <td>{{ sub.price }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <h1>暫無資料</h1>
+    {% endif %}
 {% endblock %}
