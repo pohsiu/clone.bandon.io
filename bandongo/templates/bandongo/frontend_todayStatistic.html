@@ -9,67 +9,104 @@
         
         <div><h1>餐點統計</h1></div>
         
-        <table class="table">
-                {% for name, value in foods.items %}
-                    {% if value %}
-                        <thead>
-                            <tr><th style="background-color:#D3D3D3;" colspan="5">{{name}}</th></tr>
-                        
-                            <tr>
-                                <th>姓名</th>
-                                <th>科室</th>
-                                <th>品項</th>
-                                <th>數量</th>
-                                <th>金額</th>
-                            </tr>
-                        </thead>
-                        
-                        <tbody>
-                        {% for sub in value %}
-                            <tr>
-                                <td>{{ sub.memberName }}</td>
-                                <td>{{ sub.memberName.remark.name }}</td>
-                                <td>{{ sub.foodName }}</td>
-                                <td>{{ sub.num }}</td>
-                                <td>{{ sub.price }}</td>
-                            </tr>
-                        {% endfor %}
-                    {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
+        
+            {% for name, value in foods.items %}
+            
+                {% if value %}
+                <div id="s_food{{forloop.counter}}"> 
+                <table class="table">
+                    <input type="hidden" id="food_counter" value="{{forloop.counter}}"/>
+                    <thead>
+                        <tr><th style="background-color:#D3D3D3;" onclick="foodStatisticToogle()" colspan="5">{{name}}</th></tr>
+                    
+                        <tr>
+                            <th>姓名</th>
+                            <th>科室</th>
+                            <th>品項</th>
+                            <th>數量</th>
+                            <th>金額</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                    {% for sub in value %}
+                        <tr>
+                            <td>{{ sub.memberName }}</td>
+                            <td>{{ sub.memberName.remark.name }}</td>
+                            <td>{{ sub.foodName }}</td>
+                            <td>{{ sub.num }}</td>
+                            <td>{{ sub.price }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+                {% endif %}
+            {% endfor %}
+
         <div><h1>飲料統計</h1></div>
-        <table class="table">
-            <tbody>
-                {% for name, value in drinks.items %}
-                    {% if value %}
-                        <thead>
-                            <tr><th style="background-color:#D3D3D3;" colspan="5">{{name}}</th></tr>
-                        
-                            <tr>
-                                <th>姓名</th>
-                                <th>科室</th>
-                                <th>品項</th>
-                                <th>數量</th>
-                                <th>金額</th>
-                            </tr>
-                        </thead>
-                        
-                        <tbody>
-                        {% for sub in value %}
-                            <tr>
-                                <td>{{ sub.memberName }}</td>
-                                <td>{{ sub.memberName.remark.name }}</td>
-                                <td>{{ sub.drinking }}</td>
-                                <td>{{ sub.num }}</td>
-                                <td>{{ sub.price }}</td>
-                            </tr>
-                        {% endfor %}
-                    {% endif %}
-                {% endfor %}
-            </tbody>
-        </table>
+        
+            
+            {% for name, value in drinks.items %}
+                {% if value %}
+                <div id="s_drink{{forloop.counter}}">
+                <table class="table">
+                    <input type="hidden" id="drink_counter" value="{{forloop.counter}}"/>
+                    <thead>
+                        <tr><th style="background-color:#D3D3D3;" onclick="drinkStatisticToogle()" colspan="5">{{name}}</th></tr>
+                    
+                        <tr>
+                            <th>姓名</th>
+                            <th>科室</th>
+                            <th>品項</th>
+                            <th>數量</th>
+                            <th>金額</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                    {% for sub in value %}
+                        <tr>
+                            <td>{{ sub.memberName }}</td>
+                            <td>{{ sub.memberName.remark.name }}</td>
+                            <td>{{ sub.drinking }}</td>
+                            <td>{{ sub.num }}</td>
+                            <td>{{ sub.price }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+                </div>
+                {% endif %}
+            {% endfor %}
+            
     {% else %}
         <h1>暫無資料</h1>
     {% endif %}
+{% endblock %}
+
+{% block script2%}
+<script>
+function foodStatisticToogle() {
+    var counter = document.getElementById('food_counter').value;
+    var table = document.getElementById('s_food'+String(counter));
+    // alert(counter+table);
+    // if (table.style.display === 'none') {
+    //     table.style.display = 'block';
+    // } else {
+    //     table.style.display = 'none';
+    // }
+}
+function drinkStatisticToogle() {
+    var counter= document.getElementById('drink_counter').value;
+    var table = document.getElementById('s_drink'+String(counter));
+    // alert(counter);
+    // if (table.style.display === 'none') {
+    //     table.style.display = 'block';
+    // } else {
+    //     table.style.display = 'none';
+    // }
+}
+</script>
+
 {% endblock %}
