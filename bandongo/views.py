@@ -128,7 +128,6 @@ def mark_detail(request, pk):
                 id_food = schedules[0].food
                 id_beverage = schedules[0].drink.name
                 list_food = schedules[0].catalogs.all()
-                # list_food = Catalog.objects.filter(foodShop = id_food, choosed=True)
                 pic_beverage = Drink.objects.filter(name = id_beverage)
                 schedule_name = schedules[0].name
             else:
