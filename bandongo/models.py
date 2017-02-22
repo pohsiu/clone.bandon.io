@@ -66,10 +66,23 @@ class Drink(models.Model):
     def __unicode__(self):
         return u'%s '% (self.name)
 
+#Product Food Menu
+class Catalog(models.Model):
+    foodShop = models.ForeignKey(Food)
+    name = models.CharField(max_length=15)
+    pic = models.ImageField(upload_to="static/pic/catalogPic/",blank=True)
+    price = models.IntegerField()
+    
+    def store(self):
+        self.save()
+    def __unicode__(self):
+        return u'%s '% (self.name)
+
 class Schedule(models.Model):
     name = models.CharField(max_length=50)
     comment = models.CharField(max_length=50, blank=True)
     food = models.ForeignKey(Food)
+    catalogs = models.ManyToManyField(Catalog)
     drink = models.ForeignKey(Drink, blank=True)
     date = models.DateTimeField() 
     expire = models.BooleanField(default=False)
@@ -78,22 +91,6 @@ class Schedule(models.Model):
     
     def __unicode__(self):
         return u'%s'% (self.name)
-   
-#Product Food Menu
-class Catalog(models.Model):
-    foodShop = models.ForeignKey(Food)
-    name = models.CharField(max_length=15)
-    pic = models.ImageField(upload_to="static/pic/catalogPic/",blank=True)
-    price = models.IntegerField()
-    choosed = models.BooleanField(default=False)
-    
-    def store(self):
-        self.save()
-    def __unicode__(self):
-        return u'%s '% (self.name)
-        
-
-
 
 #Transaction log
 class FoodOrder(models.Model):

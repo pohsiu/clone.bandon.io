@@ -23,7 +23,7 @@ class SavelogAdmin(admin.ModelAdmin):
     list_filter = ('tranDate',)
     # search_fields = ('member_name')
 class CatalogAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name','foodShop','pic','price', 'choosed')
+    list_display = ('id', 'name','foodShop','pic','price')
     
   
     
@@ -43,7 +43,9 @@ class FoodAdmin(admin.ModelAdmin):
 class DrinkAdmin(admin.ModelAdmin):
     list_display = ('id', 'name','pic','telephone','address','remark')
 class ScheduleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'food','drink','date','expire', 'arrived', 'finish')
+    list_display = ('id', 'name', 'food', 'get_catalogs', 'drink','date','expire', 'arrived', 'finish')
+    def get_catalogs(self, obj):
+        return "\n".join([p.name for p in obj.catalogs.all()])
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'bag')
 class NotificationAdmin(admin.ModelAdmin):
