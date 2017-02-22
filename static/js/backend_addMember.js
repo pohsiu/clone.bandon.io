@@ -21,7 +21,7 @@ function submit() {
         }
     }
     if(sameName) {
-        if(confirm("same name with the person in "+category)) {
+        if(confirm("same name with a person in "+category)) {
             var phone=$("#phone").val();
             var email=$("#email").val();
             var category=$("#category").val();

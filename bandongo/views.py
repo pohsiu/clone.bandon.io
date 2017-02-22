@@ -324,7 +324,7 @@ def editSchedulePage(request):
 @login_required(login_url='/backend/login/')
 def scheduleListPage(request):
     checkExpire()
-    schedules=Schedule.objects.all()
+    schedules=Schedule.objects.all().order_by('-id')
     return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules})
 
 @login_required(login_url='/backend/login/')
@@ -513,15 +513,21 @@ def setSchedule(request):
 
 @login_required(login_url='/backend/login/')
 def editSchedule(request):
+
     schedule=Schedule.objects.get(id=request.POST["id"])
+    schedule.name=request.POST["name"]
     schedule.date=parse_datetime(request.POST["dueDatetime"])
     schedule.food=Food.objects.get(id=request.POST["bandon"])
-    schedule.drink=Drink.objects.get(id=request.POST["drink"])
-    schedule.name=request.POST["name"]
+    
     schedule.save()
     checkExpire()
     catalogs=request.POST.getlist("catalogs[]")
     schedule.catalogs.set(Catalog.objects.filter(id__in=catalogs))
+
+    # delete not chosen catalog orders
+    FoodOrder.objects.filter(scheduleName=schedule).exclude(foodName__in=schedule.catalogs.all()).delete()
+    if not schedule.drink==Drink.objects.get(id=request.POST["drink"]):
+        DrinkOrder.objects.filter(scheduleName=schedule).delete()
 
     return HttpResponse("Edit Schedule Successfully")
 
