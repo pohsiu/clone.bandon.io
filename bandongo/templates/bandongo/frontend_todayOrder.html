@@ -108,7 +108,7 @@ function getConfirmationDrinks()
      
       
      <input type="hidden" id="foods_len" value="{{ today_foods|length }}"/>
-     <input type="hidden" id="duedate" value="{{ today_foods|length }}"/>
+    
     {% for foods in today_foods %}
        <tr id="order{{foods.id}}">
         <td>{{foods.scheduleName}}</td>
@@ -119,7 +119,7 @@ function getConfirmationDrinks()
         <td>{{foods.remark}}</td>
         <input type="hidden" id="foods_id" value="{{foods.id}}"/>
         <!--<input type="hidden" id="duedate" value="{{order_duedate|date:'Y-m-d H:i' }}"/>-->
-        <td><input type="image" onclick="getConfirmationFoods()" src="{% static 'icon/x_icon.png' %}" alt="Submit" width="12" height="12"></td>
+        <td><i class="fa fa-camera-retro fa-lg"></i></td>
       </tr>
     {% endfor %}
     {% endif %}   
@@ -133,7 +133,7 @@ function getConfirmationDrinks()
         <td>{{drinks.price}}</td>
         <td>{{drinks.remark}}</td>
         <input type="hidden" id="drinks_id" value="{{drinks.id}}"/>
-         <!--<input type="hidden" id="duedate" value="{{order_duedate}}"/>-->
+         
         <td><input type="image" onclick="getConfirmationDrinks()" src="{% static 'icon/x_icon.png' %}" alt="Submit" width="12" height="12"></td>
       </tr>
     

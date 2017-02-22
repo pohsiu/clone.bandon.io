@@ -71,8 +71,11 @@ urlpatterns = [
     url(r'^backend/catalogChangePricePage/$', views.catalogChangePricePage),
     url(r'^backend/catalog/([0-9]+)/$', views.editCatalogPage),
     url(r'^backend/addFoodShopPage/$', views.addFoodShopPage),
-    url(r'^backend/shopListPage/$', views.shopListPage),
-    url(r'^backend/shop/([0-9]+)/$', views.editShopPage),
+    url(r'^backend/foodShopListPage/$', views.foodShopListPage),
+    url(r'^backend/addDrinkShopPage/$', views.addDrinkShopPage),
+    url(r'^backend/drinkShopListPage/$', views.drinkShopListPage),
+    url(r'^backend/foodShop/([0-9]+)/$', views.editFoodShopPage),
+    url(r'^backend/drinkShop/([0-9]+)/$', views.editDrinkShopPage),
     
     ## function part
     url(r'^backend/setSchedule$', views.setSchedule),
@@ -90,8 +93,11 @@ urlpatterns = [
     url(r'^backend/catalogChangePrice$', views.catalogChangePrice),
     url(r'^backend/deleteCatalog$', views.deleteCatalog),
     url(r'^backend/addFood$', views.addFood),
-    url(r'^backend/editShop/([0-9]+)$', views.editShop),
-    url(r'^backend/deleteFood$', views.deleteFood),
+    url(r'^backend/editFoodShop/([0-9]+)$', views.editFoodShop),
+    url(r'^backend/deleteFoodShop$', views.deleteFoodShop),
+    url(r'^backend/addDrink$', views.addDrink),
+    url(r'^backend/editDrinkShop/([0-9]+)$', views.editDrinkShop),
+    url(r'^backend/deleteDrinkShop$', views.deleteDrinkShop),
     
     url(r'^getCateMem$', views.getCateMem),
     url(r'^getShopCat$', views.getShopCat),

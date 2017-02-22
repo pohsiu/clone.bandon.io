@@ -20,7 +20,7 @@
                 {% for shop in shops %}
                 <tr id="{{ shop.id }}">
                     <td>{{ shop.id }}</td>
-                    <td><a href="/backend/shop/{{ shop.id }}">{{ shop.name }}</a></td>
+                    <td><a href="/backend/foodShop/{{ shop.id }}">{{ shop.name }}</a></td>
                     <td>
                         {% if shop.pic %}
                         <img src="/{{ shop.pic }}" class="img-responsive"  width="240" height="240">
@@ -30,9 +30,9 @@
                     <td>{{ shop.address }}</td>
                     <td>{{ shop.remark }}</td>
                     <td>
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="
+                    <span class="glyphicon glyphicon-remove" style="cursor: pointer;" aria-hidden="true" onclick="
                         $.post(
-                            '/backend/deleteFood',
+                            '/backend/deleteFoodShop',
                             {id: {{shop.id}} },
                             function(response) {
                               alert(response);

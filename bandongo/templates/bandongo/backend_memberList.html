@@ -7,11 +7,11 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Department</th>
                 <th>id</th>
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Email</th>
-                <th>Department</th>
                 <th>Auth</th>
                 <th>Savings</th>
             </tr>
@@ -19,16 +19,27 @@
         <tbody>
             {% for member in members %}
             <tr>
-                <td>{{ member.id }}</td>
+                <td>{{ member.remark }}</td>
                 <td><a href="/backend/member/{{ member.id }}">{{ member.name }}</a></td>
+                <td>{{ member.id }}</td>
                 <td>{{ member.phone }}</td>
                 <td>{{ member.email }}</td>
-                <td>{{ member.remark }}</td>
                 <td>{{ member.auth }}</td>
-                <td>{{ member.saving }}</td>
+                {% if member.saving > 0 %}
+                    <td>{{ member.saving }}</td>
+                {% elif member.saving == 0 %}
+                    <td><p style="color:orange;">{{ member.saving }}</p></td>
+                {% else %}
+                    <td><p style="color:red;"><b>{{ member.saving }}</b></p></td>
+                 {% endif %}
             </tr>
             {% endfor %}
         </tbody>
+        <tr style="background-color:#E1E1E1;">
+            <td colspan="5">
+            <td colspan="1">TOTAL</td>
+            <td>TODO</td>
+        </tr>
     </table>
 </div>
 {% endblock %}

@@ -14,9 +14,9 @@
 
     <!-- Bootstrap Core CSS -->
     
-    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
-    <!--<link href="{% static 'css/index.css' %}" rel="stylesheet">-->
-    
+    <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+   
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -64,13 +64,13 @@
         <div id="page-content-wrapper">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="container col-lg-12">
-                    <div class="col-lg-6">
+                    <div class="container col-lg-10">
+                    <div class="col-lg-5">
                         {% if homePicPath %}
-                            <img src="{{homePicPath}}" class="img-responsive"  width="300" height="360" style="margin-bottom: 10px; display:block; margin:auto;">
+                            <img src="{{homePicPath}}" class="img-responsive"  width="400" height="360" style="margin-bottom: 10px; display:block; margin:auto;">
                         {% endif %}
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-5">
                         {% block content %}
                         {% endblock%}
                     </div>

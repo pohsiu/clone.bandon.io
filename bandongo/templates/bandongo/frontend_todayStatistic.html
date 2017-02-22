@@ -20,19 +20,19 @@
                         <tr><th style="background-color:#E1E1E1;" onclick="foodStatisticToogle({{forloop.counter}})" colspan="5" id="{{forloop.counter}}">{{name}}</th></tr>
                     
                         <tr style="background-color:#EDEDE4;">
-                            <th>姓名</th>
-                            <th>科室</th>
-                            <th>品項</th>
-                            <th>數量</th>
-                            <th>金額</th>
+                            <th class = "col-sm-3">科室</th>
+                            <th class = "col-sm-2">姓名</th>
+                            <th class = "col-sm-5">品項</th>
+                            <th class = "col-sm-1">數量</th>
+                            <th class = "col-sm-1">金額</th>
                         </tr>
                     </thead>
                     
                     <tbody>
                     {% for sub in value %}
                         <tr>
-                            <td>{{ sub.memberName }}</td>
                             <td>{{ sub.memberName.remark.name }}</td>
+                            <td>{{ sub.memberName }}</td>
                             <td>{{ sub.foodName }}</td>
                             <td>{{ sub.num }}</td>
                             <td>{{ sub.price }}</td>
@@ -57,11 +57,11 @@
                     
                         <tr style="background-color:#EDEDE4;">
                             
-                            <th>科室</th>
-                            <th>姓名</th>
-                            <th>品項</th>
-                            <th>數量</th>
-                            <th>金額</th>
+                            <th class = "col-sm-3">科室</th>
+                            <th class = "col-sm-2">姓名</th>
+                            <th class = "col-sm-5">品項</th>
+                            <th class = "col-sm-1">數量</th>
+                            <th class = "col-sm-1">金額</th>
                         </tr>
                     </thead>
                     
