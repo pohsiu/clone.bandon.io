@@ -1,6 +1,7 @@
 <!-- mark_select.html -->
 
-{% extends 'bandongo/frontend_index_test.html' %}
+
+{% extends 'bandongo/frontend_index.html' %}
 
 
 {% block script %}
@@ -69,23 +70,26 @@
         
 {% block content%}
 <div class="container">
-    <p style="color:red;">訂餐快訊：儲值服務已經開始囉，請至4樓紀錄科進行儲值</p>   
+    <br><br>
+    <p style="color:red;">訂餐快訊：儲值服務已經開始囉，歡迎至四樓紀錄科進行儲值</p>
+    <p style="color:red;">訂餐預告：週四中午將訂購升一排骨，然該店訂單滿五十筆才會提供外送，故還請各位多多支持</p>   
+    <p style="color:red;">貼心叮嚀：除一樓科室外，其餘請在餐點抵達時至四樓紀錄科自行取餐，謝謝您的配合</p>
     {% if s_latest %}
         {% if s_latest.0.arrived == False %}
-            <h3>{{s_latest.0.name}}</h3>
+            <h3><b>【{{s_latest.0.name}}】</b></h3>
             <h4>本日精選店家：{{s_latest.0.food}}</h4>
             <h4>本日精選飲料：{{s_latest.0.drink}}</h4>
-            <h4>便當狀態：尚未抵達，請耐心等待</h4>
+            <h4>餐點狀態：尚未抵達，請耐心等候</h4>
         {% elif s_latest.0.arrived == True %}
             <h3>{{s_latest.0.name}}</h3>
             <h4>本日精選店家：{{s_latest.0.food}}</h4>
             <h4>本日精選飲料：{{s_latest.0.drink}}</h4>
-            <h4>便當狀態：已抵達，請徑行取餐</h4>
+            <h4>餐點狀態：已抵達，請逕行取餐</h4>
         {% endif %}
-         <p style="color:red;">小叮嚀：除一樓科室外，其餘請於便當抵達時至4樓紀錄科自行取餐，謝謝您的配合</p>
     {% endif%}
     <form name="markform" action="" onsubmit="return validateForm()" method="POST" accept-charset="utf-8">{% csrf_token %}
         <div class="form-group">
+            <br>
             <label for="mark">科室：</label>
             <select class="custom-select form-control" name="mark" id="mark" style="width: auto">
                 <option value="Z">選擇科室</option>
@@ -102,6 +106,7 @@
                 </select>
             </div>
         </div>
+        <br>
         <button type="submit" class="btn btn-default">送出</button>
     </form>
 </div>

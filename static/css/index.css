@@ -1,3 +1,5 @@
+body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family: Microsoft JhengHei ,'微軟正黑體' , Tahoma, Helvetica, Arial, sans-serif;}
+
 h3{
 	font-family:Microsoft JhengHei;
 	font-weight:bold;
@@ -10,4 +12,3 @@ p{
 h4{
 	font-family:Microsoft JhengHei;
 }
-

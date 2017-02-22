@@ -2,101 +2,95 @@
 
 {% block subcontent %}
    
-    <h2>存款紀錄</h2>
     {% if savelogs %}
-    
-    
-    <table style="width:100%">
-      <tr>
-        <th>存款日期</th>
-        <th>收款人</th>
-        <th>金額</th>
-        <th>備註</th>
-        
-      </tr>
-    {% for savings in savelogs %}
-      <tr>
-        <td>{{savings.tranDate|date:'Y-m-d H:i' }}</td>
-        <td>{{savings.adminName}}</td>
-        <td>{{savings.money}}</td>
-        <td>{{savings.comment}}</td>
-        
-      </tr>
-    {% endfor %}
-       <tr>
-         <th></th>
-         <th>總存款</th>
-         <th>
-             {{save_total}}
-         </th>
-     </table>
+        <div><h2>存款紀錄</h2></div>
+        <table class="table">
+            <thead style="background-color:#EDEDE4;">
+                <tr>
+                    <th class = "col-sm-4">存款日期</th>
+                    <th class = "col-sm-4">收款人</th>
+                    <th class = "col-sm-1">金額</th>
+                    <th class = "col-sm-3">備註</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for savings in savelogs %}
+                    <tr>
+                        <td>{{savings.tranDate|date:'Y-m-d H:i' }}</td>
+                        <td>{{savings.adminName}}</td>
+                        <td>{{savings.money}}</td>
+                        <td>{{savings.comment}}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+            <tr>
+                <td colspan="2">總存款</td>
+                <td>{{save_total}}</td>
+            </tr>
+        </table>
     {% else %}
-    
-    <p>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp你沒存錢, 快點存</p>
+        <h2>你沒存錢 快點存!</h2>
     {% endif %}
-    <h2>消費紀錄</h2>
-    <table style="width:100%">
-    {% if foods_logs %}
-    
-    
-    
-      <tr>
-        <th></th>
-        <!--<th>日期</th>-->
-        <th>品項</th>
-        <th>數量</th>
-        <th>金額</th>
-        <th>備註</th>
+
+       
+    <div><h2>消費紀錄</h2></div>
         
-      </tr>
-    {% for foods in foods_logs %}
-      <tr>
-        <td>{{foods.scheduleName}}</td>
-        <!--<td>{{foods.date}}</td>-->
-        <td>{{foods.foodName}}</td>
-        <td>{{foods.num}}</td>
-        <td>{{foods.price}}</td>
-        <td>{{foods.remark}}</td>
-        
-      </tr>
-    {% endfor %}
-    {% endif %}
-    
-    
-    {% if drinks_logs %}
-    {% for drinks in drinks_logs %}
-      <tr>
-        <td>{{drinks.scheduleName}}</td>
-        <!--<td>{{drinks.date}}</td>-->
-        <td>{{drinks.drinking}}</td>
-        <td>{{drinks.num}}</td>
-        <td>{{drinks.price}}</td>
-        <td>{{drinks.remark}}</td>
-        
-      </tr>
-    
-    {% endfor %}
-    
-    {% endif %}
-    {% if cost_total %}
-       <tr>
-         <th></th>
-         <!--<th></th>-->
-         <th></th>
-         <th>總花費</th>
-         <th>
-             {{cost_total}}
-         </th>
-    {% endif %}
-         
-    
-     </table>
-    
-    
-    
-    
-    
-    {% if total_sum %}
-    <h2>餘額：{{ total_sum }}</h2>
-    {% endif %}
+            {% if foods_logs %}
+            <table class="table">
+                <thead>
+                <tr style="background-color:#EDEDE4;">
+                    <th class = "col-sm-4"><b>餐點</b></th>
+                        <th class = "col-sm-4">品項</th>
+                        <th class = "col-sm-1">數量</th>
+                        <th class = "col-sm-1">金額</th>
+                        <th class = "col-sm-2">備註</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                {% for foods in foods_logs %}
+                    <tr>
+                    <td>{{foods.scheduleName}}</td>
+                    <td>{{foods.foodName}}</td>
+                    <td>{{foods.num}}</td>
+                    <td>{{foods.price}}</td>
+                    <td>{{foods.remark}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            {% endif %}
+            {% if drinks_logs %}
+            <table class="table">
+            <thead>
+                <tr style="background-color:#EDEDE4;">
+                    <th class = "col-sm-4"><b>飲料</b></th>
+                    <th class = "col-sm-4">品項</th>
+                    <th class = "col-sm-1">數量</th>
+                    <th class = "col-sm-1">金額</th>
+                    <th class = "col-sm-2">備註</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+                {% for drinks in drinks_logs %}
+                    <tr>
+                        <td class="col-md-4">{{drinks.scheduleName}}</td>
+                        <td class="col-md-3">{{drinks.drinking}}</td>
+                        <td class="col-md-1">{{drinks.num}}</td>
+                        <td class="col-md-1">{{drinks.price}}</td>
+                        <td class="col-md-2">{{drinks.remark}}</td>
+                    </tr>
+                {% endfor %}
+                 </tbody>
+            
+            {% endif %}
+           
+                <tr>
+                    <td colspan="3">總花費</td>
+                    <td>{{cost_total}}</td>
+                </tr>
+                
+            </table>
+    <div><h3 style="color:#F74906;">餘額：{{total_sum}}</h2></div>
 {% endblock %}

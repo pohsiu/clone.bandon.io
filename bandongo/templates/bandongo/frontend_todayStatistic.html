@@ -6,40 +6,107 @@
 
 {% block subcontent %}
     {% if empty == False%}
-        <h1>訂餐統計</h1>
-        <table style="width:100%">
-            <tr>
-            <th></th>
-            <!--<th>日期</th>-->
-            <th>品項</th>
-            <th>數量</th>
-            <th>金額</th>
-            <th>備註</th>
-            <th>取消</th>
+        
+        <div><h1 style="color:#554E44">餐點統計</h1></div>
+        
+        
+            {% for name, value in foods.items %}
             
-          </tr>
-       
-        {% for i in s_len %}
-            
-            {% for key,value in foods.items %}
-                {% for i in key.items %}
-            <tr>
-                <td>test</td>
-                <!--<td>{{foods.scheduleName}}</td>-->
-                <!--<td>{{foods.date}}</td>-->
-                <!--<td>{{foods.foodName}}</td>-->
-                <!--<td>{{foods.num}}</td>-->
-                <!--<td>{{foods.price}}</td>-->
-                <!--<td>{{foods.remark}}</td>-->
-            </tr>
-                {%endfor%}
+                {% if value %}
+                <div id="s_food{{forloop.counter}}"> 
+                <table class="table">
+                    <input type="hidden" id="food_counter" value="{{forloop.counter}}"/>
+                    <thead>
+                        <tr><th style="background-color:#E1E1E1;" onclick="foodStatisticToogle({{forloop.counter}})" colspan="5" id="{{forloop.counter}}">{{name}}</th></tr>
+                    
+                        <tr style="background-color:#EDEDE4;">
+                            <th>姓名</th>
+                            <th>科室</th>
+                            <th>品項</th>
+                            <th>數量</th>
+                            <th>金額</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                    {% for sub in value %}
+                        <tr>
+                            <td>{{ sub.memberName }}</td>
+                            <td>{{ sub.memberName.remark.name }}</td>
+                            <td>{{ sub.foodName }}</td>
+                            <td>{{ sub.num }}</td>
+                            <td>{{ sub.price }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                </div>
+                {% endif %}
             {% endfor %}
+
+        <div><h1 style="color:#554E44">飲料統計</h1></div>
         
-        {% endfor %}
-           
-        
-        
-        
-        </table>
-    {%endif%}
+            
+            {% for name, value in drinks.items %}
+                {% if value %}
+                <div id="s_drink{{forloop.counter}}">
+                <table class="table">
+                    <input type="hidden" id="drink_counter" value="{{forloop.counter}}"/>
+                    <thead>
+                        <tr><th style="background-color:#E1E1E1;" onclick="drinkStatisticToogle()" colspan="5">{{name}}</th></tr>
+                    
+                        <tr style="background-color:#EDEDE4;">
+                            <th>姓名</th>
+                            <th>科室</th>
+                            <th>品項</th>
+                            <th>數量</th>
+                            <th>金額</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                    {% for sub in value %}
+                        <tr>
+                            <td>{{ sub.memberName }}</td>
+                            <td>{{ sub.memberName.remark.name }}</td>
+                            <td>{{ sub.drinking }}</td>
+                            <td>{{ sub.num }}</td>
+                            <td>{{ sub.price }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+                </table>
+                </div>
+                {% endif %}
+            {% endfor %}
+            
+    {% else %}
+        <h1>暫無資料</h1>
+    {% endif %}
+{% endblock %}
+
+{% block script2%}
+<script>
+function foodStatisticToogle(id) {
+    var counter = $("#"+id).html();
+    // var table = $('#s_food'+String(counter));
+    // alert(counter);
+    // if (table.style.display === 'none') {
+    //     table.style.display = 'block';
+    // } else {
+    //     table.style.display = 'none';
+    // }
+}
+function drinkStatisticToogle() {
+    var counter= $('#drink_counter');
+    var table = document.getElementById('s_drink'+String(counter));
+    // alert(counter);
+    // if (table.style.display === 'none') {
+    //     table.style.display = 'block';
+    // } else {
+    //     table.style.display = 'none';
+    // }
+}
+</script>
+
 {% endblock %}

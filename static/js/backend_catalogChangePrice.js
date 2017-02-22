@@ -27,18 +27,14 @@ $( document ).ready(function() {
     });
 });
 function submit() {
-    // var member=$("#member").val();
-    // var value=$("#value").val();
-    // var admin=$("#admin").val();
-    // var comment=$("#comment").val();
-    // $.post(
-    //     "/backend/addValue",
-    //     {member: member, value: value, admin: admin, comment: comment},
-    //     function(response) {
-    //       alert(response);
-    //       var newSaving=parseInt($("#saving").html())+parseInt(value);
-    //       $("#saving").html(newSaving);
-    //       $("#value").val(0);
-    //     }
-    // );
+    var catalog=$("#catalog").val();
+    var price=$("#price").val();
+    var influence=$("#influence").prop('checked');
+    $.post(
+        "/backend/catalogChangePrice",
+        {catalog: catalog, price: price, influence: influence},
+        function(response) {
+          alert(response);
+        }
+    );
 }
