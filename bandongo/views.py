@@ -257,7 +257,8 @@ def today_statistic(request, pk):
 ## backend_part
 ## page part
 def homePage(request):
-    return render(request, 'bandongo/backend_home.html',{})
+    members=Member.objects.all()
+    return render(request, 'bandongo/backend_home.html',{'balance': sum(map(lambda member: member.saving, members))})
 
 def login(request):
     if request.user.is_authenticated(): 
