@@ -119,6 +119,7 @@ function getConfirmationDrinks()
         <td>{{foods.remark}}</td>
         <input type="hidden" id="foods_id" value="{{foods.id}}"/>
         <!--<input type="hidden" id="duedate" value="{{order_duedate|date:'Y-m-d H:i' }}"/>-->
+        <td><input type="image" onclick="getConfirmationFoods()" src="{% static 'icon/x_icon.png' %}" alt="Submit" width="12" height="12"></td>
         <td><i class="fa fa-camera-retro fa-lg"></i></td>
       </tr>
     {% endfor %}

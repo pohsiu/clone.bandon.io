@@ -155,68 +155,65 @@
                 
                 </table>
             {% endif %}
-        
+            
             {% if pic_beverage.0.name != "休" %}
                 <table class = "table col-xs-12">
-                <div class="form-group">
-                <th colspan="4" ><h4style="background-color:#E1E1E1;"{{pic_beverage.0.name}}</h4></th>
-                </div>
-                <tr>
-                <th colspan="4">
-                <div class="container">
-                <br>
-                <img src="/{{pic_beverage.0.pic}}" class="img-responsive col-xs-12" width="500" height="360"> 
-                </div>
-                </th>
-                </tr>
-                <div class="form-group">
-                <label for="drink-name">喝點什麼</label>
-                <input type = "text" class="form-control" id="drink-name" name="drink-name" placeholder="飲料名稱">
-                </div>
-                <div class="form-group">
-                <label for="sugar">甜度</label>
-                <select class="form-control" id="sugar" name="sugar">
-                <option value="無糖">無糖</option>
-                <option value="微糖">微糖</option>
-                <option value="半糖">半糖</option>
-                <option value="少糖">少糖</option>
-                <option value="正常甜">正常甜</option>
-                </select>
-                <label for="ice">冰塊</label>
-                <select class="form-control" id="ice" name="ice">
-                <option value="去冰">去冰</option>
-                <option value="少冰">少冰</option>
-                <option value="微冰">微冰</option>
-                <option value="常溫">常溫</option>
-                <option value="正常冰">正常冰</option>
-                <option value="熱的">熱的</option>
-                </select>
-                </div>
-                <div class="form-group">
-                <label for="drink-comment">備註</label>
-                <input type = "text" class="form-control" id="drink-comment" name="drink-comment" placeholder="加珍珠">
-                </div>
-                <div class="form-group">
-                <label for="drink-price">價格</label>
-                <input type = "number" class="form-control" min="0" max="100" id="drink-price" name="drink-price" placeholder="50">
-                </div>
-                
-                </table>
+                    <tr>
+                        <th colspan="4" style="background-color:#E1E1E1;"><h4>{{pic_beverage.0.name}}</h4></th>
+                    </tr>
+                    <tr>
+                        <th colspan="4">
+                        <div class="container">
+                            <br>
+                            <img src="/{{pic_beverage.0.pic}}" class="img-responsive col-xs-12" width="500" height="360"> 
+                        </div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div class="form-group">
+                                <label for="drink-name">喝點什麼</label>
+                                <input type = "text" class="form-control" id="drink-name" name="drink-name" placeholder="飲料名稱">
+                                
+                                <label for="sugar">甜度</label>
+                                <select class="form-control" id="sugar" name="sugar">
+                                <option value="無糖">無糖</option>
+                                <option value="微糖">微糖</option>
+                                <option value="半糖">半糖</option>
+                                <option value="少糖">少糖</option>
+                                <option value="正常甜">正常甜</option>
+                                </select>
+                                
+                                <label for="ice">冰塊</label>
+                                <select class="form-control" id="ice" name="ice">
+                                <option value="去冰">去冰</option>
+                                <option value="少冰">少冰</option>
+                                <option value="微冰">微冰</option>
+                                <option value="常溫">常溫</option>
+                                <option value="正常冰">正常冰</option>
+                                <option value="熱的">熱的</option>
+                                </select>
+                                
+                                <label for="drink-comment">備註</label>
+                                <input type = "text" class="form-control" id="drink-comment" name="drink-comment" placeholder="加珍珠">
+                                
+                                <label for="drink-price">金額</label>
+                                <input type = "number" class="form-control" min="0" max="100" id="drink-price" name="drink-price" placeholder="50">
+                            </div>
+                            
+                    
+                 
             {% else %}
                 <input type="hidden" name="drink-name" value=""/>
+                
             {% endif %}
-            
-            <table style="width:100%">
-            <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>
                     <button type="submit" class="btn btn-default">送出</button>
-                </td>
-            </tr>
-            </table>
+                    </td>
+                    </tr>
+                </table>   
+                <table class ="table">
+                    <!--buttom-->
+                </table>
         </form>
     {% else %}
         <h2>統計截止，不便之處請見諒</h2>
