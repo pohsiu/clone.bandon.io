@@ -56,8 +56,9 @@
                         <tr><th style="background-color:#E1E1E1;" onclick="drinkStatisticToogle()" colspan="5">{{name}}</th></tr>
                     
                         <tr style="background-color:#EDEDE4;">
-                            <th>姓名</th>
+                            
                             <th>科室</th>
+                            <th>姓名</th>
                             <th>品項</th>
                             <th>數量</th>
                             <th>金額</th>
@@ -67,8 +68,9 @@
                     <tbody>
                     {% for sub in value %}
                         <tr>
-                            <td>{{ sub.memberName }}</td>
+                            
                             <td>{{ sub.memberName.remark.name }}</td>
+                            <td>{{ sub.memberName }}</td>
                             <td>{{ sub.drinking }}</td>
                             <td>{{ sub.num }}</td>
                             <td>{{ sub.price }}</td>
