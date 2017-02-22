@@ -1,6 +1,5 @@
 from django import forms
-from models import Member, Catalog, Food
-
+from models import Member, Catalog, Food, Drink
 class MemberForm(forms.ModelForm):
     class Meta:
         model = Member
@@ -23,6 +22,18 @@ class CatalogForm(forms.ModelForm):
 class FoodForm(forms.ModelForm):
     class Meta:
         model = Food
+        fields = ['name', 'pic', 'telephone', 'address', 'remark']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'pic': forms.ClearableFileInput(attrs={'class': 'filestyle'}),
+            'telephone': forms.TextInput(attrs={'class': 'form-control'}),
+            'address': forms.TextInput(attrs={'class': 'form-control'}),
+            'remark': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+class DrinkForm(forms.ModelForm):
+    class Meta:
+        model = Drink
         fields = ['name', 'pic', 'telephone', 'address', 'remark']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control'}),

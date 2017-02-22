@@ -71,7 +71,9 @@ urlpatterns = [
     url(r'^backend/catalogChangePricePage/$', views.catalogChangePricePage),
     url(r'^backend/catalog/([0-9]+)/$', views.editCatalogPage),
     url(r'^backend/addFoodShopPage/$', views.addFoodShopPage),
-    url(r'^backend/shopListPage/$', views.shopListPage),
+    url(r'^backend/foodShopListPage/$', views.foodShopListPage),
+    url(r'^backend/addDrinkShopPage/$', views.addDrinkShopPage),
+    url(r'^backend/drinkShopListPage/$', views.drinkShopListPage),
     url(r'^backend/shop/([0-9]+)/$', views.editShopPage),
     
     ## function part

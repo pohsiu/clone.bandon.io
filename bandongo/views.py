@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from models import Member, Savelog, Food, Drink, Schedule, Catalog, FoodOrder, DrinkOrder
 from models import Category
 
-from .forms import MemberForm, PicForm, CatalogForm, FoodForm
+from .forms import MemberForm, PicForm, CatalogForm, FoodForm, DrinkForm
 from django.shortcuts import render_to_response, RequestContext
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
@@ -474,8 +474,18 @@ def addFoodShopPage(request):
     return render(request, 'bandongo/backend_addForm.html',{'form': form, 'action': "addFood", 'title': 'Add Food Shop'})
 
 @login_required(login_url='/backend/login/')
-def shopListPage(request):
+def foodShopListPage(request):
     shops = Food.objects.all()
+    return render(request, 'bandongo/backend_shopList.html',{'shops': shops})
+
+@login_required(login_url='/backend/login/')
+def addDrinkShopPage(request):
+    form = DrinkForm()
+    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'action': "addDrink", 'title': 'Add Drink Shop'})
+
+@login_required(login_url='/backend/login/')
+def drinkShopListPage(request):
+    shops = Drink.objects.all()
     return render(request, 'bandongo/backend_shopList.html',{'shops': shops})
 
 @login_required(login_url='/backend/login/')
