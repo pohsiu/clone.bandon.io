@@ -476,7 +476,13 @@ def addFoodShopPage(request):
 @login_required(login_url='/backend/login/')
 def foodShopListPage(request):
     shops = Food.objects.all()
-    return render(request, 'bandongo/backend_shopList.html',{'shops': shops})
+    return render(request, 'bandongo/backend_foodShopList.html',{'shops': shops})
+
+@login_required(login_url='/backend/login/')
+def editFoodShopPage(request, id):
+    shop=Food.objects.get(id=id)
+    form = FoodForm(instance=shop)
+    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Food Shop', 'action': 'editFoodShop/'+id})
 
 @login_required(login_url='/backend/login/')
 def addDrinkShopPage(request):
@@ -486,13 +492,13 @@ def addDrinkShopPage(request):
 @login_required(login_url='/backend/login/')
 def drinkShopListPage(request):
     shops = Drink.objects.all()
-    return render(request, 'bandongo/backend_shopList.html',{'shops': shops})
+    return render(request, 'bandongo/backend_drinkShopList.html',{'shops': shops})
 
 @login_required(login_url='/backend/login/')
-def editShopPage(request, id):
-    shop=Food.objects.get(id=id)
+def editDrinkShopPage(request, id):
+    shop=Drink.objects.get(id=id)
     form = FoodForm(instance=shop)
-    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Shop', 'action': 'editShop/'+id})
+    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Drink Shop', 'action': 'editDrinkShop/'+id})
 
 
 ## function part
@@ -628,7 +634,7 @@ def addCatalog(request):
     form = CatalogForm(request.POST, request.FILES)
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect("/backend/addCatalogPage")
+        return HttpResponseRedirect("/backend/addCatalogPage/")
     else:
         return HttpResponse("<script>alert('not valid upload')</script>")
 
@@ -647,7 +653,7 @@ def editCatalog(request, id):
     form = CatalogForm(request.POST, request.FILES, instance=catalog)
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect("/backend/catalogListPage")
+        return HttpResponseRedirect("/backend/catalogListPage/")
     else:
         return HttpResponse("<script>alert('not valid form')</script>")
 
@@ -671,22 +677,45 @@ def addFood(request):
     form = FoodForm(request.POST, request.FILES)
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect("/backend/addFoodShopPage")
+        return HttpResponseRedirect("/backend/addFoodShopPage/")
     else:
         return HttpResponse("<script>alert('not valid upload')</script>")
 
-def editShop(request, id):
+def editFoodShop(request, id):
     shop=Food.objects.get(id=id)
     form = FoodForm(request.POST, request.FILES, instance=shop)
     if form.is_valid():
         form.save()
-        return HttpResponseRedirect("/backend/shopListPage")
+        return HttpResponseRedirect("/backend/foodShopListPage/")
     else:
         return HttpResponse("<script>alert('not valid form')</script>")
 
-def deleteFood(request):
+def deleteFoodShop(request):
     food=Food.objects.get(id=request.POST["id"])
     food.delete()
+    return HttpResponse("Deleted successfully.")
+
+@login_required(login_url='/backend/login/')
+def addDrink(request):
+    form = DrinkForm(request.POST, request.FILES)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/backend/addDrinkShopPage/")
+    else:
+        return HttpResponse("<script>alert('not valid upload')</script>")
+
+def editDrinkShop(request, id):
+    shop=Drink.objects.get(id=id)
+    form = DrinkForm(request.POST, request.FILES, instance=shop)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/backend/drinkShopListPage/")
+    else:
+        return HttpResponse("<script>alert('not valid form')</script>")
+
+def deleteDrinkShop(request):
+    drink=Drink.objects.get(id=request.POST["id"])
+    drink.delete()
     return HttpResponse("Deleted successfully.")
 
 def checkExpire():
