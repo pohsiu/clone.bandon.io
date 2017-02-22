@@ -23,7 +23,11 @@
                     <td>{{ schedule.id }}</td>
                     <td><a href="/backend/schedule/{{ schedule.id }}/">{{ schedule.name }}</a></td>
                     <td>{{ schedule.food.name }}</td>
-                    <td>{{ schedule.catalogs }}</td>
+                    <td>
+                        {% for catalog in schedule.catalogs.all %}
+                        {{ catalog.name }}
+                        {% endfor %}
+                    </td>
                     <td>{{ schedule.drink.name }}</td>
                     <td>{{ schedule.date }}</td>
                     <td>{{ schedule.expire }}</td>

@@ -305,7 +305,7 @@ def editSchedulePage(request):
                 shops[index].selected="selected"
                 catalogs=Catalog.objects.filter(foodShop=shops[index])
                 for index2 in range(len(catalogs)):
-                    if catalogs[index2].choosed:
+                    if catalogs[index2] in nonFinish[0].catalogs.all():
                         catalogs[index2].selected="selected"
                     else:
                         catalogs[index2].selected=""
@@ -325,13 +325,7 @@ def editSchedulePage(request):
 def scheduleListPage(request):
     checkExpire()
     schedules=Schedule.objects.all()
-    for i in range(len(schedules)):
-        catalogs=Catalog.objects.filter(foodShop=schedules[i].food, choosed=True)
-        schedules[i].catalogs=""
-        for catalog in catalogs:
-            schedules[i].catalogs+=catalog.name+", "
-        
-    return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules, 'catalogs': catalogs})
+    return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules})
 
 @login_required(login_url='/backend/login/')
 def orderPage(request):
@@ -511,12 +505,8 @@ def setSchedule(request):
     drink=Drink.objects.get(id=request.POST["drink"])
     catalogs=request.POST.getlist("cata[]")
     if nonFinish==0:
-        Schedule.objects.create(name=request.POST["schedule_name"], food=bandon, drink=drink, date=dueDatetime)
-        Catalog.objects.all().update(choosed=False)
-        for catalog in catalogs:
-            temp=Catalog.objects.get(id=catalog)
-            temp.choosed=True
-            temp.save()
+        schedule=Schedule.objects.create(name=request.POST["schedule_name"], food=bandon, drink=drink, date=dueDatetime)
+        schedule.catalogs.set(Catalog.objects.filter(id__in=catalogs))
         return HttpResponse("Registered Schedule Successfully")
     else:
         return HttpResponse("Another schedule is not finished.")
@@ -531,10 +521,7 @@ def editSchedule(request):
     schedule.save()
     checkExpire()
     catalogs=request.POST.getlist("catalogs[]")
-    for catalog in catalogs:
-        temp=Catalog.objects.get(id=catalog)
-        temp.choosed=True
-        temp.save()
+    schedule.catalogs.set(Catalog.objects.filter(id__in=catalogs))
 
     return HttpResponse("Edit Schedule Successfully")
 
