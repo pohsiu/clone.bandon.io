@@ -525,11 +525,11 @@ def finishSchedule(request):
     schedule=Schedule.objects.get(id=request.POST["id"])
     if not schedule.arrived:
         return HttpResponse("The schedule is not arrived.")
-    else:
+    elif not schedule.finish:
         schedule.finish=True
         schedule.save();
-        fOrders=FoodOrder.objects.filter(scheduleName=schedule)
-        dOrders=DrinkOrder.objects.filter(scheduleName=schedule)
+        fOrders=FoodOrder.objects.filter(scheduleName=schedule, finish=False)
+        dOrders=DrinkOrder.objects.filter(scheduleName=schedule, finish=False)
         for order in fOrders:
             member=order.memberName
             member.saving-=order.price
