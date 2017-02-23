@@ -131,12 +131,9 @@
            
         <form name="orderform" onsubmit="return orderForm()" action="" method="POST" class="post-form" accept-charset="utf-8">
             {% if list_food.0.foodShop != "休" %}
-                <table class="table col-xs-12">
+                <table class="table">
                 
                 <tr>
-                    <!--
-                    <th colspan="1">{{schedule_name}}</th>
-                    -->
                     <th colspan="2" style="background-color:#E1E1E1;"><h4>{{list_food.0.foodShop}}</h4></th>
                     <th colspan="1" style="background-color:#E1E1E1;"><h4>價格</h4></th>
                     <th colspan="1" style="background-color:#E1E1E1;"><h4>數量</h4></th>
@@ -148,10 +145,8 @@
                     <tr>
                         <td><input type="hidden" name="food-name{{ forloop.counter }}" value="{{ foods.name }}"/>{{foods.name}}</td>
                         <td>
-                        <!--<div class="container">-->
                         {% if foods.pic %}
                           <img src="/{{foods.pic}}" class="img-responsive img-circle col-xs-12"  width="400" height="200"> 
-                        <!--</div>-->
                         {% else %}
                           <p> </p>
                         {% endif%}
@@ -176,16 +171,14 @@
             {% endif %}
             
             {% if pic_beverage.0.name != "休" %}
-                <table class = "table col-xs-12">
+                <table class = "table">
                     <tr>
                         <th colspan="4" style="background-color:#E1E1E1;"><h4>{{pic_beverage.0.name}}</h4></th>
                     </tr>
                     <tr>
                         <th colspan="4">
-                        <!--<div class="container">-->
                             <br>
                             <img src="/{{pic_beverage.0.pic}}" class="img-responsive col-xs-12" width="500" height="360"> 
-                        <!--</div>-->
                         </th>
                     </tr>
                     <tr>
@@ -230,9 +223,6 @@
                     </td>
                     </tr>
                 </table>   
-                <table class ="table">
-                    <!--buttom-->
-                </table>
         </form>
     {% else %}
         <h2>統計截止，不便之處請見諒</h2>

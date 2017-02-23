@@ -1,0 +1,31 @@
+<div><h1>Drink Orders</h1></div>
+    <table class="table">
+    <thead>
+        <tr style="background-color:#EDEDE4;">
+        <input type="hidden" id="foods_len" value="{{ today_foods|length }}"/>
+        <th class = "col-sm-5">品項</th>
+        <th class = "col-sm-2">數量</th>
+        <th class = "col-sm-2">金額</th>
+        <th class = "col-sm-2">備註</th>
+        <th class = "col-sm-1">取消</th>
+        
+        </tr>
+    </thead>
+    <tbody>
+    {% for foods in today_foods %}
+        <tr id="order{{foods.id}}">
+        <tr>
+            <td>{{ order.memberName.name }}</td>
+            <td>{{ order.memberName.remark.name }}</td>
+            <td>{{ order.drinking }}</td>
+            <td>{{ order.remark }}</td>
+            <td>{{ order.num }}</td>
+            <td>{{ order.price }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+    <tr>
+        <td colspan="5">total price</td>
+        <td>{{ drinkTotalPrice }}</td>
+    </tr>
+</table>

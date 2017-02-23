@@ -3,7 +3,7 @@
 {% block subcontent %}
    
     {% if savelogs %}
-        <div><h3>存款紀錄</h3></div>
+        <div><h3 style="color:#F74906;">存款紀錄</h3></div>
         <table class="table">
             <thead style="background-color:#EDEDE4;">
                 <tr>
@@ -24,8 +24,8 @@
                 {% endfor %}
             </tbody>
             <tr>
-                <td colspan="2">總存款</td>
-                <td>{{save_total}}</td>
+                <td colspan="2" style="font-weight:bold;">總存款</td>
+                <td style="font-weight:bold;">{{save_total}}</td>
             </tr>
         </table>
     {% else %}
@@ -33,7 +33,7 @@
     {% endif %}
 
        
-    <div><h3>消費紀錄</h3></div>
+    <div><h3 style="color:#F74906;">消費紀錄</h3></div>
         
             {% if foods_logs %}
             <table class="table">
@@ -88,8 +88,8 @@
             
             {% endif %}
                 <tr>
-                    <td colspan="3">總花費</td>
-                    <td>{{cost_total}}</td>
+                    <td colspan="3" style="font-weight:bold;">總花費</td>
+                    <td style="font-weight:bold;">{{cost_total}}</td>
                 </tr>
                 
             </table>
