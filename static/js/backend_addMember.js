@@ -20,18 +20,16 @@ function submit() {
             }
         }
     }
-    if(sameName) {
-        if(confirm("same name with a person in "+category)) {
-            var phone=$("#phone").val();
-            var email=$("#email").val();
-            var category=$("#category").val();
-            $.post(
-                "/backend/addMember",
-                {name: name, phone: phone, email: email, category: category},
-                function(response) {
-                  alert(response);
-                }
-            );
-        }
+    if(!sameName||(sameName&&confirm("same name with a person in "+category))) {
+        var phone=$("#phone").val();
+        var email=$("#email").val();
+        var category=$("#category").val();
+        $.post(
+            "/backend/addMember",
+            {name: name, phone: phone, email: email, category: category},
+            function(response) {
+              alert(response);
+            }
+        );
     }
 }
