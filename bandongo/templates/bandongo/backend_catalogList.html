@@ -1,6 +1,11 @@
 {% extends "bandongo/backend_base.html" %}
 {% load staticfiles%}
-{% block js %}{% endblock %}
+{% block js %}
+<script>function changeImage(pic) {
+    $("#modal-body").html('<img src="/'+pic+'" class="img-responsive">')
+}
+</script>
+{% endblock %}
 {% block content %}
 <div class="container">
     <div><h1>Catalog List</h1></div>
@@ -23,7 +28,9 @@
                 <td>{{ catalog.foodShop.name }}</td>
                 <td>
                     {% if catalog.pic %}
-                    <img src="/{{ catalog.pic }}" class="img-responsive"  width="240" height="240">
+                    <a style="cursor: pointer;" data-toggle="modal" data-target="#imageModal" onclick="changeImage('{{ catalog.pic }}')">
+                      Display Image
+                    </a>
                     {% endif %}
                 </td>
                 <td>{{ catalog.price }}</td>
@@ -43,5 +50,21 @@
             {% endfor %}
         </tbody>
     </table>
+    <!-- Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Image</h4>
+          </div>
+          <div class="modal-body" id="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
 {% endblock %}
