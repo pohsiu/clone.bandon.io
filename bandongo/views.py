@@ -125,7 +125,7 @@ def mark_detail(request, pk):
         if schedules:
             duedate = schedules[0].date
             if now < duedate:
-                id_food = schedules[0].food
+                # id_food = schedules[0].food
                 id_beverage = schedules[0].drink.name
                 list_food = schedules[0].catalogs.all()
                 pic_beverage = Drink.objects.filter(name = id_beverage)
@@ -136,8 +136,7 @@ def mark_detail(request, pk):
         else:
             list_food=''
             pic_beverage=''
-        # if duedate != None:
-        #     duedate = duedate.strftime("%Y/%m/%d, %H:%M")
+        
         return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name,'due_date':duedate})
 
 def member_log(request,pk):
@@ -165,12 +164,7 @@ def today_order(request,pk):
     de_member =  get_object_or_404(Member, pk=pk)
     today_foods = FoodOrder.objects.filter(memberName=pk, finish=False).order_by('date')
     today_drinks = DrinkOrder.objects.filter(memberName=pk, finish=False).order_by('date')
-    # order_duedate = None
-    # if not today_foods:
-    #     print "empty orders"
-    # else:
-    #     order_duedate = Schedule.objects.filter(name=today_foods[0].scheduleName)[0].date
-    #     order_duedate = order_duedate.strftime('%Y/%m/%d:')
+    
     return render(request, 'bandongo/frontend_todayOrder.html',{'de_member':de_member,'today_foods':today_foods,'today_drinks':today_drinks })
 
 def delete_food(request):
@@ -207,7 +201,6 @@ def delete_drink(request):
 
 def mark_select(request):
     path="/home/ubuntu/workspace/static/pic/homePic"
-    today = datetime.now()
     s_latest = Schedule.objects.all().order_by('-id')
         
     
@@ -225,21 +218,16 @@ def mark_select(request):
             mark_list = list(Category.objects.all().values())
             for i in range(len(mark_list)):
                 mark_list[i]['index']=i
-           
-            # mark_list = Member.objects.values_list('member_mark',flat=True).distinct()
+            
             return render(request, 'bandongo/frontend_markSelect.html',{'mark_list':mark_list,'homePicPath': picPath,'s_latest':s_latest})
     mark_list = list(Category.objects.all().values())
     for i in range(len(mark_list)):
         mark_list[i]['index']=i
-    
 
-    
-    # mark_list = Member.objects.values_list('member_mark',flat=True).distinct()
     return render(request, 'bandongo/frontend_markSelect.html',{'mark_list':mark_list, 'homePicPath': picPath, 's_latest':s_latest})
 
 def today_statistic(request, pk):
     de_member =  get_object_or_404(Member, pk=pk)
-    today = datetime.date(datetime.now())
     schedules = Schedule.objects.filter(finish=False).order_by('-id') #get latest record
     empty = False
     s_len = len(schedules)

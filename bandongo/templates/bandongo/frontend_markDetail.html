@@ -51,6 +51,8 @@
             
             
             var drinkname = document.forms["orderform"]["drink-name"].value;
+            var drinkprice = document.forms["orderform"]["drink-price"].value;
+            
             var strindex;
             var foodnum;
             
@@ -67,14 +69,16 @@
                 bootbox.alert("請選擇餐點");
                 return false;
             }
+            if (drinkname != "" && drinkprice ==""){
+                bootbox.alert("請輸入飲料價格");
+                return false;
+            }
         }
+        
     </script>
 {% endblock %}
 
-{% block article %}
 
-
-{% endblock %}
 {% block subcontent %}
     
     
