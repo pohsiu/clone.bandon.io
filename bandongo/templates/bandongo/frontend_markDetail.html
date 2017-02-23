@@ -76,6 +76,21 @@
         }
         
     </script>
+    <script type="text/javascript">
+    function codeAddress() {
+        var member_saving = "{{de_member.saving}}";
+        if(member_saving < 100){
+            bootbox.alert({
+                title:"<h3 style='color:#0C182D; font-weight:bold;'>餘額不足通知</h3>",
+                message: "<h4>餘額剩餘 <font style='color:red; font-weight:bold;'>"+member_saving+"</font>元，請儘速儲值</h4>",
+                backdrop: true
+                
+        });
+        }
+        
+    }
+    window.onload = codeAddress;
+    </script>
 {% endblock %}
 
 

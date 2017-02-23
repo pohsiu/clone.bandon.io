@@ -21,7 +21,6 @@ class Member(models.Model):
     phone = models.CharField(max_length=15)
     email = models.EmailField(blank=True, verbose_name='e-mail')
     remark = models.ForeignKey(Category)
-    # member_mark = models.CharField(max_length=10, blank=True)
     auth = models.CharField(max_length=10, default='normal')
     saving = models.IntegerField(default=0)
     
@@ -30,8 +29,7 @@ class Member(models.Model):
     def __unicode__(self):
         return u'%s' % (self.name)
         
-    # def __str__(self):
-    #     return self.name
+    
     
 #Saving record
 class Savelog(models.Model):
