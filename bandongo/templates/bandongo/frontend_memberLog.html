@@ -58,7 +58,8 @@
                     </tr>
                 {% endfor %}
                 </tbody>
-            </table>
+                
+            
             {% endif %}
             {% if drinks_logs %}
             <table class="table">
@@ -83,14 +84,16 @@
                     </tr>
                 {% endfor %}
                  </tbody>
+                 
             
             {% endif %}
-           
                 <tr>
                     <td colspan="3">總花費</td>
                     <td>{{cost_total}}</td>
                 </tr>
                 
             </table>
+           
+                
     <div><h3 style="color:#F74906;">餘額：{{total_sum}}</h2></div>
 {% endblock %}
