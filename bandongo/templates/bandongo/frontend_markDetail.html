@@ -131,12 +131,38 @@
            
         <form name="orderform" onsubmit="return orderForm()" action="" method="POST" class="post-form" accept-charset="utf-8">
             {% if list_food.0.foodShop != "休" %}
+                
+                <table class="table">
+                    <thead>
+                    <!--<tr>-->
+                    <!--    <th colspan="4" style="background-color:#E1E1E1;"></th>-->
+                    <!--</tr>-->
+                    <tr style="background-color:#E62739; color:#FFFFFF;">
+                        <th class="col-sm-3" style="font-weight:bold;"><h4>本日熱門</h4></th>
+                        
+                        <th class="col-sm-5" ><h4>品項</h4></th>
+                        <th class="col-sm-4" ><h4>累積數量</h4></th>
+                    
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for top3 in top3 %}
+                    <tr>
+                        <td><img src="/static/pic/medal/medal{{forloop.counter}}.png" class="img-responsive img-circle col-sm-3"  width="40" height="50"></td>
+                        <td>{{top3.foodName__name}}</td>
+                        <td>{{top3.s_sum}}</td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                
+                
                 <table class="table">
                 
-                <tr>
-                    <th colspan="2" style="background-color:#E1E1E1;"><h4>{{list_food.0.foodShop}}</h4></th>
-                    <th colspan="1" style="background-color:#E1E1E1;"><h4>價格</h4></th>
-                    <th colspan="1" style="background-color:#E1E1E1;"><h4>數量</h4></th>
+                <tr style="background-color:#EDEDE4;">
+                    <th class="col-sm-3" colspan="2" ><h4>{{list_food.0.foodShop}}</h4></th>
+                    <th class="col-sm-5" colspan="1" ><h4>價格</h4></th>
+                    <th class="col-sm-4" colspan="1" ><h4>數量</h4></th>
                     
                 </tr>
                 <input type="hidden" name="food-len" value="{{ list_food|length }}"/>
@@ -219,6 +245,7 @@
                 <input type="hidden" name="drink-name" value=""/>
                 
             {% endif %}
+                    <br>
                     <button type="submit" class="btn btn-default">送出</button>
                     </td>
                     </tr>

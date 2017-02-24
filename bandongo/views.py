@@ -122,6 +122,7 @@ def mark_detail(request, pk):
         schedules = Schedule.objects.filter(expire=False)
         schedule_name = None
         duedate = None
+        top3 = None
         if schedules:
             duedate = schedules[0].date
             if now < duedate:
@@ -130,6 +131,7 @@ def mark_detail(request, pk):
                 list_food = schedules[0].catalogs.all()
                 pic_beverage = Drink.objects.filter(name = id_beverage)
                 schedule_name = schedules[0].name
+                top3 = FoodOrder.objects.filter(scheduleName = schedules).values('foodName__name').annotate(s_sum = Sum('num')).order_by('-s_sum')[:3]
             else:
                 list_food=''
                 pic_beverage=''
@@ -137,7 +139,7 @@ def mark_detail(request, pk):
             list_food=''
             pic_beverage=''
         
-        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name,'due_date':duedate})
+        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name,'due_date':duedate,'top3':top3})
 
 def member_log(request,pk):
     de_member = get_object_or_404(Member, pk=pk)
