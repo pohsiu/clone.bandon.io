@@ -406,7 +406,10 @@ def editMemberPage(request, id):
 
 @login_required(login_url='/backend/login/')
 def memberListPage(request):
-    members=Member.objects.order_by('remark')
+    remarks=Category.objects.all()
+    members=[]
+    for remark in remarks:
+        members.append(Member.objects.filter(remark=remark))
     return render(request, 'bandongo/backend_memberList.html',{'members': members})
 
 @login_required(login_url='/backend/login/')

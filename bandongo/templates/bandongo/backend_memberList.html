@@ -1,6 +1,15 @@
 {% extends "bandongo/backend_base.html" %}
 {% load staticfiles%}
-{% block js %}{% endblock %}
+{% block js %}<script>
+    function show(category) {
+        $(".category"+category).show();
+        $("#category"+category).attr("onclick","hide("+category+")");
+    }
+    function hide(category) {
+        $(".category"+category).hide();
+        $("#category"+category).attr("onclick","show("+category+")");
+    }
+</script>{% endblock %}
 {% block content %}
 <div class="container">
     <div><h1>Member List</h1></div>
@@ -17,22 +26,29 @@
             </tr>
         </thead>
         <tbody>
-            {% for member in members %}
-            <tr>
-                <td>{{ member.remark }}</td>
-                <td><a href="/backend/member/{{ member.id }}">{{ member.name }}</a></td>
-                <td>{{ member.id }}</td>
-                <td>{{ member.phone }}</td>
-                <td>{{ member.email }}</td>
-                <td>{{ member.auth }}</td>
-                {% if member.saving > 0 %}
-                    <td>{{ member.saving }}</td>
-                {% elif member.saving == 0 %}
-                    <td><p style="color:orange;">{{ member.saving }}</p></td>
-                {% else %}
-                    <td><p style="color:red;"><b>{{ member.saving }}</b></p></td>
-                 {% endif %}
-            </tr>
+            {% for category in members %}
+                {% if category|length > 0 %}
+                    <tr style="background-color: #EDEDE4;">
+                        <td colspan="7"><a id="category{{category.0.remark.id}}" style="cursor: pointer;" onclick="show('{{category.0.remark.id}}')">{{ category.0.remark.name }}</a></td>
+                    </tr>
+                {% endif %}
+                {% for member in category %}
+                    <tr class="category{{member.remark.id}}" style="display: none;">
+                        <td></td>
+                        <td><a href="/backend/member/{{ member.id }}">{{ member.name }}</a></td>
+                        <td>{{ member.id }}</td>
+                        <td>{{ member.phone }}</td>
+                        <td>{{ member.email }}</td>
+                        <td>{{ member.auth }}</td>
+                        {% if member.saving > 0 %}
+                            <td>{{ member.saving }}</td>
+                        {% elif member.saving == 0 %}
+                            <td><p style="color:orange;">{{ member.saving }}</p></td>
+                        {% else %}
+                            <td><p style="color:red;"><b>{{ member.saving }}</b></p></td>
+                         {% endif %}
+                    </tr>
+                {% endfor %}
             {% endfor %}
         </tbody>
         </tr>
