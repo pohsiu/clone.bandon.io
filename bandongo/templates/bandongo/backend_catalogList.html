@@ -1,47 +1,84 @@
 {% extends "bandongo/backend_base.html" %}
 {% load staticfiles%}
-{% block js %}{% endblock %}
+{% block js %}<script>
+    function changeImage(pic) {
+        $("#modal-body").html('<img src="/'+pic+'" class="img-responsive">')
+    }
+    function show(shop) {
+        $(".shop"+shop).show();
+        $("#shop"+shop).attr("onclick","hide("+shop+")");
+    }
+    function hide(shop) {
+        $(".shop"+shop).hide();
+        $("#shop"+shop).attr("onclick","show("+shop+")");
+    }
+</script>{% endblock %}
 {% block content %}
 <div class="container">
     <div><h1>Catalog List</h1></div>
     <table class="table">
         <thead>
             <tr>
+                <th>Shop</th>
                 <th>id</th>
                 <th>Name</th>
-                <th>Shop</th>
                 <th>Picture</th>
                 <th>Price</th>
                 <th>Delete</th>
             </tr>
         </thead>
         <tbody>
-            {% for catalog in catalogs %}
-            <tr id="{{ catalog.id }}">
-                <td>{{ catalog.id }}</td>
-                <td><a href="/backend/catalog/{{ catalog.id }}">{{ catalog.name }}</a></td>
-                <td>{{ catalog.foodShop.name }}</td>
-                <td>
-                    {% if catalog.pic %}
-                    <img src="/{{ catalog.pic }}" class="img-responsive"  width="240" height="240">
-                    {% endif %}
-                </td>
-                <td>{{ catalog.price }}</td>
-                <td>
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="
-                        $.post(
-                            '/backend/deleteCatalog',
-                            {id: {{catalog.id}} },
-                            function(response) {
-                              alert(response);
-                              $('#{{catalog.id}}').remove();
-                            }
-                        );">
-                    </span>
-                </td>
-            </tr>
+            {% for shop in catalogs %}
+                {% if shop|length > 0 %}
+                    <tr style="background-color: #EDEDE4;">
+                        <td colspan="6"><a id="shop{{shop.0.foodShop.id}}" style="cursor: pointer;" onclick="show('{{shop.0.foodShop.id}}')">{{ shop.0.foodShop.name }}</a></td>
+                    </tr>
+                {% endif %}
+                {% for catalog in shop %}
+                <tr id="{{ catalog.id }}" class="shop{{catalog.foodShop.id}}" style="display: none;">
+                    <td></td>
+                    <td>{{ catalog.id }}</td>
+                    <td><a href="/backend/catalog/{{ catalog.id }}">{{ catalog.name }}</a></td>
+                    <td>
+                        {% if catalog.pic %}
+                        <a style="cursor: pointer;" data-toggle="modal" data-target="#imageModal" onclick="changeImage('{{ catalog.pic }}')">
+                          Display Image
+                        </a>
+                        {% endif %}
+                    </td>
+                    <td>{{ catalog.price }}</td>
+                    <td>
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="
+                            $.post(
+                                '/backend/deleteCatalog',
+                                {id: {{catalog.id}} },
+                                function(response) {
+                                  alert(response);
+                                  $('#{{catalog.id}}').remove();
+                                }
+                            );">
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
             {% endfor %}
         </tbody>
     </table>
+    <!-- Modal -->
+    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">Image</h4>
+          </div>
+          <div class="modal-body" id="modal-body">
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
 </div>
 {% endblock %}

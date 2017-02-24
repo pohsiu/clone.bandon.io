@@ -1,4 +1,6 @@
 function finish() {
+    $('#finish').prop("disabled", true);
+    $("#finish").remove();
     var id=$("#id").html();
     $.post(
         "/backend/finishSchedule",

@@ -408,7 +408,10 @@ def editMemberPage(request, id):
 
 @login_required(login_url='/backend/login/')
 def memberListPage(request):
-    members=Member.objects.order_by('remark')
+    remarks=Category.objects.all()
+    members=[]
+    for remark in remarks:
+        members.append(Member.objects.filter(remark=remark))
     return render(request, 'bandongo/backend_memberList.html',{'members': members})
 
 @login_required(login_url='/backend/login/')
@@ -435,7 +438,10 @@ def addCatalogBatchPage(request):
 
 @login_required(login_url='/backend/login/')
 def catalogListPage(request):
-    catalogs=Catalog.objects.all().order_by("foodShop")
+    foods=Food.objects.all()
+    catalogs=[]
+    for food in foods:
+        catalogs.append(Catalog.objects.filter(foodShop=food))
     return render(request, 'bandongo/backend_catalogList.html',{'catalogs': catalogs})
 
 @login_required(login_url='/backend/login/')
@@ -527,11 +533,11 @@ def finishSchedule(request):
     schedule=Schedule.objects.get(id=request.POST["id"])
     if not schedule.arrived:
         return HttpResponse("The schedule is not arrived.")
-    else:
+    elif not schedule.finish:
         schedule.finish=True
         schedule.save();
-        fOrders=FoodOrder.objects.filter(scheduleName=schedule)
-        dOrders=DrinkOrder.objects.filter(scheduleName=schedule)
+        fOrders=FoodOrder.objects.filter(scheduleName=schedule, finish=False)
+        dOrders=DrinkOrder.objects.filter(scheduleName=schedule, finish=False)
         for order in fOrders:
             member=order.memberName
             member.saving-=order.price

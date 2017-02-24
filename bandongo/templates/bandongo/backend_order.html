@@ -124,7 +124,7 @@
         </table>
     	<div style="margin-top: 20px">
             {% if schedule.arrived %}
-        	   <button class="btn btn-default" onclick="finish();">Finish</button>
+        	   <button id="finish" class="btn btn-default" onclick="finish();">Finish</button>
             {% endif %}
             {% if not schedule.arrived %}
                 <button class="btn btn-default" onclick="arrive();">Arrive</button>

@@ -27,7 +27,9 @@ $( document ).ready(function() {
         $("#saving").html(saving);
     });
 });
+
 function submit() {
+    $('#submit').prop("disabled", true);
     var member=$("#member").val();
     var value=$("#value").val();
     var admin=$("#admin").val();
@@ -42,4 +44,8 @@ function submit() {
           $("#value").val(0);
         }
     );
+
+    setTimeout(function(){
+        $('#submit').prop("disabled", false);
+    }, 300);
 }
