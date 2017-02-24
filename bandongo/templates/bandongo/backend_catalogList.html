@@ -12,9 +12,9 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Shop</th>
                 <th>id</th>
                 <th>Name</th>
-                <th>Shop</th>
                 <th>Picture</th>
                 <th>Price</th>
                 <th>Delete</th>
@@ -23,9 +23,9 @@
         <tbody>
             {% for catalog in catalogs %}
             <tr id="{{ catalog.id }}">
+                <td>{{ catalog.foodShop.name }}</td>
                 <td>{{ catalog.id }}</td>
                 <td><a href="/backend/catalog/{{ catalog.id }}">{{ catalog.name }}</a></td>
-                <td>{{ catalog.foodShop.name }}</td>
                 <td>
                     {% if catalog.pic %}
                     <a style="cursor: pointer;" data-toggle="modal" data-target="#imageModal" onclick="changeImage('{{ catalog.pic }}')">
