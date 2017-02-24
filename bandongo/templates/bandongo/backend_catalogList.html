@@ -1,11 +1,18 @@
 {% extends "bandongo/backend_base.html" %}
 {% load staticfiles%}
-{% block js %}
-<script>function changeImage(pic) {
-    $("#modal-body").html('<img src="/'+pic+'" class="img-responsive">')
-}
-</script>
-{% endblock %}
+{% block js %}<script>
+    function changeImage(pic) {
+        $("#modal-body").html('<img src="/'+pic+'" class="img-responsive">')
+    }
+    function show(shop) {
+        $(".shop"+shop).show();
+        $("#shop"+shop).attr("onclick","hide("+shop+")");
+    }
+    function hide(shop) {
+        $(".shop"+shop).hide();
+        $("#shop"+shop).attr("onclick","show("+shop+")");
+    }
+</script>{% endblock %}
 {% block content %}
 <div class="container">
     <div><h1>Catalog List</h1></div>
@@ -21,32 +28,39 @@
             </tr>
         </thead>
         <tbody>
-            {% for catalog in catalogs %}
-            <tr id="{{ catalog.id }}">
-                <td>{{ catalog.foodShop.name }}</td>
-                <td>{{ catalog.id }}</td>
-                <td><a href="/backend/catalog/{{ catalog.id }}">{{ catalog.name }}</a></td>
-                <td>
-                    {% if catalog.pic %}
-                    <a style="cursor: pointer;" data-toggle="modal" data-target="#imageModal" onclick="changeImage('{{ catalog.pic }}')">
-                      Display Image
-                    </a>
-                    {% endif %}
-                </td>
-                <td>{{ catalog.price }}</td>
-                <td>
-                    <span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="
-                        $.post(
-                            '/backend/deleteCatalog',
-                            {id: {{catalog.id}} },
-                            function(response) {
-                              alert(response);
-                              $('#{{catalog.id}}').remove();
-                            }
-                        );">
-                    </span>
-                </td>
-            </tr>
+            {% for shop in catalogs %}
+                {% if shop|length > 0 %}
+                    <tr style="background-color: #EDEDE4;">
+                        <td colspan="6"><a id="shop{{shop.0.foodShop.id}}" style="cursor: pointer;" onclick="show('{{shop.0.foodShop.id}}')">{{ shop.0.foodShop.name }}</a></td>
+                    </tr>
+                {% endif %}
+                {% for catalog in shop %}
+                <tr id="{{ catalog.id }}" class="shop{{catalog.foodShop.id}}" style="display: none;">
+                    <td></td>
+                    <td>{{ catalog.id }}</td>
+                    <td><a href="/backend/catalog/{{ catalog.id }}">{{ catalog.name }}</a></td>
+                    <td>
+                        {% if catalog.pic %}
+                        <a style="cursor: pointer;" data-toggle="modal" data-target="#imageModal" onclick="changeImage('{{ catalog.pic }}')">
+                          Display Image
+                        </a>
+                        {% endif %}
+                    </td>
+                    <td>{{ catalog.price }}</td>
+                    <td>
+                        <span class="glyphicon glyphicon-remove" aria-hidden="true" onclick="
+                            $.post(
+                                '/backend/deleteCatalog',
+                                {id: {{catalog.id}} },
+                                function(response) {
+                                  alert(response);
+                                  $('#{{catalog.id}}').remove();
+                                }
+                            );">
+                        </span>
+                    </td>
+                </tr>
+                {% endfor %}
             {% endfor %}
         </tbody>
     </table>

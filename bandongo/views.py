@@ -436,7 +436,10 @@ def addCatalogBatchPage(request):
 
 @login_required(login_url='/backend/login/')
 def catalogListPage(request):
-    catalogs=Catalog.objects.all().order_by("foodShop")
+    foods=Food.objects.all()
+    catalogs=[]
+    for food in foods:
+        catalogs.append(Catalog.objects.filter(foodShop=food))
     return render(request, 'bandongo/backend_catalogList.html',{'catalogs': catalogs})
 
 @login_required(login_url='/backend/login/')
