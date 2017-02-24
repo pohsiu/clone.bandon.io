@@ -137,7 +137,7 @@
                     <!--<tr>-->
                     <!--    <th colspan="4" style="background-color:#E1E1E1;"></th>-->
                     <!--</tr>-->
-                    <tr style="background-color:#E62739; color:#FFFFFF;">
+                    <tr style="background-color:#df8c37; color:#FFFFFF;">
                         <th class="col-sm-3" style="font-weight:bold;"><h4>本日熱門</h4></th>
                         
                         <th class="col-sm-5" ><h4>品項</h4></th>
@@ -146,13 +146,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for top3 in top3 %}
-                    <tr>
-                        <td><img src="/static/pic/medal/medal{{forloop.counter}}.png" class="img-responsive img-circle col-sm-3"  width="40" height="50"></td>
-                        <td>{{top3.foodName__name}}</td>
-                        <td>{{top3.s_sum}}</td>
-                    </tr>
-                    {% endfor %}
+                    {% if top3 %}
+                        {% for top3 in top3 %}
+                        <tr>
+                            <td><img src="/static/pic/medal/medal{{forloop.counter}}.png" class="img-responsive img-circle col-sm-3"  width="40" height="50"></td>
+                            <td>{{top3.foodName__name}}</td>
+                            <td>{{top3.s_sum}}</td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr><th colspan="3"><h3>正在吸取日月天地精華中...</h3></th></tr>
+                    {% endif %}
                     </tbody>
                 </table>
                 
