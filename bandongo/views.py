@@ -514,7 +514,7 @@ def editSchedule(request):
     schedule.name=request.POST["name"]
     schedule.date=parse_datetime(request.POST["dueDatetime"])
     schedule.food=Food.objects.get(id=request.POST["bandon"])
-    
+    schedule.drink=Drink.objects.get(id=request.POST["drink"])
     schedule.save()
     checkExpire()
     catalogs=request.POST.getlist("catalogs[]")
