@@ -1,0 +1,29 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}<script src="{% static 'js/backend_emergency.js' %}"></script>{% endblock %}
+{% block content %}
+<div class="container">
+    {% if schedule %}
+        <div><h1>Emergency</h1></div>
+        <div><h3>Choose catalog</h3></div>
+        <div>
+            <select id="shop" style="width: 20%;" class="selectpicker">
+                {% for shop in shops %}
+                    <option value="{{forloop.counter0}}">{{shop.name}}</option>
+                {% endfor %}
+            </select>
+            <select id="catalog" style="width: 20%;" class="selectpicker">
+                {% for catalog in catalogs %}
+                    <option value="{{catalog.id}}">{{catalog.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div><h3>Affected schedule: {{schedule.name}}</h3></div>
+        <div style="margin-top: 20px">
+            <button id="submit" class="btn btn-default" onclick="submit();">Submit</button>
+        </div>
+    {% else %}
+        <div><h1>No non-finished schedule.</h1></div>
+    {% endif %}
+</div>
+{% endblock %}

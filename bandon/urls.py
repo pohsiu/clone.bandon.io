@@ -58,6 +58,7 @@ urlpatterns = [
     url(r'^backend/setSchedulePage/$', views.setSchedulePage),
     url(r'^backend/editSchedulePage/$', views.editSchedulePage),
     url(r'^backend/scheduleListPage/$', views.scheduleListPage),
+    url(r'^backend/emergencyPage/$', views.emergencyPage),
     url(r'^backend/order/$', views.orderPage),
     url(r'^backend/schedule/([0-9]+)/$', views.orderDetailPage),
     url(r'^backend/addMemberPage/$', views.addMemberPage),
@@ -98,6 +99,7 @@ urlpatterns = [
     url(r'^backend/addDrink$', views.addDrink),
     url(r'^backend/editDrinkShop/([0-9]+)$', views.editDrinkShop),
     url(r'^backend/deleteDrinkShop$', views.deleteDrinkShop),
+    url(r'^backend/emergency$', views.emergency),
     
     url(r'^getCateMem$', views.getCateMem),
     url(r'^getShopCat$', views.getShopCat),

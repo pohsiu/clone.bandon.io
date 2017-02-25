@@ -318,6 +318,15 @@ def scheduleListPage(request):
     return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules})
 
 @login_required(login_url='/backend/login/')
+def emergencyPage(request):
+    schedule=Schedule.objects.filter(finish=False)
+    if len(schedule)>0:
+        schedule=schedule[0]
+    shops=Food.objects.all()
+    catalogs=Catalog.objects.filter(foodShop=shops[0])
+    return render(request, 'bandongo/backend_emergency.html',{'shops': shops, 'catalogs': catalogs, 'schedule': schedule})
+
+@login_required(login_url='/backend/login/')
 def orderPage(request):
     checkExpire()
     try:
@@ -706,6 +715,23 @@ def deleteDrinkShop(request):
     drink=Drink.objects.get(id=request.POST["id"])
     drink.delete()
     return HttpResponse("Deleted successfully.")
+
+def emergency(request):
+    schedule=Schedule.objects.filter(finish=False)
+    if len(schedule)>0:
+        schedule=schedule[0]
+        catalog=Catalog.objects.get(id=request.POST["catalog"])
+        schedule.food=catalog.foodShop
+        schedule.save()
+        for order in FoodOrder.objects.filter(scheduleName=schedule):
+            order.foodName=catalog
+            order.price=catalog.price*order.num
+            order.save()
+
+        return HttpResponse("Set emergency successfully.")
+    else:
+        return HttpResponse("No non-finished schedule")
+
 
 def checkExpire():
     nonFinish=Schedule.objects.filter(finish=False)
