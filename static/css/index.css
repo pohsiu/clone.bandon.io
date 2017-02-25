@@ -1,14 +1,23 @@
-body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family: Microsoft JhengHei ,'微軟正黑體' , Tahoma, Helvetica, Arial, sans-serif;}
+@import url(//fonts.googleapis.com/css?family=Open+Sans);
 
-h3{
-	font-family:Microsoft JhengHei;
-	font-weight:bold;
+@font-face {
+    font-family: '王漢宗粗明體繁';
+    src: url('boldfonts.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
 }
 
-p{
-	font-family:Microsoft JhengHei;
+body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family: '王漢宗粗明體繁', Microsoft JhengHei ,'微軟正黑體' , Tahoma, Helvetica, Arial, sans-serif;}
+
+body {
+  -webkit-animation-duration: 0.1s;
+  -webkit-animation-name: fontfix;
+  -webkit-animation-iteration-count: 1;
+  -webkit-animation-timing-function: linear;
+  -webkit-animation-delay: 0.1s;
 }
 
-h4{
-	font-family:Microsoft JhengHei;
+@-webkit-keyframes fontfix {
+  from { opacity: 1; }
+  to { opacity: 1; }
 }

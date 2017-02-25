@@ -69,13 +69,13 @@
         
         
 {% block content%}
-<div class="container">
+
     <br><br>
     <p style="color:red;">訂餐快訊：儲值服務已經開始囉，歡迎至四樓紀錄科進行儲值</p>
-    <p style="color:red;">貼心叮嚀：除一二樓科室外，其餘請在餐點抵達時至四樓紀錄科自行取餐，謝謝您的配合</p>
+    <p style="color:red;">如有任何問題，請洽紀錄一沈昇勳（分機2117）、紀錄二許文典（分機2218）</p>
     {% if s_latest %}
         {% if s_latest.0.arrived == False %}
-            <h3><b>【{{s_latest.0.name}}】</b></h3>
+            <h3 style="clear: both; display: inline-block; overflow: hidden; white-space: nowrap;"><b>【{{s_latest.0.name}}】</b></h3>
             <h4>本日精選店家：{{s_latest.0.food}}</h4>
             <h4>本日精選飲料：{{s_latest.0.drink}}</h4>
             <h4>餐點狀態：尚未抵達，請耐心等候</h4>
@@ -108,7 +108,7 @@
         <br>
         <button type="submit" class="btn btn-default">送出</button>
     </form>
-</div>
+
 {%endblock%}
 
 
