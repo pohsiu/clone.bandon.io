@@ -1,6 +1,6 @@
 # coding=UTF8
 from django.shortcuts import render, get_object_or_404
-from models import Member, Savelog, Food, Drink, Schedule, Catalog, FoodOrder, DrinkOrder
+from models import Member, Savelog, Food, Drink, Schedule, Catalog, FoodOrder, DrinkOrder, Message
 from models import Category
 
 from .forms import MemberForm, PicForm, CatalogForm, FoodForm, DrinkForm
@@ -499,6 +499,11 @@ def editDrinkShopPage(request, id):
     form = FoodForm(instance=shop)
     return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Drink Shop', 'action': 'editDrinkShop/'+id})
 
+@login_required(login_url='/backend/login/')
+def messagePage(request):
+    messages=Message.objects.all()
+    return render(request, 'bandongo/backend_message.html',{'messages': messages})
+
 
 ## function part
 @login_required(login_url='/backend/login/')
@@ -732,6 +737,15 @@ def emergency(request):
     else:
         return HttpResponse("No non-finished schedule")
 
+def setMessage(request):
+    m=Message.objects.get(id=request.POST["message"])
+    m.content=request.POST["content"]
+    m.save()
+    print m
+    print m.content
+    print request.POST["content"]
+    return HttpResponse("Set message successfully.")
+
 
 def checkExpire():
     nonFinish=Schedule.objects.filter(finish=False)
@@ -755,3 +769,7 @@ def getShopCat(request):
     for shop in shops:
         catalogs.append(list(Catalog.objects.filter(foodShop=shop).values()))
     return JsonResponse({'shops': list(shops.values()), 'catalogs': catalogs})
+
+def getMessage(request):
+    messages=list(Message.objects.all().values())
+    return JsonResponse({'messages': messages})

@@ -1,0 +1,23 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}<script src="{% static 'js/backend_message.js' %}"></script>{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Set Message</h1></div>
+    <div><h3>Message</h3></div>
+    <div>
+        <select id="message" style="width: 20%;" class="selectpicker">
+            {% for message in messages %}
+                <option value="{{message.id}}">{{message.usage}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div><h3>Content</h3></div>
+    <div>
+        <textarea id="content" style="width: 50%; height: 200px;">{{ messages.0.content }}</textarea>
+    </div>
+    <div style="margin-top: 20px">
+        <button id="submit" class="btn btn-default" onclick="submit();">Submit</button>
+    </div>
+</div>
+{% endblock %}

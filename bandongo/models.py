@@ -135,7 +135,15 @@ class Notification(models.Model):
     def store(self):
         self.save()
     def __unicode__(self):
-        return u'%s '% (self.memberName)
+        return u'%s '% (self.content)
         
-        
-
+class Message(models.Model):
+    # id
+    # 1: homeMessage
+    # 2: greetingMessage
+    usage = models.CharField(max_length=50)
+    content = models.TextField()
+    def store(self):
+        self.save()
+    def __unicode__(self):
+        return u'%s '% (self.content)

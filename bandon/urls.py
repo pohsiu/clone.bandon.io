@@ -77,6 +77,7 @@ urlpatterns = [
     url(r'^backend/drinkShopListPage/$', views.drinkShopListPage),
     url(r'^backend/foodShop/([0-9]+)/$', views.editFoodShopPage),
     url(r'^backend/drinkShop/([0-9]+)/$', views.editDrinkShopPage),
+    url(r'^backend/messagePage/$', views.messagePage),
     
     ## function part
     url(r'^backend/setSchedule$', views.setSchedule),
@@ -100,9 +101,11 @@ urlpatterns = [
     url(r'^backend/editDrinkShop/([0-9]+)$', views.editDrinkShop),
     url(r'^backend/deleteDrinkShop$', views.deleteDrinkShop),
     url(r'^backend/emergency$', views.emergency),
+    url(r'^backend/setMessage$', views.setMessage),
     
     url(r'^getCateMem$', views.getCateMem),
     url(r'^getShopCat$', views.getShopCat),
+    url(r'^getMessage$', views.getMessage),
 
     url(r'^admin/', admin.site.urls),
 ]
