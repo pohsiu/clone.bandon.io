@@ -71,25 +71,24 @@
 {% block content%}
 
     <br><br>
-    <p style="color:red;">訂餐快訊：儲值服務已經開始囉，歡迎至四樓紀錄科進行儲值</p>
-    <p style="color:red;">如有任何問題，請洽紀錄一沈昇勳（分機2117）、紀錄二許文典（分機2218）</p>
+    <p style="color:red;">{{home_message.0.content}}</p>
     {% if s_latest %}
         {% if s_latest.0.arrived == False %}
             <h3 style="clear: both; display: inline-block; overflow: hidden; white-space: nowrap;"><b>【{{s_latest.0.name}}】</b></h3>
-            <h4>本日精選店家：{{s_latest.0.food}}</h4>
-            <h4>本日精選飲料：{{s_latest.0.drink}}</h4>
+            <h4>精選店家：{{s_latest.0.food}}</h4>
+            <h4>精選飲料：{{s_latest.0.drink}}</h4>
             <h4>餐點狀態：尚未抵達，請耐心等候</h4>
         {% elif s_latest.0.arrived == True %}
             <h3>{{s_latest.0.name}}</h3>
-            <h4>本日精選店家：{{s_latest.0.food}}</h4>
-            <h4>本日精選飲料：{{s_latest.0.drink}}</h4>
+            <h4>精選店家：{{s_latest.0.food}}</h4>
+            <h4>精選飲料：{{s_latest.0.drink}}</h4>
             <h4>餐點狀態：已抵達，請逕行取餐</h4>
         {% endif %}
     {% endif%}
     <form name="markform" action="" onsubmit="return validateForm()" method="POST" accept-charset="utf-8">{% csrf_token %}
         <div class="form-group">
             <br>
-            <label for="mark">科室：</label>
+            <h4><label for="mark">科室：</label></h4>
             <select class="custom-select form-control" name="mark" id="mark" style="width: auto">
                 <option value="Z">選擇科室</option>
                 {% for mark in mark_list %}
@@ -98,7 +97,7 @@
             </select>
         </div>
         <div class="form-group">
-            <label for="member_name">姓名:</label>
+            <h4><label for="member_name">姓名:</label></h4>
             <div>          
                 <select class="custom-select form-control" name="member_name" id="member_name" disabled="true" style="width: auto">
                     <option>選擇姓名</option>

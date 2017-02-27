@@ -28,6 +28,9 @@ from django.core.files.base import ContentFile
 from django.db.models import Q
 import os
 
+greeting_msg = Message.objects.filter(usage="greeting message")
+
+
 def member_new(request):
     if request.method == "POST":
         form = MemberForm(request.POST)
@@ -112,7 +115,7 @@ def mark_detail(request, pk):
             price = request.POST['drink-price']
             DrinkOrder.objects.create(memberName=de_member,scheduleName=schedule,drinking=drink,num=1,remark=remark,date=now,price=price)
         
-        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'finish_order':finish_order})
+        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'finish_order':finish_order,'greeting_msg':greeting_msg})
        
     
     else:
@@ -139,7 +142,7 @@ def mark_detail(request, pk):
             list_food=''
             pic_beverage=''
         
-        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name,'due_date':duedate,'top3':top3})
+        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name,'due_date':duedate,'top3':top3,'greeting_msg':greeting_msg})
 
 def member_log(request,pk):
     de_member = get_object_or_404(Member, pk=pk)
@@ -159,7 +162,7 @@ def member_log(request,pk):
     cost_total = foods_total + drinks_total
     total_sum = save_total - cost_total
     
-    return render(request, 'bandongo/frontend_memberLog.html',{'de_member':de_member,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'foods_logs':foods_logs,'drinks_logs':drinks_logs,'total_sum':total_sum})
+    return render(request, 'bandongo/frontend_memberLog.html',{'de_member':de_member,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'foods_logs':foods_logs,'drinks_logs':drinks_logs,'total_sum':total_sum,'greeting_msg':greeting_msg})
 
 
 def today_order(request,pk):
@@ -167,7 +170,7 @@ def today_order(request,pk):
     today_foods = FoodOrder.objects.filter(memberName=pk, finish=False).order_by('date')
     today_drinks = DrinkOrder.objects.filter(memberName=pk, finish=False).order_by('date')
     
-    return render(request, 'bandongo/frontend_todayOrder.html',{'de_member':de_member,'today_foods':today_foods,'today_drinks':today_drinks })
+    return render(request, 'bandongo/frontend_todayOrder.html',{'de_member':de_member,'today_foods':today_foods,'today_drinks':today_drinks,'greeting_msg':greeting_msg})
 
 def delete_food(request):
     now = datetime.now()
@@ -204,7 +207,8 @@ def delete_drink(request):
 def mark_select(request):
     path="/home/ubuntu/workspace/static/pic/homePic"
     s_latest = Schedule.objects.all().order_by('-id')
-        
+    
+    home_message = Message.objects.filter(usage="home message")
     
     if os.path.exists(path) and len(os.listdir(path))>0:
         picPath="/static/pic/homePic/"+os.listdir(path)[0]
@@ -221,12 +225,12 @@ def mark_select(request):
             for i in range(len(mark_list)):
                 mark_list[i]['index']=i
             
-            return render(request, 'bandongo/frontend_markSelect.html',{'mark_list':mark_list,'homePicPath': picPath,'s_latest':s_latest})
+            return render(request, 'bandongo/frontend_markSelect.html',{'mark_list':mark_list,'homePicPath': picPath,'s_latest':s_latest,'home_message':home_message})
     mark_list = list(Category.objects.all().values())
     for i in range(len(mark_list)):
         mark_list[i]['index']=i
 
-    return render(request, 'bandongo/frontend_markSelect.html',{'mark_list':mark_list, 'homePicPath': picPath, 's_latest':s_latest})
+    return render(request, 'bandongo/frontend_markSelect.html',{'mark_list':mark_list, 'homePicPath': picPath, 's_latest':s_latest,'home_message':home_message})
 
 def today_statistic(request, pk):
     de_member =  get_object_or_404(Member, pk=pk)
@@ -243,7 +247,7 @@ def today_statistic(request, pk):
         for i in schedules:
             foods[i.name] = FoodOrder.objects.filter(scheduleName=i).order_by('memberName__remark')
             drinks[i.name] = DrinkOrder.objects.filter(scheduleName=i).order_by('memberName__remark')
-    return render(request, 'bandongo/frontend_todayStatistic.html',{'schedules':schedules,'de_member':de_member, 'foods':foods, 'drinks':drinks, 'empty':empty,'s_len':range(s_len)})
+    return render(request, 'bandongo/frontend_todayStatistic.html',{'schedules':schedules,'de_member':de_member, 'foods':foods, 'drinks':drinks, 'empty':empty,'s_len':range(s_len),'greeting_msg':greeting_msg})
 
 
 ## backend_part
