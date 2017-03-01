@@ -15,7 +15,7 @@ $( document ).ready(function() {
 });
 
 function submit() {
-    var content=$("#content").val();
+    var content=$(".ql-editor p").html();
     var message=$("#message").val();
     $('#submit').prop("disabled", true);
     $.post(

@@ -1,6 +1,12 @@
 {% extends "bandongo/backend_base.html" %}
 {% load staticfiles%}
-{% block js %}<script src="{% static 'js/backend_message.js' %}"></script>{% endblock %}
+{% block js %}
+<script src="{% static 'js/backend_message.js' %}"></script>
+<script src="https://cdn.quilljs.com/1.2.2/quill.js"></script>
+{% endblock %}
+{% block css %}
+<link href="https://cdn.quilljs.com/1.2.2/quill.snow.css" rel="stylesheet">
+{% endblock %}
 {% block content %}
 <div class="container">
     <div><h1>Set Message</h1></div>
@@ -13,11 +19,18 @@
         </select>
     </div>
     <div><h3>Content</h3></div>
-    <div>
-        <textarea id="content" style="width: 50%; height: 200px;">{{ messages.0.content }}</textarea>
+    <div style="width: 50%;">
+        <div id="editor">
+            {{ messages.0.content|safe }}
+        </div>
     </div>
     <div style="margin-top: 20px">
         <button id="submit" class="btn btn-default" onclick="submit();">Submit</button>
     </div>
 </div>
+<script>
+  var quill = new Quill('#editor', {
+    theme: 'snow'
+  });
+</script>
 {% endblock %}
