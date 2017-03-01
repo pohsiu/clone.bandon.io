@@ -1,0 +1,38 @@
+{% extends 'bandongo/frontend_base.html' %}
+
+{% block subcontent %}
+   
+    
+    <div><h3 style="color:#F74906;">許願池</h3></div>
+    <form>
+    
+        <div class="form-group">
+            <label for="wish_eat">明天想吃什麼</label>
+            <select class="form-control" id="wish_eat">
+                {% for foods in foodshops %}
+                    <option>{{foods.name}}</option>
+                {% endfor%}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="wish_drink">明天想喝什麼</label>
+            <select class="form-control" id="wish_drink">
+                {% for drinks in drinkshops %}
+                    {% if drinks.name == '休' %}
+                        <option>讓飲料休吧，別再誘惑我了!!!</option>
+                    {% else %}
+                        <option>{{drinks.name}}</option>
+                    {% endif %}
+                {% endfor%}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">送出</button>
+    </form>
+    
+
+       
+    
+           
+                
+    
+{% endblock %}

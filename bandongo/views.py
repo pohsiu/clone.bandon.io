@@ -29,6 +29,7 @@ from django.db.models import Q
 import os
 
 greeting_msg = Message.objects.filter(usage="greeting message")
+greeting_front = Message.objects.filter(usage="Greeting message front")
 
 
 def member_new(request):
@@ -115,7 +116,7 @@ def mark_detail(request, pk):
             price = request.POST['drink-price']
             DrinkOrder.objects.create(memberName=de_member,scheduleName=schedule,drinking=drink,num=1,remark=remark,date=now,price=price)
         
-        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'finish_order':finish_order,'greeting_msg':greeting_msg})
+        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'finish_order':finish_order,'greeting_msg':greeting_msg,'greeting_front':greeting_front})
        
     
     else:
@@ -142,7 +143,7 @@ def mark_detail(request, pk):
             list_food=''
             pic_beverage=''
         
-        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name,'due_date':duedate,'top3':top3,'greeting_msg':greeting_msg})
+        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name,'due_date':duedate,'top3':top3,'greeting_msg':greeting_msg,'greeting_front':greeting_front})
 
 def member_log(request,pk):
     de_member = get_object_or_404(Member, pk=pk)
@@ -162,7 +163,7 @@ def member_log(request,pk):
     cost_total = foods_total + drinks_total
     total_sum = save_total - cost_total
     
-    return render(request, 'bandongo/frontend_memberLog.html',{'de_member':de_member,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'foods_logs':foods_logs,'drinks_logs':drinks_logs,'total_sum':total_sum,'greeting_msg':greeting_msg})
+    return render(request, 'bandongo/frontend_memberLog.html',{'de_member':de_member,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'foods_logs':foods_logs,'drinks_logs':drinks_logs,'total_sum':total_sum,'greeting_msg':greeting_msg,'greeting_front':greeting_front})
 
 
 def today_order(request,pk):
@@ -170,7 +171,7 @@ def today_order(request,pk):
     today_foods = FoodOrder.objects.filter(memberName=pk, finish=False).order_by('date')
     today_drinks = DrinkOrder.objects.filter(memberName=pk, finish=False).order_by('date')
     
-    return render(request, 'bandongo/frontend_todayOrder.html',{'de_member':de_member,'today_foods':today_foods,'today_drinks':today_drinks,'greeting_msg':greeting_msg})
+    return render(request, 'bandongo/frontend_todayOrder.html',{'de_member':de_member,'today_foods':today_foods,'today_drinks':today_drinks,'greeting_msg':greeting_msg,'greeting_front':greeting_front})
 
 def delete_food(request):
     now = datetime.now()
@@ -249,6 +250,11 @@ def today_statistic(request, pk):
             drinks[i.name] = DrinkOrder.objects.filter(scheduleName=i).order_by('memberName__remark')
     return render(request, 'bandongo/frontend_todayStatistic.html',{'schedules':schedules,'de_member':de_member, 'foods':foods, 'drinks':drinks, 'empty':empty,'s_len':range(s_len),'greeting_msg':greeting_msg})
 
+def wish_meal(request, pk):
+    de_member = get_object_or_404(Member, pk=pk)
+    foodshops = Food.objects.all()
+    drinkshops = Drink.objects.all()
+    return render(request, 'bandongo/frontend_wishMeal.html',{'de_member':de_member,'foodshops':foodshops,'drinkshops':drinkshops,'greeting_msg':greeting_msg})
 
 ## backend_part
 ## page part
