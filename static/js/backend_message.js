@@ -8,7 +8,7 @@ $( document ).ready(function() {
         var message = $(this).val();
         for(var i=0; i<messages.length; i++) {
             if(messages[i].id==message) {
-                $("#content").html(messages[i].content);
+                $(".ql-editor p").html(messages[i].content);
             }
         }
     });
