@@ -147,3 +147,15 @@ class Message(models.Model):
         self.save()
     def __unicode__(self):
         return u'%s '% (self.content)
+        
+
+class WishFood(models.Model):
+    member = models.ForeignKey(Member)
+    food = models.ForeignKey(Food)
+    date = models.DateField(default=timezone.now)
+    
+class WishDrink(models.Model):
+    member = models.ForeignKey(Member)
+    drink = models.ForeignKey(Drink)
+    date = models.DateField(default=timezone.now)
+    

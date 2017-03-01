@@ -94,6 +94,9 @@
                 
             </table>
            
-                
-    <div><h3 style="color:#003366;font-weight:bold;">餘額：{{total_sum}}</h2></div>
+    {% if money_tag == 'R' %}
+        <div><h3 style="color:red;font-weight:bold;">餘額：{{total_sum}}</h2></div>
+    {% else %}
+        <div><h3 style="color:#003366;font-weight:bold;">餘額：{{total_sum}}</h2></div>
+    {% endif%}
 {% endblock %}
