@@ -248,13 +248,13 @@ def today_statistic(request, pk):
         for i in schedules:
             foods[i.name] = FoodOrder.objects.filter(scheduleName=i).order_by('memberName__remark')
             drinks[i.name] = DrinkOrder.objects.filter(scheduleName=i).order_by('memberName__remark')
-    return render(request, 'bandongo/frontend_todayStatistic.html',{'schedules':schedules,'de_member':de_member, 'foods':foods, 'drinks':drinks, 'empty':empty,'s_len':range(s_len),'greeting_msg':greeting_msg})
+    return render(request, 'bandongo/frontend_todayStatistic.html',{'schedules':schedules,'de_member':de_member, 'foods':foods, 'drinks':drinks, 'empty':empty,'s_len':range(s_len),'greeting_msg':greeting_msg,'greeting_front':greeting_front})
 
 def wish_meal(request, pk):
     de_member = get_object_or_404(Member, pk=pk)
     foodshops = Food.objects.all()
     drinkshops = Drink.objects.all()
-    return render(request, 'bandongo/frontend_wishMeal.html',{'de_member':de_member,'foodshops':foodshops,'drinkshops':drinkshops,'greeting_msg':greeting_msg})
+    return render(request, 'bandongo/frontend_wishMeal.html',{'de_member':de_member,'foodshops':foodshops,'drinkshops':drinkshops,'greeting_msg':greeting_msg,'greeting_front':greeting_front})
 
 ## backend_part
 ## page part
