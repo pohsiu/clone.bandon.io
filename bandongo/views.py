@@ -147,7 +147,7 @@ def mark_detail(request, pk):
 
 def member_log(request,pk):
     de_member = get_object_or_404(Member, pk=pk)
-    
+    money_tag = 'B'
     save_total = Savelog.objects.filter(memberName=pk).aggregate(save_total=Sum('money'))['save_total']
     if save_total == None:
         save_total = 0
@@ -163,7 +163,10 @@ def member_log(request,pk):
     cost_total = foods_total + drinks_total
     total_sum = save_total - cost_total
     
-    return render(request, 'bandongo/frontend_memberLog.html',{'de_member':de_member,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'foods_logs':foods_logs,'drinks_logs':drinks_logs,'total_sum':total_sum,'greeting_msg':greeting_msg,'greeting_front':greeting_front})
+    if total_sum < 0:
+        money_tag = 'R'
+    
+    return render(request, 'bandongo/frontend_memberLog.html',{'de_member':de_member,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'foods_logs':foods_logs,'drinks_logs':drinks_logs,'total_sum':total_sum,'greeting_msg':greeting_msg,'greeting_front':greeting_front,'money_tag':money_tag})
 
 
 def today_order(request,pk):
