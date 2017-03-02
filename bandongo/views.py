@@ -282,7 +282,10 @@ def add_wish_meal(request):
     else:
         return HttpResponse(failmessage)
     
-        
+def terms_of_use(request, pk):
+    de_member = get_object_or_404(Member, pk=pk)
+    terms = Message.objects.filter(usage="Terms of Use")
+    return render(request,'bandongo/frontend_termsOfUse.html',{'de_member':de_member,'greeting_msg':greeting_msg,'greeting_front':greeting_front,'terms':terms})
 
 
 ## backend_part

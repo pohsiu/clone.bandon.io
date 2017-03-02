@@ -40,6 +40,7 @@ urlpatterns = [
     url(r'^log/(?P<pk>[0-9]+)/$',views.member_log),
     url(r'^todayOrder/(?P<pk>[0-9]+)/$',views.today_order),
     url(r'^wish/(?P<pk>[0-9]+)/$',views.wish_meal),
+    url(r'^terms/(?P<pk>[0-9]+)/$',views.terms_of_use),
     url(r'^todayStatistic/(?P<pk>[0-9]+)/$',views.today_statistic),
     url(r'^$', views.mark_select),
     
