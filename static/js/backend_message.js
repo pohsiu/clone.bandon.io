@@ -8,14 +8,20 @@ $( document ).ready(function() {
         var message = $(this).val();
         for(var i=0; i<messages.length; i++) {
             if(messages[i].id==message) {
-                $(".ql-editor p").html(messages[i].content);
+                $(".ql-editor").html(messages[i].content);
             }
         }
     });
 });
 
 function submit() {
-    var content=$(".ql-editor p").html();
+    var content="";
+    $(".ql-editor").children().each(function(idx, val) {
+        if(idx==0)
+            content+=$(this).html()
+        else
+            content+="<br>"+$(this).html()
+    });
     var message=$("#message").val();
     $('#submit').prop("disabled", true);
     $.post(
