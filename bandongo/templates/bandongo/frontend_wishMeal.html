@@ -1,16 +1,21 @@
 {% extends 'bandongo/frontend_base.html' %}
+{% load staticfiles %}
+
+{% block script %}
+<script src="{% static 'js/frontend_addWishMeal.js' %}"></script>
+{% endblock %}
+
 
 {% block subcontent %}
    
     
     <div><h3 style="color:#F74906;">許願池</h3></div>
-    <form>
-    
+        <input type="hidden" id="id" value="{{de_member.id}}"/>
         <div class="form-group">
             <label for="wish_eat">明天想吃什麼</label>
             <select class="form-control" id="wish_eat">
                 {% for foods in foodshops %}
-                    <option>{{foods.name}}</option>
+                    <option value='{{foods.id}}'>{{foods.name}}</option>
                 {% endfor%}
             </select>
         </div>
@@ -19,16 +24,14 @@
             <select class="form-control" id="wish_drink">
                 {% for drinks in drinkshops %}
                     {% if drinks.name == '休' %}
-                        <option>讓飲料休吧，別再誘惑我了!!!</option>
+                        <option value='{{drinks.id}}'>讓飲料休吧，別再誘惑我了!!!</option>
                     {% else %}
-                        <option>{{drinks.name}}</option>
+                        <option value='{{drinks.id}}'>{{drinks.name}}</option>
                     {% endif %}
                 {% endfor%}
             </select>
         </div>
-        <button type="submit" class="btn btn-primary">送出</button>
-    </form>
-    
+        <button type="submit" onclick="submit()" class="btn btn-primary">送出</button>
 
        
     

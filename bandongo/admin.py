@@ -10,7 +10,8 @@ from .models import Schedule
 from .models import Category
 from .models import Notification
 from .models import Message
-
+from .models import WishFood
+from .models import WishDrink
 
 
 
@@ -52,6 +53,11 @@ class NotificationAdmin(admin.ModelAdmin):
     list_display = ('id', 'classification', 'subject', 'content', 'date', 'read')
 class MessageAdmin(admin.ModelAdmin):
     list_display = ('id', 'usage', 'content')
+    
+class WishFoodAdmin(admin.ModelAdmin):
+    list_display = ('id', 'member', 'food','date')
+class WishDrinkAdmin(admin.ModelAdmin):
+    list_display = ('id', 'member', 'drink','date')
 
 admin.site.register(Member, MemberAdmin)
 admin.site.register(Savelog, SavelogAdmin)
@@ -64,5 +70,7 @@ admin.site.register(Schedule, ScheduleAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Notification, NotificationAdmin)
 admin.site.register(Message, MessageAdmin)
+admin.site.register(WishFood, WishFoodAdmin)
+admin.site.register(WishDrink, WishDrinkAdmin)
 
 
