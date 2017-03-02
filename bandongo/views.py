@@ -256,9 +256,7 @@ def wish_meal(request, pk):
     de_member = get_object_or_404(Member, pk=pk)
     foodshops = Food.objects.all()
     drinkshops = Drink.objects.all()
-<<<<<<< HEAD
-    return render(request, 'bandongo/frontend_wishMeal.html',{'de_member':de_member,'foodshops':foodshops,'drinkshops':drinkshops,'greeting_msg':greeting_msg,'greeting_front':greeting_front})
-=======
+
 
     return render(request, 'bandongo/frontend_wishMeal.html',{'de_member':de_member,'foodshops':foodshops,'drinkshops':drinkshops,'greeting_msg':greeting_msg,'greeting_front':greeting_front})
 
@@ -285,7 +283,7 @@ def add_wish_meal(request):
         return HttpResponse(failmessage)
     
         
->>>>>>> a62f6fa5c71326751c2d85df8215527c88d35b69
+
 
 ## backend_part
 ## page part
