@@ -427,15 +427,19 @@ def orderDetailPage(request, id):
 
         for i in range(3):
             orders=FoodOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1)).order_by('memberName__remark')
+            num=0
             for order in orders:
                 foodTotalPrice+=order.price
-            foodBags.append(orders)
+                num+=order.num
+            foodBags.append({'orders': orders, 'num': num})
         
         for i in range(3):
             orders=DrinkOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1)).order_by('memberName__remark')
+            num=0
             for order in orders:
                 drinkTotalPrice+=order.price
-            drinkBags.append(orders)
+                num+=order.num
+            drinkBags.append({'orders': orders, 'num': num})
         
         return render(request, 'bandongo/backend_orderDetail.html',{'schedule': schedule, 'foodBags': foodBags, 'foodTotalPrice': foodTotalPrice, 'drinkBags': drinkBags, 'drinkTotalPrice': drinkTotalPrice})
     except ObjectDoesNotExist:
