@@ -47,4 +47,3 @@ class DrinkForm(forms.ModelForm):
 
 
 
-

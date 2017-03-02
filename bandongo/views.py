@@ -1,7 +1,7 @@
 # coding=UTF8
 from django.shortcuts import render, get_object_or_404
 from models import Member, Savelog, Food, Drink, Schedule, Catalog, FoodOrder, DrinkOrder, Message
-from models import Category
+from models import Category, WishFood, WishDrink
 
 from .forms import MemberForm, PicForm, CatalogForm, FoodForm, DrinkForm
 from django.shortcuts import render_to_response, RequestContext
@@ -201,7 +201,6 @@ def delete_drink(request):
     success = "刪除成功"
     
     if now > order_duedate:
-        
         return HttpResponse(failmessage)
     else:
         DrinkOrder.objects.get(id=request.POST['id']).delete()
@@ -257,7 +256,36 @@ def wish_meal(request, pk):
     de_member = get_object_or_404(Member, pk=pk)
     foodshops = Food.objects.all()
     drinkshops = Drink.objects.all()
+<<<<<<< HEAD
     return render(request, 'bandongo/frontend_wishMeal.html',{'de_member':de_member,'foodshops':foodshops,'drinkshops':drinkshops,'greeting_msg':greeting_msg,'greeting_front':greeting_front})
+=======
+
+    return render(request, 'bandongo/frontend_wishMeal.html',{'de_member':de_member,'foodshops':foodshops,'drinkshops':drinkshops,'greeting_msg':greeting_msg,'greeting_front':greeting_front})
+
+def add_wish_meal(request):
+    
+    today = date.today()
+    member = Member.objects.get(id=request.POST['id'])
+    failmessage = "一天只能許一次願喔~"
+    success = "許願成功，心誠則靈..."
+    
+    testFood = WishFood.objects.filter(member=member, date=today)
+    testDrink = WishDrink.objects.filter(member=member, date=today)
+    
+    
+    
+    if not testFood and (not testDrink):
+        food = Food.objects.get(id=request.POST['food'])
+        drink = Drink.objects.get(id=request.POST['drink'])
+        WishFood.objects.create(member=member,food=food,date=today)
+        WishDrink.objects.create(member=member,drink=drink,date=today)
+        return HttpResponse(success)
+        
+    else:
+        return HttpResponse(failmessage)
+    
+        
+>>>>>>> a62f6fa5c71326751c2d85df8215527c88d35b69
 
 ## backend_part
 ## page part

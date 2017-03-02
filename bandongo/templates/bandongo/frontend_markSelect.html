@@ -79,7 +79,7 @@
             <h4>精選飲料：{{s_latest.0.drink}}</h4>
             <h4>餐點狀態：尚未抵達，請耐心等候</h4>
         {% elif s_latest.0.arrived == True %}
-            <h3>{{s_latest.0.name}}</h3>
+            <h3 style="clear: both; display: inline-block; overflow: hidden; white-space: nowrap;"><b>【{{s_latest.0.name}}】</b></h3>
             <h4>精選店家：{{s_latest.0.food}}</h4>
             <h4>精選飲料：{{s_latest.0.drink}}</h4>
             <h4>餐點狀態：已抵達，請逕行取餐</h4>
