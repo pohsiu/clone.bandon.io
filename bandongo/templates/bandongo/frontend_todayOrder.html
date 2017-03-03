@@ -3,9 +3,9 @@
 
 {% block script %}
 <script>
-function getConfirmationFoods()
+function getConfirmationFoods(food_id)
 {
-    var id = document.getElementById("foods_id").value;
+    var id = food_id;
     
     bootbox.confirm({
     title: "Bandongo, 取消訂單",
@@ -44,9 +44,9 @@ function getConfirmationFoods()
     });
     
 }
-function getConfirmationDrinks()
+function getConfirmationDrinks(drink_id)
 {
-    var id = document.getElementById("drinks_id").value;
+    var id = drink_id;
     
     bootbox.confirm({
     title: "Bandongo, 取消訂單",
@@ -115,13 +115,13 @@ function getConfirmationDrinks()
         
         {% for foods in today_foods %}
            <tr id="order{{foods.id}}">
-            <input type="hidden" id="foods_id" value="{{foods.id}}"/>
+            
             <td>{{foods.foodName}}</td>
             <td>{{foods.num}}</td>
             <td>{{foods.price}}</td>
             <td>{{foods.remark}}</td>
             
-            <td><input type="image" onclick="getConfirmationFoods()" src="{% static 'icon/x_icon.png' %}" alt="Submit" width="12" height="12"></td>
+            <td><input type="image" onclick="getConfirmationFoods({{foods.id}})" src="{% static 'icon/x_icon.png' %}" alt="Submit" width="12" height="12"></td>
             <!--<td><i class="fa fa-camera-retro fa-lg"></i></td>-->
           </tr>
         {% endfor %}
@@ -150,9 +150,9 @@ function getConfirmationDrinks()
             <td>{{drinks.num}}</td>
             <td>{{drinks.price}}</td>
             <td>{{drinks.remark}}</td>
-            <input type="hidden" id="drinks_id" value="{{drinks.id}}"/>
+            
              
-            <td><input type="image" onclick="getConfirmationDrinks()" src="{% static 'icon/x_icon.png' %}" alt="Submit" width="12" height="12"></td>
+            <td><input type="image" onclick="getConfirmationDrinks({{drinks.id}})" src="{% static 'icon/x_icon.png' %}" alt="Submit" width="12" height="12"></td>
           </tr>
         {% endfor %}
         </tbody>
