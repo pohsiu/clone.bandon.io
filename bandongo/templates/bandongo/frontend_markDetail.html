@@ -103,10 +103,19 @@
     {% elif schedule_name %}
         
         {%if due_date %}
-            <h3 style="color:#F74906;">截止時間：{{due_date | date:'m/d H:i'}}</h2>
-            <br>
+            <table class="table">
+                
+                <div style="color:#F74906;" class="col-sm-4">
+                    <h3>截止時間：{{due_date | date:'m/d H:i'}}</h3>
+                </div>
+                <div class="col-sm-2"></div>
+                <div style="color:#F74906;" class="col-sm-4">
+                    <h3><font id='countDownTimer'></font></h3>
+                </div>
+                <div class="col-sm-2"></div>
+            </table>
         {% endif %}
-           
+        
         <form name="orderform" onsubmit="return orderForm()" action="" method="POST" class="post-form" accept-charset="utf-8">
             {% if list_food.0.foodShop != "休" %}
                 
@@ -253,49 +262,36 @@
 
 {% block script2 %}
 <script>
-function getTimeRemaining(endtime) {
-  var t = Date.parse(endtime) - Date.parse(new Date());
-  var seconds = Math.floor((t / 1000) % 60);
-  var minutes = Math.floor((t / 1000 / 60) % 60);
-  var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
-//   var days = Math.floor(t / (1000 * 60 * 60 * 24));
-  return {
-    'total': t,
-    // 'days': days,
-    'hours': hours,
-    'minutes': minutes,
-    'seconds': seconds
-  };
-}
 
-function initializeClock(id, endtime) {
-  var clock = document.getElementById(id);
-//   var daysSpan = clock.querySelector('.days');
-  var hoursSpan = clock.querySelector('.hours');
-  var minutesSpan = clock.querySelector('.minutes');
-  var secondsSpan = clock.querySelector('.seconds');
+var countDownDate = new Date("{{ due_date | date:'Y/m/d H:i'}}").getTime();
 
-  function updateClock() {
-    var t = getTimeRemaining(endtime);
 
-    // daysSpan.innerHTML = t.days;
-    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
-    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
-    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+var x = setInterval(function() {
 
-    if (t.total <= 0) {
-      clearInterval(timeinterval);
+    
+    var now = new Date().getTime();
+    
+    
+    var distance = countDownDate - now;
+    
+    
+    
+    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    hours = ('0' + hours).slice(-2);
+    minutes = ('0' + minutes).slice(-2);
+    seconds = ('0' + seconds).slice(-2);
+    document.getElementById("countDownTimer").innerHTML = "剩餘時間："+hours + ":"
+    + minutes + ":" + seconds ;
+    
+    
+    if (distance < 0) {
+        clearInterval(x);
+        document.getElementById("countDownTimer").innerHTML = "EXPIRED";
     }
-  }
-
-  updateClock();
-  var timeinterval = setInterval(updateClock, 1000);
-}
-
-// var deadline = new Date(Date.parse(new Date()) + 15 * 24 * 60 * 60 * 1000);
-var duedate = "{{ due_date }}";
-
-initializeClock('clockdiv', duedate);
+}, 1000);
 </script>
 
 
