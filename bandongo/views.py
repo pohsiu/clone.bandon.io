@@ -19,7 +19,7 @@ from django.db.models import Sum
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from datetime import date #detail index used
 from django.utils.dateparse import parse_datetime
 from django.core.files.storage import default_storage
@@ -549,6 +549,25 @@ def editDrinkShopPage(request, id):
 def messagePage(request):
     messages=Message.objects.all()
     return render(request, 'bandongo/backend_message.html',{'messages': messages})
+
+@login_required(login_url='/backend/login/')
+def wishPage(request):
+    schedule=Schedule.objects.order_by('-id')[0]
+    foods=Food.objects.all()
+    drinks=Drink.objects.all()
+    foodCount=[]
+    lastTime=schedule.date.date()-timedelta(days=1)
+    for food in foods:
+        num=len(WishFood.objects.filter(date__gt=lastTime, food=food))
+        if num>0:
+            foodCount.append({'name': food.name, 'num': num})
+    drinkCount=[]
+    for drink in drinks:
+        num=len(WishDrink.objects.filter(date__gt=lastTime, drink=drink))
+        if num>0:
+            drinkCount.append({'name': drink.name, 'num': num})
+    
+    return render(request, 'bandongo/backend_wish.html',{'foods': foodCount, 'drinks': drinkCount})
 
 
 ## function part

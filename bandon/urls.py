@@ -81,6 +81,7 @@ urlpatterns = [
     url(r'^backend/foodShop/([0-9]+)/$', views.editFoodShopPage),
     url(r'^backend/drinkShop/([0-9]+)/$', views.editDrinkShopPage),
     url(r'^backend/messagePage/$', views.messagePage),
+    url(r'^backend/wishPage/$', views.wishPage),
     
     ## function part
     url(r'^backend/setSchedule$', views.setSchedule),
