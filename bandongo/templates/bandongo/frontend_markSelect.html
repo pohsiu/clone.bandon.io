@@ -71,7 +71,7 @@
 {% block content%}
 
     <br><br>
-    <p style="color:red;">{{home_message.0.content|safe}}</p>
+    {{home_message.0.content|safe}}
     {% if s_latest %}
         {% if s_latest.0.arrived == False %}
             <h3 style="clear: both; display: inline-block; overflow: hidden; white-space: nowrap;"><b>【{{s_latest.0.name}}】</b></h3>

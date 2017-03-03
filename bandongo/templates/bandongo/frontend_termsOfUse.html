@@ -6,10 +6,52 @@
 
 {% block subcontent %}
         
-        <div><h3 style="color:#F74906;">使用規範</h3></div>
+        <div><h3 style="color:#F74906;">使用須知</h3></div>
         
-        
-        {{terms.0.content}}
+        <div class="row" style="margin-left: 10px; margin-right: 10px;">
+                {{terms.0.content|safe}}
+        </div>
+        <br>
+        <div><h3 style="color:#F74906;">關於作者</h3></div>
+        <div id="container">
+                <div class="row" style="margin-left: 10px; margin-right: 10px;">
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                <img src={% static 'pic/liao.png' %} class="img-responsive" style="margin-bottom: 10px; display:block; margin:auto;">
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <h3>後端工程師</h3>
+                                <h4>廖偉宏，公館大學資管所畢</h4>
+                                <br>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                <img src={% static 'pic/hsiao.png' %} class="img-responsive" style="margin-bottom: 10px; display:block; margin:auto;">
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <h3>前端工程師</h3>
+                                <h4>蕭博修，貓空大學資管所畢</h4>
+                                <br>
+                        </div>
+                </div>
+                <br><br>
+                <div class="row" style="margin-left: 10px; margin-right: 10px;">
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                <img src={% static 'pic/shen.png' %} class="img-responsive" style="margin-bottom: 10px; display:block; margin:auto;">
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <h3>程序測試員</h3>
+                                <h4>沈昇勳，翔豪的學弟</h4>
+                                <br>
+                        </div>
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
+                                <img src={% static 'pic/wen.png' %} class="img-responsive" style="margin-bottom: 10px; display:block; margin:auto;">
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12">
+                                <h3>程序測試員</h3>
+                                <h4>許文典，翔豪的學弟</h4>
+                                <br>
+                        </div>
+                </div>
+        </div>
         
 {% endblock %}
 
