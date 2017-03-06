@@ -14,7 +14,7 @@ from django.http import JsonResponse
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 
-from django.db.models import Sum
+from django.db.models import Sum, Count
 
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
@@ -30,6 +30,7 @@ import os
 
 greeting_msg = Message.objects.filter(usage="greeting message")
 greeting_front = Message.objects.filter(usage="Greeting message front")
+
 
 
 def member_new(request):
@@ -552,20 +553,24 @@ def messagePage(request):
 
 @login_required(login_url='/backend/login/')
 def wishPage(request):
-    schedule=Schedule.objects.order_by('-id')[0]
-    foods=Food.objects.all()
-    drinks=Drink.objects.all()
-    foodCount=[]
-    lastTime=schedule.date.date()-timedelta(days=1)
-    for food in foods:
-        num=len(WishFood.objects.filter(realized=False, food=food))
-        if num>0:
-            foodCount.append({'name': food.name, 'num': num})
-    drinkCount=[]
-    for drink in drinks:
-        num=len(WishDrink.objects.filter(realized=False, drink=drink))
-        if num>0:
-            drinkCount.append({'name': drink.name, 'num': num})
+
+    # schedule=Schedule.objects.order_by('-id')[0]
+    # foods=Food.objects.all()
+    # drinks=Drink.objects.all()
+    # foodCount=[]
+    # lastTime=schedule.date.date()-timedelta(days=1)
+    foodCount = WishFood.objects.filter(realized=False).values('food__name').annotate(num=Count('food__name')).order_by('-num')
+    drinkCount = WishDrink.objects.filter(realized=False).values('drink__name').annotate(num=Count('drink__name')).order_by('-num')
+    # for food in foods:
+    #     num=len(WishFood.objects.filter(realized=False, food=food))
+    #     if num>0:
+    #         foodCount.append({'name': food.name, 'num': num})
+    # drinkCount=[]
+    # for drink in drinks:
+    #     num=len(WishDrink.objects.filter(realized=False, drink=drink))
+    #     if num>0:
+    #         drinkCount.append({'name': drink.name, 'num': num})
+
     
     return render(request, 'bandongo/backend_wish.html',{'foods': foodCount, 'drinks': drinkCount})
 
