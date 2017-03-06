@@ -19,7 +19,7 @@ from django.db.models import Sum, Count
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, time
 from datetime import date #detail index used
 from django.utils.dateparse import parse_datetime
 from django.core.files.storage import default_storage
@@ -30,8 +30,14 @@ import os
 
 greeting_msg = Message.objects.filter(usage="greeting message")
 greeting_front = Message.objects.filter(usage="Greeting message front")
-
-
+if time(23) < datetime.now().time() < time(5):
+    Message.objects.filter(usage="Greeting message front").update(content="夜貓子?還在奮鬥阿")
+elif time(5) < datetime.now().time() < time(11):
+    Message.objects.filter(usage="Greeting message front").update(content="早安")
+elif time(11) < datetime.now().time() < time(17):
+    Message.objects.filter(usage="Greeting message front").update(content="下午囉，打起精神")
+elif time(17) < datetime.now().time() < time(23):
+    Message.objects.filter(usage="Greeting message front").update(content="晚上好")
 
 def member_new(request):
     if request.method == "POST":
@@ -553,24 +559,8 @@ def messagePage(request):
 
 @login_required(login_url='/backend/login/')
 def wishPage(request):
-
-    # schedule=Schedule.objects.order_by('-id')[0]
-    # foods=Food.objects.all()
-    # drinks=Drink.objects.all()
-    # foodCount=[]
-    # lastTime=schedule.date.date()-timedelta(days=1)
     foodCount = WishFood.objects.filter(realized=False).values('food__name').annotate(num=Count('food__name')).order_by('-num')
     drinkCount = WishDrink.objects.filter(realized=False).values('drink__name').annotate(num=Count('drink__name')).order_by('-num')
-    # for food in foods:
-    #     num=len(WishFood.objects.filter(realized=False, food=food))
-    #     if num>0:
-    #         foodCount.append({'name': food.name, 'num': num})
-    # drinkCount=[]
-    # for drink in drinks:
-    #     num=len(WishDrink.objects.filter(realized=False, drink=drink))
-    #     if num>0:
-    #         drinkCount.append({'name': drink.name, 'num': num})
-
     
     return render(request, 'bandongo/backend_wish.html',{'foods': foodCount, 'drinks': drinkCount})
 
