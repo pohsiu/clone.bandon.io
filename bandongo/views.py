@@ -558,12 +558,12 @@ def wishPage(request):
     foodCount=[]
     lastTime=schedule.date.date()-timedelta(days=1)
     for food in foods:
-        num=len(WishFood.objects.filter(date__gt=lastTime, food=food))
+        num=len(WishFood.objects.filter(Q(date=lastTime)|Q(date__gt=lastTime), food=food))
         if num>0:
             foodCount.append({'name': food.name, 'num': num})
     drinkCount=[]
     for drink in drinks:
-        num=len(WishDrink.objects.filter(date__gt=lastTime, drink=drink))
+        num=len(WishDrink.objects.filter(Q(date=lastTime)|Q(date__gt=lastTime), drink=drink))
         if num>0:
             drinkCount.append({'name': drink.name, 'num': num})
     
