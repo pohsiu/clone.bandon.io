@@ -623,6 +623,9 @@ def finishSchedule(request):
             order.save()
         FoodOrder.objects.filter(scheduleName=schedule).update(finish=True)
         DrinkOrder.objects.filter(scheduleName=schedule).update(finish=True)
+
+        WishFood.objects.filter(realized=False, food=schedule.food).update(realized=True)
+        WishDrink.objects.filter(realized=False, drink=schedule.drink).update(realized=True)
         
         return HttpResponse("Finish Schedule Successfully")
 
