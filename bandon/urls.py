@@ -110,6 +110,7 @@ urlpatterns = [
     url(r'^getCateMem$', views.getCateMem),
     url(r'^getShopCat$', views.getShopCat),
     url(r'^getMessage$', views.getMessage),
+    url(r'^getScheduleCatalogs$', views.getScheduleCatalogs),
 
     url(r'^admin/', admin.site.urls),
 ]

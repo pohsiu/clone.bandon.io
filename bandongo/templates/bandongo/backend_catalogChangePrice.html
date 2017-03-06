@@ -4,32 +4,29 @@
 {% block content %}
 <div class="container">
     <div><h1>Change Price</h1></div>
+    {% if schedule %}
     <div><h3>Catalog</h3></div>
     <div>
-        <select id="shop" style="width: 20%;" class="selectpicker">
-            {% for shop in shops %}
-                <option value="{{forloop.counter0}}">{{shop.name}}</option>
-            {% endfor %}
-        </select>
         <select id="catalog" style="width: 20%;" class="selectpicker">
-            {% for catalog in catalogs %}
+            {% for catalog in schedule.0.catalogs.all %}
                 <option value="{{catalog.id}}">{{catalog.name}}</option>
             {% endfor %}
         </select>
     </div>
     <div><h3>Price</h3></div>
     <div>
-        <input type="number" step="100" class="form-control" style="width: 20%;" id="price" value="{{ catalogs.0.price }}">
+        <input type="number" step="100" class="form-control" style="width: 20%;" id="price" value="{{ schedule.0.catalogs.all.0.price }}">
     </div>
-    {% if schedule %}
-    <div class="checkbox">
+    <div>
         <label>
-            <input id="influence" name="influence" type="checkbox" value="influence"> Influence to current unfinished schedule {{ schedule.name }}?
+            This will influence to current unfinished schedule {{ schedule.0.name }}!
         </label>
     </div>
-    {% endif %}
     <div style="margin-top: 20px">
         <button class="btn btn-default" onclick="submit();">Submit</button>
     </div>
+    {% else %}
+    <div><h3>Please go to catalog list to change price.</h3></div>
+    {% endif %}
 </div>
 {% endblock %}

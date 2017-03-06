@@ -508,11 +508,8 @@ def catalogListPage(request):
 
 @login_required(login_url='/backend/login/')
 def catalogChangePricePage(request):
-    shops=Food.objects.all()
-    catalogs=Catalog.objects.filter(foodShop=shops[0])
-    schedule=Schedule.objects.get(finish=False)
-    print schedule
-    return render(request, 'bandongo/backend_catalogChangePrice.html',{'shops': shops, 'catalogs': catalogs, 'schedule': schedule})
+    schedule=Schedule.objects.filter(finish=False)
+    return render(request, 'bandongo/backend_catalogChangePrice.html',{'schedule': schedule})
 
 @login_required(login_url='/backend/login/')
 def editCatalogPage(request, id):
@@ -724,10 +721,9 @@ def catalogChangePrice(request):
     catalog=Catalog.objects.get(id=request.POST["catalog"])
     catalog.price=request.POST["price"]
     catalog.save()
-    if request.POST["influence"]=="true":
-        for order in FoodOrder.objects.filter(scheduleName__finish=False, foodName=catalog):
-            order.price=order.foodName.price*order.num
-            order.save()
+    for order in FoodOrder.objects.filter(scheduleName__finish=False, foodName=catalog):
+        order.price=order.foodName.price*order.num
+        order.save()
     return HttpResponse("Change price successfully.")
 
 def deleteCatalog(request):
@@ -833,3 +829,11 @@ def getShopCat(request):
 def getMessage(request):
     messages=list(Message.objects.all().values())
     return JsonResponse({'messages': messages})
+
+def getScheduleCatalogs(request):
+    schedule=Schedule.objects.filter(finish=False)
+    if len(schedule)==1:
+        catalogs=list(schedule[0].catalogs.values())
+    else:
+        catalogs=[]
+    return JsonResponse({'catalogs': catalogs})
