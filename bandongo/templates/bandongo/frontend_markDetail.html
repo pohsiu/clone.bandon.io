@@ -45,6 +45,16 @@
     <script src="{% static 'bootstrap/js/bootstrap-select.min.js' %}"></script>
     <script>
         function orderForm() {
+            var due_date = new Date("{{ due_date | date:'Y/m/d H:i'}}").getTime();
+            var now = new Date().getTime();
+            
+            if(now > due_date){
+                bootbox.alert({
+                    title: "訂餐失敗",
+                    message: "統計時間已截止",
+                });
+                return false;
+            }
             var foodlen = document.forms["orderform"]["food-len"].value;
             var lock = 0;
             

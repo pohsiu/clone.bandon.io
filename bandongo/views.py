@@ -19,7 +19,7 @@ from django.db.models import Sum, Count
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
 
-from datetime import datetime, timedelta, time
+from datetime import datetime, timedelta
 from datetime import date #detail index used
 from django.utils.dateparse import parse_datetime
 from django.core.files.storage import default_storage
@@ -29,15 +29,10 @@ from django.db.models import Q
 import os
 
 greeting_msg = Message.objects.filter(usage="greeting message")
-greeting_front = Message.objects.filter(usage="Greeting message front")
-if time(23) < datetime.now().time() < time(5):
-    Message.objects.filter(usage="Greeting message front").update(content="夜貓子?還在奮鬥阿")
-elif time(5) < datetime.now().time() < time(11):
-    Message.objects.filter(usage="Greeting message front").update(content="早安")
-elif time(11) < datetime.now().time() < time(17):
-    Message.objects.filter(usage="Greeting message front").update(content="下午囉，打起精神")
-elif time(17) < datetime.now().time() < time(23):
-    Message.objects.filter(usage="Greeting message front").update(content="晚上好")
+msg_morning = Message.objects.filter(usage="greeting msg morning")
+msg_noon = Message.objects.filter(usage="greeting msg noon")
+msg_night = Message.objects.filter(usage="greeting msg night")
+msg_midnight = Message.objects.filter(usage="greeting msg midnight")
 
 def member_new(request):
     if request.method == "POST":
@@ -123,7 +118,7 @@ def mark_detail(request, pk):
             price = request.POST['drink-price']
             DrinkOrder.objects.create(memberName=de_member,scheduleName=schedule,drinking=drink,num=1,remark=remark,date=now,price=price)
         
-        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'finish_order':finish_order,'greeting_msg':greeting_msg,'greeting_front':greeting_front})
+        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'finish_order':finish_order,'greeting_msg':greeting_msg,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
        
     
     else:
@@ -150,7 +145,7 @@ def mark_detail(request, pk):
             list_food=''
             pic_beverage=''
         
-        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name,'due_date':duedate,'top3':top3,'greeting_msg':greeting_msg,'greeting_front':greeting_front})
+        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name,'due_date':duedate,'top3':top3,'greeting_msg':greeting_msg,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
 
 def member_log(request,pk):
     de_member = get_object_or_404(Member, pk=pk)
@@ -173,7 +168,7 @@ def member_log(request,pk):
     if total_sum < 0:
         money_tag = 'R'
     
-    return render(request, 'bandongo/frontend_memberLog.html',{'de_member':de_member,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'foods_logs':foods_logs,'drinks_logs':drinks_logs,'total_sum':total_sum,'greeting_msg':greeting_msg,'greeting_front':greeting_front,'money_tag':money_tag})
+    return render(request, 'bandongo/frontend_memberLog.html',{'de_member':de_member,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'foods_logs':foods_logs,'drinks_logs':drinks_logs,'total_sum':total_sum,'greeting_msg':greeting_msg,'money_tag':money_tag,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
 
 
 def today_order(request,pk):
@@ -181,7 +176,7 @@ def today_order(request,pk):
     today_foods = FoodOrder.objects.filter(memberName=pk, finish=False).order_by('date')
     today_drinks = DrinkOrder.objects.filter(memberName=pk, finish=False).order_by('date')
     
-    return render(request, 'bandongo/frontend_todayOrder.html',{'de_member':de_member,'today_foods':today_foods,'today_drinks':today_drinks,'greeting_msg':greeting_msg,'greeting_front':greeting_front})
+    return render(request, 'bandongo/frontend_todayOrder.html',{'de_member':de_member,'today_foods':today_foods,'today_drinks':today_drinks,'greeting_msg':greeting_msg,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
 
 def delete_food(request):
     now = datetime.now()
@@ -257,7 +252,7 @@ def today_statistic(request, pk):
         for i in schedules:
             foods[i.name] = FoodOrder.objects.filter(scheduleName=i).order_by('memberName__remark')
             drinks[i.name] = DrinkOrder.objects.filter(scheduleName=i).order_by('memberName__remark')
-    return render(request, 'bandongo/frontend_todayStatistic.html',{'schedules':schedules,'de_member':de_member, 'foods':foods, 'drinks':drinks, 'empty':empty,'s_len':range(s_len),'greeting_msg':greeting_msg,'greeting_front':greeting_front})
+    return render(request, 'bandongo/frontend_todayStatistic.html',{'schedules':schedules,'de_member':de_member, 'foods':foods, 'drinks':drinks, 'empty':empty,'s_len':range(s_len),'greeting_msg':greeting_msg,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
 
 def wish_meal(request, pk):
     de_member = get_object_or_404(Member, pk=pk)
@@ -265,7 +260,7 @@ def wish_meal(request, pk):
     drinkshops = Drink.objects.all()
 
 
-    return render(request, 'bandongo/frontend_wishMeal.html',{'de_member':de_member,'foodshops':foodshops,'drinkshops':drinkshops,'greeting_msg':greeting_msg,'greeting_front':greeting_front})
+    return render(request, 'bandongo/frontend_wishMeal.html',{'de_member':de_member,'foodshops':foodshops,'drinkshops':drinkshops,'greeting_msg':greeting_msg,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
 
 def add_wish_meal(request):
     
@@ -292,7 +287,7 @@ def add_wish_meal(request):
 def terms_of_use(request, pk):
     de_member = get_object_or_404(Member, pk=pk)
     terms = Message.objects.filter(usage="Terms of Use")
-    return render(request,'bandongo/frontend_termsOfUse.html',{'de_member':de_member,'greeting_msg':greeting_msg,'greeting_front':greeting_front,'terms':terms})
+    return render(request,'bandongo/frontend_termsOfUse.html',{'de_member':de_member,'greeting_msg':greeting_msg,'terms':terms,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
 
 
 ## backend_part
