@@ -27,6 +27,7 @@ from django.core.files.base import ContentFile
 
 from django.db.models import Q
 import os
+import json
 
 greeting_msg = Message.objects.filter(usage="greeting message")
 msg_morning = Message.objects.filter(usage="greeting msg morning")
@@ -91,61 +92,73 @@ def filter_json(request):
         models.append(list(Member.objects.all().filter(remark=mark).values()))
         
     return JsonResponse({'member_list': models, 'mark_list': marks})
-    
 
+
+def check_order(request):
+    schedule_id = request.POST['schedule_id']
+    member_id = request.POST['member_id']
+    foodorders = FoodOrder.objects.filter(scheduleName__id=schedule_id,memberName__id=member_id)
+    drinkorders = DrinkOrder.objects.filter(scheduleName__id=schedule_id,memberName__id=member_id)
+    if foodorders.exists() and (drinkorders.exists()):
+        return HttpResponse("both")
+    if (not foodorders.exists()) and drinkorders.exists():
+        return HttpResponse("drink")
+    if foodorders.exists() and (not drinkorders.exists()):
+        return HttpResponse("food")
+    if (not foodorders.exists()) and (not drinkorders.exists()):
+        return HttpResponse("nothing")
+
+def add_order(request):
     
+    foodJson=json.loads(request.POST["foodJson"])
+    print foodJson
+    now = datetime.now()
+    schedule = Schedule.objects.get(id=request.POST['schedule_id'])
+    member = Member.objects.get(id=request.POST['member_id'])
+    success = "訂餐成功"
+    fail = "統計時間已過"
+    if now < schedule.date:
+        for i in foodJson:
+            if i['food_num'] != '0':
+                catalog=Catalog.objects.get(id=i['catalog_id'])
+                price = catalog.price
+                num = int(i['food_num'])
+                count = price * num
+                FoodOrder.objects.create(memberName=member, scheduleName=schedule, foodName=catalog, num=num, date=now, price=count)
+        
+        if request.POST.get('drinkname'):
+            print "working"
+            drink = request.POST['drinkname']
+            remark = request.POST['sugar']+request.POST['ice']+request.POST['drinkcomment']
+            price = request.POST['drinkprice']
+            DrinkOrder.objects.create(memberName=member,scheduleName=schedule,drinking=drink,num=1,remark=remark,date=now,price=price)
+        
+       
+        return HttpResponse(success)
+    else:
+        return HttpResponse(fail)
 
 def mark_detail(request, pk):
     de_member = get_object_or_404(Member, pk=pk)
     now = datetime.now()
-    finish_order = 'Y'
-    if request.method =="POST":
-        schedule = Schedule.objects.get(name=request.POST['schedule'])
-        food_len = int(request.POST['food-len'])
-        finish_order='passed'
-        for i in range(1, food_len+1):
-            if request.POST['food-num'+unicode(i)] != '0':
-                catalog = Catalog.objects.get(name=request.POST['food-name'+unicode(i)], foodShop=schedule.food)
-                price = catalog.price
-                num = int(request.POST['food-num'+unicode(i)])
-                count    = price * num
-                name = catalog
-                FoodOrder.objects.create(memberName=de_member,scheduleName=schedule,foodName=name,num=num,date=now,price=count)
-        
-        if request.POST.get('drink-name'):
-            drink = request.POST['drink-name']
-            remark = request.POST['sugar']+request.POST['ice']+request.POST['drink-comment']
-            price = request.POST['drink-price']
-            DrinkOrder.objects.create(memberName=de_member,scheduleName=schedule,drinking=drink,num=1,remark=remark,date=now,price=price)
-        
-        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'finish_order':finish_order,'greeting_msg':greeting_msg,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
-       
+    schedules = Schedule.objects.filter(expire=False)
+    list_food = None
+    pic_beverage = None
+    duedate = None
+    top3 = None
+    if schedules:
+        duedate = schedules[0].date
+        if now < duedate:
+            id_beverage = schedules[0].drink.name
+            list_food = schedules[0].catalogs.all()
+            pic_beverage = Drink.objects.filter(name = id_beverage)
+            
+            top3 = FoodOrder.objects.filter(scheduleName = schedules).values('foodName__name').annotate(s_sum = Sum('num')).order_by('-s_sum')[:3]
     
-    else:
-        #order index
-        #===get today's schedule part===
-        
-        schedules = Schedule.objects.filter(expire=False)
-        schedule_name = None
-        duedate = None
-        top3 = None
-        if schedules:
-            duedate = schedules[0].date
-            if now < duedate:
-                # id_food = schedules[0].food
-                id_beverage = schedules[0].drink.name
-                list_food = schedules[0].catalogs.all()
-                pic_beverage = Drink.objects.filter(name = id_beverage)
-                schedule_name = schedules[0].name
-                top3 = FoodOrder.objects.filter(scheduleName = schedules).values('foodName__name').annotate(s_sum = Sum('num')).order_by('-s_sum')[:3]
-            else:
-                list_food=''
-                pic_beverage=''
-        else:
-            list_food=''
-            pic_beverage=''
-        
-        return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedule_name':schedule_name,'due_date':duedate,'top3':top3,'greeting_msg':greeting_msg,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
+    return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedules':schedules,'due_date':duedate,'top3':top3,'greeting_msg':greeting_msg,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
+
+
+
 
 def member_log(request,pk):
     de_member = get_object_or_404(Member, pk=pk)

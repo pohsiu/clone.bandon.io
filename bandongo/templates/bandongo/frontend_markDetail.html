@@ -8,83 +8,11 @@
 
 
     <link rel="stylesheet" href="{%static 'bootstrap/css/bootstrap-select.min.css' %}">
-    <style>
     
-    table{ border-collapse: separate; }
-    table td { border-spacing: 1em; }
-
-    #clockdiv{
-    font-family: sans-serif;
-    color: #fff;
-    display: inline-block;
-    font-weight: 100;
-    text-align: center;
-    font-size: 30px;
-    }
-    
-    #clockdiv > div{
-    padding: 10px;
-    border-radius: 3px;
-    background: #00BF96;
-    display: inline-block;
-    }
-    
-    #clockdiv div > span{
-    padding: 15px;
-    border-radius: 3px;
-    background: #00816A;
-    display: inline-block;
-    }
-    
-    .smalltext{
-    padding-top: 5px;
-    font-size: 16px;
-    }
-    </style>
 
     <script src="{% static 'bootstrap/js/bootstrap-select.min.js' %}"></script>
-    <script>
-        function orderForm() {
-            var due_date = new Date("{{ due_date | date:'Y/m/d H:i'}}").getTime();
-            var now = new Date().getTime();
-            
-            if(now > due_date){
-                bootbox.alert({
-                    title: "訂餐失敗",
-                    message: "統計時間已截止",
-                });
-                return false;
-            }
-            var foodlen = document.forms["orderform"]["food-len"].value;
-            var lock = 0;
-            
-            
-            var drinkname = document.forms["orderform"]["drink-name"].value;
-            var drinkprice = document.forms["orderform"]["drink-price"].value;
-            
-            var strindex;
-            var foodnum;
-            
-            for (var i = 1; i <= foodlen; i++) {
-                strindex = i.toString();
-                foodnum = document.forms["orderform"]["food-num"+strindex].value;
-               
-                if(foodnum != "0"){
-                    lock = 1;
-                }
-            }
-            
-            if (drinkname == "" && lock == 0) {
-                bootbox.alert("請選擇餐點");
-                return false;
-            }
-            if (drinkname != "" && drinkprice ==""){
-                bootbox.alert("請輸入飲料價格");
-                return false;
-            }
-        }
-        
-    </script>
+    <script src="{% static 'js/frontend_orderValidate.js' %}"></script>
+    
     <script type="text/javascript">
     function codeAddress() {
         var member_saving = "{{de_member.saving}}";
@@ -107,10 +35,9 @@
     
     
     
-    {% if finish_order %}
-        <h1>訂餐完成！</h1>
     
-    {% elif schedule_name %}
+    
+    {% if schedules %}
         
         {%if due_date %}
             <table class="table">
@@ -126,7 +53,7 @@
             </table>
         {% endif %}
         
-        <form name="orderform" onsubmit="return orderForm()" action="" method="POST" class="post-form" accept-charset="utf-8">
+        <form id="orderForm" name="orderform" onsubmit="return orderForm()" action="" method="" class="post-form" accept-charset="utf-8">
             {% if list_food.0.foodShop != "休" %}
                 
                 <table class="table">
@@ -166,11 +93,12 @@
                     <th class="col-sm-4" colspan="1" ><h4>數量</h4></th>
                     
                 </tr>
+                <input type="hidden" name="member_id" value="{{ de_member.id }}"/>
                 <input type="hidden" name="food-len" value="{{ list_food|length }}"/>
-                <input type="hidden" name="schedule" value="{{schedule_name}}"/>
+                <input type="hidden" name="schedule_id" value="{{schedules.0.id}}"/>
                 {% for foods in list_food %}
                     <tr>
-                        <td><input type="hidden" name="food-name{{ forloop.counter }}" value="{{ foods.name }}"/>{{foods.name}}</td>
+                        <td><input type="hidden" name="catalog-id{{ forloop.counter }}" value="{{ foods.id }}"/>{{foods.name}}</td>
                         <td>
                         {% if foods.pic %}
                           <img src="/{{foods.pic}}" class="img-responsive img-circle col-xs-12"  width="400" height="200"> 
@@ -256,7 +184,7 @@
                 
             {% endif %}
                     <br>
-                    <button type="submit" class="btn btn-default">送出</button>
+                    <input type="submit" class="btn btn-default" value="送出"></input>
                     </td>
                     </tr>
                 </table>   
