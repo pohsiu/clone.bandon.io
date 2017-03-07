@@ -299,7 +299,8 @@ var x = setInterval(function() {
     
     if (distance < 0) {
         clearInterval(x);
-        document.getElementById("countDownTimer").innerHTML = "EXPIRED";
+        document.getElementById("countDownTimer").innerHTML = "時間到!";
+        window.location.reload();
     }
 }, 1000);
 </script>
