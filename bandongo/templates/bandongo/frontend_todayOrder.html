@@ -78,9 +78,19 @@ function getConfirmationDrinks(drink_id)
                 "/frontend/delete_drink",
                 {id:id},
                 function(response) {
-                    bootbox.alert(response);
-                    if(response == "刪除成功"){
-                    $("#order"+String(id)).remove();
+                    
+                    if(response == "訂單刪除成功"){
+                        bootbox.alert({
+                            title: "Bandongo, 取消訂單", 
+                            message: response
+                        });
+                        $("#order"+String(id)).remove();
+                    }
+                    else{
+                        bootbox.alert({
+                            title: "Bandongo, 訂單取消失敗", 
+                            message: response
+                        });
                     }
                 }
             );
