@@ -35,25 +35,7 @@ msg_noon = Message.objects.filter(usage="greeting msg noon")
 msg_night = Message.objects.filter(usage="greeting msg night")
 msg_midnight = Message.objects.filter(usage="greeting msg midnight")
 
-def member_new(request):
-    if request.method == "POST":
-        form = MemberForm(request.POST)
-        if form.is_valid():
-            member = form.save(commit=False)
-            # member.name = request.user
-            member.save()
-            return redirect('bandongo.views.member_detail', pk=member.pk)
-    else:
-        form = MemberForm()
-    return render(request, 'bandongo/member_edit.html', {'form': form})
 
-def memberList(request):
-    members=Member.objects.all()
-    return render(request, 'bandongo/member_list.html',{'members':members})
-    
-def member_detail(request, pk):
-    de_member = get_object_or_404(Member, pk=pk)
-    return render(request, 'bandongo/member_detail.html', {'de_member': de_member})
 
 # Create your views here.
 # def userList(request):
@@ -62,18 +44,7 @@ def member_detail(request, pk):
 
 
 
-def member_edit(request, pk):
-    member = get_object_or_404(Member, id=pk)
-    if request.method == "POST":
-        form = MemberForm(request.POST, instance=member)
-        if form.is_valid():
-            member = form.save(commit=False)
-            # member.author = request.user
-            member.save()
-            return redirect('bandongo.views.member_detail', pk=member.pk)
-    else:
-        form = MemberForm(instance=member)
-    return render(request, 'bandongo/member_edit.html', {'form': form})
+
 
 
 
@@ -237,7 +208,7 @@ def mark_select(request):
         if request.POST.get('member_name') != None:
             
             member_pk = request.POST.get('member_name')
-            return redirect('bandongo.views.mark_detail', pk=member_pk)
+            return redirect('frontend_detail', pk=member_pk)
         else:
             mark_list = list(Category.objects.all().values())
             for i in range(len(mark_list)):

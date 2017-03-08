@@ -28,20 +28,17 @@ urlpatterns = [
     
     
     
-    url(r'^list/', views.memberList),
-    url(r'^member/(?P<pk>[0-9]+)/$', views.member_detail),
-    url(r'^member/new/$', views.member_new, name='member_new'),
-    url(r'^member/(?P<pk>[0-9]+)/edit/$', views.member_edit, name='member_edit'),
+   
     
     
     
     
-    url(r'^detail/(?P<pk>[0-9]+)/$', views.mark_detail),
-    url(r'^log/(?P<pk>[0-9]+)/$',views.member_log),
-    url(r'^todayOrder/(?P<pk>[0-9]+)/$',views.today_order),
-    url(r'^wish/(?P<pk>[0-9]+)/$',views.wish_meal),
-    url(r'^terms/(?P<pk>[0-9]+)/$',views.terms_of_use),
-    url(r'^todayStatistic/(?P<pk>[0-9]+)/$',views.today_statistic),
+    url(r'^detail/(?P<pk>[0-9]+)/$', views.mark_detail, name='frontend_detail'),
+    url(r'^log/(?P<pk>[0-9]+)/$',views.member_log, name='frontend_log'),
+    url(r'^todayOrder/(?P<pk>[0-9]+)/$',views.today_order, name='frontend_todayOrder'),
+    url(r'^wish/(?P<pk>[0-9]+)/$',views.wish_meal, name='frontend_wish'),
+    url(r'^terms/(?P<pk>[0-9]+)/$',views.terms_of_use, name='frontend_terms'),
+    url(r'^todayStatistic/(?P<pk>[0-9]+)/$',views.today_statistic, name='frontend_todayStatistic'),
     url(r'^$', views.mark_select),
     
     url(r'^frontend/delete_food$', views.delete_food),

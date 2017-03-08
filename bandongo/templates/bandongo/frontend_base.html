@@ -52,12 +52,12 @@
                 <div class="collapse navbar-collapse" id="defaultNavbar1">
                     <ul class="nav navbar-nav navbar-right">
                         <li><a href="/">首頁</a></li>
-                        <li><a href="{% url 'bandongo.views.mark_detail' pk=de_member.pk %}">訂餐頁面</a></li>
-                        <li><a href="{% url 'bandongo.views.today_statistic' pk=de_member.pk %}">餐點統計</a></li>
-                        <li><a href="{% url 'bandongo.views.today_order' pk=de_member.pk %}">本次訂單</a></li>
-                        <li><a href="{% url 'bandongo.views.member_log' pk=de_member.pk %}">帳戶記錄</a></li>
-                        <li><a href="{% url 'bandongo.views.wish_meal' pk=de_member.pk %}">心誠則靈</a></li>
-                        <li><a href="{% url 'bandongo.views.terms_of_use' pk=de_member.pk %}">相關說明</a></li>
+                        <li><a href="{% url 'frontend_detail' pk=de_member.pk %}">訂餐頁面</a></li>
+                        <li><a href="{% url 'frontend_todayStatistic' pk=de_member.pk %}">餐點統計</a></li>
+                        <li><a href="{% url 'frontend_todayOrder' pk=de_member.pk %}">本次訂單</a></li>
+                        <li><a href="{% url 'frontend_log' pk=de_member.pk %}">帳戶記錄</a></li>
+                        <li><a href="{% url 'frontend_wish' pk=de_member.pk %}">心誠則靈</a></li>
+                        <li><a href="{% url 'frontend_terms' pk=de_member.pk %}">相關說明</a></li>
                         
                     </ul>
                 </div>
