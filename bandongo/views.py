@@ -564,7 +564,6 @@ def editSchedule(request):
     schedule.name=request.POST["name"]
     schedule.date=parse_datetime(request.POST["dueDatetime"])
     schedule.food=Food.objects.get(id=request.POST["bandon"])
-    schedule.save()
     checkExpire()
     catalogs=request.POST.getlist("catalogs[]")
     schedule.catalogs.set(Catalog.objects.filter(id__in=catalogs))
@@ -573,7 +572,8 @@ def editSchedule(request):
     FoodOrder.objects.filter(scheduleName=schedule).exclude(foodName__in=schedule.catalogs.all()).delete()
     if not schedule.drink==Drink.objects.get(id=request.POST["drink"]):
         DrinkOrder.objects.filter(scheduleName=schedule).delete()
-        schedule.drink=Drink.objects.get(id=request.POST["drink"])
+    schedule.drink=Drink.objects.get(id=request.POST["drink"])
+    schedule.save()
 
     return HttpResponse("Edit Schedule Successfully")
 
