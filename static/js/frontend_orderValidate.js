@@ -146,7 +146,7 @@ function orderForm() {
                 callback: function () {
                     console.log('This was logged in the callback!');
                     document.forms["orderform"].remove();
-                    window.location.replace("/todayOrder/"+member_id);
+                    window.location.replace("/todayOrder/"+member_id+"/");
                 }
                 });
             }

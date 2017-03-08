@@ -27,9 +27,19 @@ function getConfirmationFoods(food_id)
                 "/frontend/delete_food",
                 {id:id},
                 function(response) {
-                   bootbox.alert(response)
-                   if(response == "刪除成功"){
-                    $("#order"+String(id)).remove();
+                    
+                    if(response == "訂單刪除成功"){
+                        bootbox.alert({
+                            title: "Bandongo, 取消訂單", 
+                            message: response
+                        });
+                        $("#order"+String(id)).remove();
+                    }
+                    else{
+                        bootbox.alert({
+                            title: "Bandongo, 訂單取消失敗", 
+                            message: response
+                        });
                     }
                 }
             );
@@ -159,18 +169,6 @@ function getConfirmationDrinks(drink_id)
         </tbody>
     </table>
     {% endif %}
-    
-    
-    <!--{% if cost_total %}-->
-    <!--   <table class="table">-->
-    <!--        <tr>-->
-    <!--            <td colspan="5">小計</td>-->
-    <!--            <td>{{cost_total}}</td>-->
-    <!--        </tr>-->
-    <!--    </table>-->
-         
-    
-    <!--{% endif %}-->
     
     
     
