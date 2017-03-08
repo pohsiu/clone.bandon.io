@@ -101,8 +101,11 @@ function getConfirmationDrinks(drink_id)
 
 {% block subcontent %}
     
-    
+    {% if today_foods or today_drinks %}
     <div><h3 style="color:#F74906;">本次訂單</h3></div>
+    {% else %}
+    <div><h2>沒有訂單資料</h2></div>
+    {% endif %}
     
     {% if today_foods %}
     <div>

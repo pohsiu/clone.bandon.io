@@ -183,8 +183,8 @@ def delete_drink(request):
     now = datetime.now()
     order = DrinkOrder.objects.get(id=request.POST['id'])
     order_duedate = Schedule.objects.filter(name=order.scheduleName)[0].date
-    failmessage = "截止日期已過"
-    success = "刪除成功"
+    failmessage = "截止日期已過，訂單無法刪除"
+    success = "訂單刪除成功"
     
     if now > order_duedate:
         return HttpResponse(failmessage)
