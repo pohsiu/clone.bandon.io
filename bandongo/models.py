@@ -153,6 +153,7 @@ class WishFood(models.Model):
     member = models.ForeignKey(Member)
     food = models.ForeignKey(Food)
     date = models.DateField(default=timezone.now)
+    realized = models.BooleanField(default=False)
     def __unicode__(self):
         return u'%s '% (self.food)
     
@@ -160,7 +161,7 @@ class WishDrink(models.Model):
     member = models.ForeignKey(Member)
     drink = models.ForeignKey(Drink)
     date = models.DateField(default=timezone.now)
-    
+    realized = models.BooleanField(default=False)
     def __unicode__(self):
         return u'%s '% (self.drink)
     

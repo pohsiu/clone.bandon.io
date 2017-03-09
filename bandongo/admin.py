@@ -55,9 +55,9 @@ class MessageAdmin(admin.ModelAdmin):
     list_display = ('id', 'usage', 'content')
     
 class WishFoodAdmin(admin.ModelAdmin):
-    list_display = ('id', 'member', 'food','date')
+    list_display = ('id', 'member', 'food','date','realized')
 class WishDrinkAdmin(admin.ModelAdmin):
-    list_display = ('id', 'member', 'drink','date')
+    list_display = ('id', 'member', 'drink','date','realized')
 
 admin.site.register(Member, MemberAdmin)
 admin.site.register(Savelog, SavelogAdmin)

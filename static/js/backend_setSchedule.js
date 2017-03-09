@@ -1,7 +1,7 @@
 var shops;
 var catalogs;
 $( document ).ready(function() {
-    document.getElementById("dueDatetime").value=nowString();
+    document.getElementById("dueDatetime").value=timeString();
     
     var url = "/getShopCat";
     $.getJSON(url, function(res) {
@@ -37,12 +37,12 @@ function submit() {
     }
 }
 
-function nowString() {
+function timeString() {
     var now=new Date();
-    var offset1=now.getMonth()>8?"":"0";
-    var offset2=now.getDate()>9?"":"0";
-    var offset3=now.getHours()>9?"":"0";
-    var offset4=now.getMinutes()>9?"":"0";
-    var nowString=now.getFullYear()+'-'+offset1+(now.getMonth()+1)+'-'+offset2+now.getDate()+'T'+offset3+now.getHours()+':'+offset4+now.getMinutes();
+    var month=now.getMonth()>8?"":"0"+(now.getMonth()+1);
+    var date=now.getDate()>9?"":"0"+now.getDate();
+    var hour="09";
+    var minute="40";
+    var nowString=now.getFullYear()+'-'+month+'-'+date+'T'+hour+':'+minute;
     return nowString
 }

@@ -1,38 +1,22 @@
-var categories;
-var members;
+var catalogs;
 $( document ).ready(function() {
-    var url = "/getShopCat";
+    var url = "/getScheduleCatalogs";
     $.getJSON(url, function(res) {
-        shops=res.shops;
         catalogs=res.catalogs;
     });
-    $("#shop").change(function() {
-        var shop = $(this).val();
-        
-        $("#catalog option").remove();
-        for (var i = 0; i < catalogs[shop].length; i++) {
-            $("#catalog").append($("<option></option>").attr("value", catalogs[shop][i].id).text(catalogs[shop][i].name));
-        }
-        $("#price").val(catalogs[shop][0].price);
-        $("#catalog option:first").attr('selected', 'selected');
-        $("#catalog").selectpicker('refresh');
-    });
     $("#catalog").change(function() {
-        var shop = $("#shop").val();
-        for (var i = 0; i < catalogs[shop].length; i++) {
-            if(catalogs[shop][i].id==$(this).val())
-                $("#price").val(catalogs[shop][i].price);
+        for (var i = 0; i < catalogs.length; i++) {
+            if(catalogs[i].id==$(this).val())
+                $("#price").val(catalogs[i].price);
         }
-        
     });
 });
 function submit() {
     var catalog=$("#catalog").val();
     var price=$("#price").val();
-    var influence=$("#influence").prop('checked');
     $.post(
         "/backend/catalogChangePrice",
-        {catalog: catalog, price: price, influence: influence},
+        {catalog: catalog, price: price},
         function(response) {
           alert(response);
         }
