@@ -487,8 +487,15 @@ def catalogListPage(request):
 
 @login_required(login_url='/backend/login/')
 def catalogChangePricePage(request):
-    schedule=Schedule.objects.filter(finish=False)
-    return render(request, 'bandongo/backend_catalogChangePrice.html',{'schedule': schedule})
+    try:
+        schedule=Schedule.objects.get(finish=False)
+        catalogs=Catalog.objects.filter(foodShop=schedule.food)
+        
+    except ObjectDoesNotExist:
+        schedule=None
+        catalogs=[]
+        
+    return render(request, 'bandongo/backend_catalogChangePrice.html',{'schedule': schedule, 'catalogs': catalogs})
 
 @login_required(login_url='/backend/login/')
 def editCatalogPage(request, id):
@@ -705,12 +712,14 @@ def editCatalog(request, id):
         return HttpResponse("<script>alert('not valid form')</script>")
 
 def catalogChangePrice(request):
-    catalog=Catalog.objects.get(id=request.POST["catalog"])
-    catalog.price=request.POST["price"]
-    catalog.save()
-    for order in FoodOrder.objects.filter(scheduleName__finish=False, foodName=catalog):
-        order.price=order.foodName.price*order.num
-        order.save()
+    catalogs=Catalog.objects.filter(id__in=request.POST.getlist("catalog[]"))
+    price=int(request.POST["price"])
+    for catalog in catalogs:
+        catalog.price+=price
+        catalog.save()
+        for order in FoodOrder.objects.filter(scheduleName__finish=False, foodName=catalog):
+            order.price=order.foodName.price*order.num
+            order.save()
     return HttpResponse("Change price successfully.")
 
 def deleteCatalog(request):
