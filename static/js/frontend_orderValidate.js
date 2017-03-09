@@ -58,10 +58,12 @@ function orderForm() {
                         message: "您已經有訂飲料跟便當了，確定加點嗎?",
                         buttons: {
                             cancel: {
-                                label: '<i class="fa fa-times"></i> 取消'
+                                label: '取消',
+                                className: 'btn-danger'
                             },
                             confirm: {
-                                label: '<i class="fa fa-check"></i> 確定'
+                                label: '確定',
+                                className: 'btn-success'
                             }
                         },
                         callback: function (result) {
@@ -81,10 +83,12 @@ function orderForm() {
                         message: "您已經有訂便當了，確定加點嗎?",
                         buttons: {
                             cancel: {
-                                label: '<i class="fa fa-times"></i> 取消'
+                                label: '取消',
+                                className: 'btn-danger'
                             },
                             confirm: {
-                                label: '<i class="fa fa-check"></i> 確定'
+                                label: '確定',
+                                className: 'btn-success'
                             }
                         },
                         callback: function (result) {
@@ -104,10 +108,12 @@ function orderForm() {
                         message: "您已經有訂飲料了，確定加點嗎?",
                         buttons: {
                             cancel: {
-                                label: '<i class="fa fa-times"></i> 取消'
+                                label: '取消',
+                                className: 'btn-danger'
                             },
                             confirm: {
-                                label: '<i class="fa fa-check"></i> 確定'
+                                label: '確定',
+                                className: 'btn-success'
                             }
                         },
                         callback: function (result) {

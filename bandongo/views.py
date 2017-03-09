@@ -82,7 +82,7 @@ def check_order(request):
 def add_order(request):
     
     foodJson=json.loads(request.POST["foodJson"])
-    print foodJson
+    # print foodJson
     now = datetime.now()
     schedule = Schedule.objects.get(id=request.POST['schedule_id'])
     member = Member.objects.get(id=request.POST['member_id'])
@@ -564,7 +564,6 @@ def editSchedule(request):
     schedule.name=request.POST["name"]
     schedule.date=parse_datetime(request.POST["dueDatetime"])
     schedule.food=Food.objects.get(id=request.POST["bandon"])
-    checkExpire()
     catalogs=request.POST.getlist("catalogs[]")
     schedule.catalogs.set(Catalog.objects.filter(id__in=catalogs))
 
