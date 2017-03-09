@@ -569,6 +569,12 @@ def wishPage(request):
     
     return render(request, 'bandongo/backend_wish.html',{'foods': foodCount, 'drinks': drinkCount})
 
+@login_required(login_url='/backend/login/')
+def savelogPage(request):
+    savelogs=Savelog.objects.order_by('-id')[:10]
+    
+    return render(request, 'bandongo/backend_savelog.html',{'logs': savelogs})
+
 
 ## function part
 @login_required(login_url='/backend/login/')
