@@ -342,7 +342,7 @@ def editSchedulePage(request):
 @login_required(login_url='/backend/login/')
 def scheduleListPage(request):
     checkExpire()
-    schedules=Schedule.objects.all().order_by('-id')
+    schedules=Schedule.objects.all().order_by('-id')[:15]
     return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules})
 
 @login_required(login_url='/backend/login/')
