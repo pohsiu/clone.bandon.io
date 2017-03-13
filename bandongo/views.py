@@ -125,7 +125,8 @@ def mark_detail(request, pk):
             pic_beverage = Drink.objects.filter(name = id_beverage)
             
             top3 = FoodOrder.objects.filter(scheduleName = schedules).values('foodName__name').annotate(s_sum = Sum('num')).order_by('-s_sum')[:3]
-    
+        else:
+            schedules = None
     return render(request, 'bandongo/frontend_markDetail.html', {'de_member': de_member,'list_food':list_food,'pic_beverage':pic_beverage,'schedules':schedules,'due_date':duedate,'top3':top3,'greeting_msg':greeting_msg,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
 
 
