@@ -82,7 +82,7 @@ def check_order(request):
 def add_order(request):
     
     foodJson=json.loads(request.POST["foodJson"])
-    print foodJson
+    # print foodJson
     now = datetime.now()
     schedule = Schedule.objects.get(id=request.POST['schedule_id'])
     member = Member.objects.get(id=request.POST['member_id'])
@@ -183,8 +183,8 @@ def delete_drink(request):
     now = datetime.now()
     order = DrinkOrder.objects.get(id=request.POST['id'])
     order_duedate = Schedule.objects.filter(name=order.scheduleName)[0].date
-    failmessage = "截止日期已過"
-    success = "刪除成功"
+    failmessage = "截止日期已過，訂單無法刪除"
+    success = "訂單刪除成功"
     
     if now > order_duedate:
         return HttpResponse(failmessage)
@@ -342,7 +342,7 @@ def editSchedulePage(request):
 @login_required(login_url='/backend/login/')
 def scheduleListPage(request):
     checkExpire()
-    schedules=Schedule.objects.all().order_by('-id')
+    schedules=Schedule.objects.all().order_by('-id')[:15]
     return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules})
 
 @login_required(login_url='/backend/login/')
@@ -487,8 +487,15 @@ def catalogListPage(request):
 
 @login_required(login_url='/backend/login/')
 def catalogChangePricePage(request):
-    schedule=Schedule.objects.filter(finish=False)
-    return render(request, 'bandongo/backend_catalogChangePrice.html',{'schedule': schedule})
+    try:
+        schedule=Schedule.objects.get(finish=False)
+        catalogs=Catalog.objects.filter(foodShop=schedule.food)
+        
+    except ObjectDoesNotExist:
+        schedule=None
+        catalogs=[]
+        
+    return render(request, 'bandongo/backend_catalogChangePrice.html',{'schedule': schedule, 'catalogs': catalogs})
 
 @login_required(login_url='/backend/login/')
 def editCatalogPage(request, id):
@@ -540,6 +547,12 @@ def wishPage(request):
     
     return render(request, 'bandongo/backend_wish.html',{'foods': foodCount, 'drinks': drinkCount})
 
+@login_required(login_url='/backend/login/')
+def savelogPage(request):
+    savelogs=Savelog.objects.order_by('-id')[:10]
+    
+    return render(request, 'bandongo/backend_savelog.html',{'logs': savelogs})
+
 
 ## function part
 @login_required(login_url='/backend/login/')
@@ -564,8 +577,6 @@ def editSchedule(request):
     schedule.name=request.POST["name"]
     schedule.date=parse_datetime(request.POST["dueDatetime"])
     schedule.food=Food.objects.get(id=request.POST["bandon"])
-    schedule.save()
-    checkExpire()
     catalogs=request.POST.getlist("catalogs[]")
     schedule.catalogs.set(Catalog.objects.filter(id__in=catalogs))
 
@@ -573,7 +584,8 @@ def editSchedule(request):
     FoodOrder.objects.filter(scheduleName=schedule).exclude(foodName__in=schedule.catalogs.all()).delete()
     if not schedule.drink==Drink.objects.get(id=request.POST["drink"]):
         DrinkOrder.objects.filter(scheduleName=schedule).delete()
-        schedule.drink=Drink.objects.get(id=request.POST["drink"])
+    schedule.drink=Drink.objects.get(id=request.POST["drink"])
+    schedule.save()
 
     return HttpResponse("Edit Schedule Successfully")
 
@@ -700,12 +712,14 @@ def editCatalog(request, id):
         return HttpResponse("<script>alert('not valid form')</script>")
 
 def catalogChangePrice(request):
-    catalog=Catalog.objects.get(id=request.POST["catalog"])
-    catalog.price=request.POST["price"]
-    catalog.save()
-    for order in FoodOrder.objects.filter(scheduleName__finish=False, foodName=catalog):
-        order.price=order.foodName.price*order.num
-        order.save()
+    catalogs=Catalog.objects.filter(id__in=request.POST.getlist("catalog[]"))
+    price=int(request.POST["price"])
+    for catalog in catalogs:
+        catalog.price+=price
+        catalog.save()
+        for order in FoodOrder.objects.filter(scheduleName__finish=False, foodName=catalog):
+            order.price=order.foodName.price*order.num
+            order.save()
     return HttpResponse("Change price successfully.")
 
 def deleteCatalog(request):

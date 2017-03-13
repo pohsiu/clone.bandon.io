@@ -7,19 +7,19 @@
     {% if schedule %}
     <div><h3>Catalog</h3></div>
     <div>
-        <select id="catalog" style="width: 20%;" class="selectpicker">
-            {% for catalog in schedule.0.catalogs.all %}
+        <select id="catalog" style="width: 20%;" class="selectpicker" multiple>
+            {% for catalog in catalogs %}
                 <option value="{{catalog.id}}">{{catalog.name}}</option>
             {% endfor %}
         </select>
     </div>
-    <div><h3>Price</h3></div>
+    <div><h3>Price Adjustment</h3></div>
     <div>
-        <input type="number" step="100" class="form-control" style="width: 20%;" id="price" value="{{ schedule.0.catalogs.all.0.price }}">
+        <input type="number" step="5" class="form-control" style="width: 20%;" id="price" value="0">
     </div>
     <div>
         <label>
-            This will influence to current unfinished schedule {{ schedule.0.name }}!
+            This will influence current unfinished schedule {{ schedule.name }}!
         </label>
     </div>
     <div style="margin-top: 20px">

@@ -1,0 +1,30 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Recently Savelogs</h1></div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Member</th>
+                <th>Savings</th>
+                <th>Date</th>
+                <th>Save By</th>
+                <th>Comment</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+                <tr>
+                    <td>{{log.memberName.name}}</td>
+                    <td>{{log.money}}</td>
+                    <td>{{log.tranDate}}</td>
+                    <td>{{log.adminName.name}}</td>
+                    <td>{{log.comment}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

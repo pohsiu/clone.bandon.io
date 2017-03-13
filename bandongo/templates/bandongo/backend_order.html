@@ -5,7 +5,7 @@
 {% block content %}
 <div class="container">
 	{% if schedule %}
-    <div><h1>Schedule</h1></div>
+    <div style="position: relative"><h1>Schedule</h1><a class="btn btn-default" href="/backend/schedule/{{schedule.id}}/" role="button" style="position: absolute; right: 8px; bottom: 0;">Detail</a></div>
         <table class="table">
             <thead>
                 <tr>
