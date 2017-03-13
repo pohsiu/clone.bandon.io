@@ -1,0 +1,73 @@
+{% extends 'bandongo/frontend_base.html' %}
+{% load staticfiles %}
+
+{% block script %}
+<link rel="stylesheet" href="{% static 'css/robot.css' %}">
+<script type="text/javascript"> 
+   var member_name = "{{de_member.name}}";
+</script>
+
+<script src="{% static 'js/frontend_robotMessage.js' %}"></script>
+
+
+{% endblock %}
+
+
+{% block subcontent %}
+   
+    
+
+<div class="panel panel-primary">
+    <div class="panel-heading">
+        <span class="glyphicon glyphicon-comment"></span>&nbsp&nbsp即時客服
+        <div class="btn-group pull-right">
+            <!--<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">-->
+            <!--    <span class="glyphicon glyphicon-chevron-down"></span>-->
+            <!--</button>-->
+            <!--<ul class="dropdown-menu slidedown">-->
+            <!--    <li><a href="http://www"><span class="glyphicon glyphicon-refresh">-->
+            <!--    </span>Refresh</a></li>-->
+            <!--    <li class="divider"></li>-->
+            <!--</ul>-->
+        </div>
+    </div>
+    <div class="panel-body">
+        <ul class="chat" id='chatbox'>
+            <li class="left clearfix">
+                <span class="chat-img pull-left">
+                <img src="http://placehold.it/50/55C1E7/fff&amp;text=!" alt="User Avatar" class="img-circle">
+                </span>
+                <div class="chat-body clearfix">
+                <div class="header">
+                <strong class="primary-font">小幫手</strong>
+                <!--<small class="pull-right text-muted">-->
+                <!--    <span class="glyphicon glyphicon-time"></span>now-->
+                <!--</small>-->
+                </div>
+                <p>
+                    {{de_member.name}}您好，請問有什麼問題呢？
+                </p>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div class="panel-footer">
+        <div class="input-group">
+            <input id="btn-input" type="text" class="form-control input-sm" onkeydown = "if (event.keyCode == 13) document.getElementById('btn-chat').click()" placeholder="在此輸入訊息........">
+            <span class="input-group-btn">
+            <button id="btn-chat" onclick="postMessage()"  class="btn btn-warning btn-sm" >
+                送出
+            </button>
+            </span>
+        </div>
+    </div>
+</div>
+
+
+
+       
+    
+           
+                
+    
+{% endblock %}

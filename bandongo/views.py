@@ -64,7 +64,16 @@ def filter_json(request):
         
     return JsonResponse({'member_list': models, 'mark_list': marks})
 
+def post_msg(request):
+    user_msg = request.POST['inputMsg']
+    robot_msg = "YOLO"
+    return HttpResponse(robot_msg)
 
+def frontend_robot(request,pk):
+    de_member = get_object_or_404(Member, pk=pk)
+    
+    return render(request,'bandongo/frontend_robot.html',{'de_member':de_member,'greeting_msg':greeting_msg,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
+    
 def check_order(request):
     schedule_id = request.POST['schedule_id']
     member_id = request.POST['member_id']
