@@ -80,7 +80,7 @@ def check_order(request):
         return HttpResponse("nothing")
 
 def add_order(request):
-    
+    checkExpire()
     foodJson=json.loads(request.POST["foodJson"])
     # print foodJson
     now = datetime.now()
@@ -110,6 +110,7 @@ def add_order(request):
         return HttpResponse(fail)
 
 def mark_detail(request, pk):
+    checkExpire()
     de_member = get_object_or_404(Member, pk=pk)
     now = datetime.now()
     schedules = Schedule.objects.filter(expire=False)
@@ -164,6 +165,7 @@ def today_order(request,pk):
     return render(request, 'bandongo/frontend_todayOrder.html',{'de_member':de_member,'today_foods':today_foods,'today_drinks':today_drinks,'greeting_msg':greeting_msg,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
 
 def delete_food(request):
+    checkExpire()
     now = datetime.now()
     order = FoodOrder.objects.get(id=request.POST['id'])
     order_duedate = Schedule.objects.filter(name=order.scheduleName)[0].date
@@ -181,6 +183,7 @@ def delete_food(request):
 
 
 def delete_drink(request):
+    checkExpire()
     now = datetime.now()
     order = DrinkOrder.objects.get(id=request.POST['id'])
     order_duedate = Schedule.objects.filter(name=order.scheduleName)[0].date
@@ -587,6 +590,7 @@ def editSchedule(request):
         DrinkOrder.objects.filter(scheduleName=schedule).delete()
     schedule.drink=Drink.objects.get(id=request.POST["drink"])
     schedule.save()
+    checkExpire()
 
     return HttpResponse("Edit Schedule Successfully")
 
