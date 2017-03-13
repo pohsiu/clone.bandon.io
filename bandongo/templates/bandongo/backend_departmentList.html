@@ -1,0 +1,39 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}<script>
+
+</script>{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Department List</h1></div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>Department</th>
+                <th>Bag</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for department in departments %}
+                <tr id="{{ department.id }}">
+                    <td>{{ department.id }}</td>
+                    <td><a href="/backend/department/{{ department.id }}">{{ department.name }}</a></td>
+                    <td>{{ department.bag }}</td>
+                    <td>
+                        <span class="glyphicon glyphicon-remove" style="cursor: pointer;" aria-hidden="true" onclick="
+                            $.post(
+                                '/backend/deleteDepartment',
+                                {id: {{department.id}} },
+                                function(response) {
+                                  alert(response);
+                                  $('#{{department.id}}').remove();
+                                }
+                            );">
+                        </span>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
