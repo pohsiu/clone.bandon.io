@@ -38,12 +38,12 @@
     
     
     {% if schedules %}
-        
+        <h2 id='hold'></h2>
         {%if due_date %}
-            <table class="table">
+            <table class="table" id='top_table'>
                 
                 <div style="color:#F74906;" class="col-sm-4">
-                    <h3>截止時間：{{due_date | date:'m/d H:i'}}</h3>
+                    <h3 id='label_duedate'>截止時間：{{due_date | date:'m/d H:i'}}</h3>
                 </div>
                 <div class="col-sm-2"></div>
                 <div style="color:#F74906;" class="col-sm-4">
@@ -208,7 +208,7 @@ var countDownDate = new Date("{{ due_date | date:'Y/m/d H:i'}}").getTime();
 
 
 var x = setInterval(function() {
-
+    var member_id = document.forms["orderform"]["member_id"].value;
     
     var now = new Date().getTime();
     
@@ -231,7 +231,12 @@ var x = setInterval(function() {
     if (distance < 0) {
         clearInterval(x);
         document.getElementById("countDownTimer").innerHTML = "時間到!";
-        window.location.reload();
+        $('#orderForm').remove();
+        $('#label_duedate').remove();
+        $('#countDownTimer').remove();
+        $('#top_table').remove();
+        document.getElementById("hold").innerHTML= "統計截止，不便之處請見諒";
+        
     }
 }, 1000);
 </script>
