@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404
 from models import Member, Savelog, Food, Drink, Schedule, Catalog, FoodOrder, DrinkOrder, Message
 from models import Category, WishFood, WishDrink
 
-from .forms import MemberForm, PicForm, CatalogForm, FoodForm, DrinkForm
+from .forms import MemberForm, PicForm, CatalogForm, FoodForm, DrinkForm, DepartmentForm
 from django.shortcuts import render_to_response, RequestContext
 from django.contrib import auth
 from django.contrib.auth.decorators import login_required
@@ -89,7 +89,7 @@ def check_order(request):
         return HttpResponse("nothing")
 
 def add_order(request):
-    
+    checkExpire()
     foodJson=json.loads(request.POST["foodJson"])
     # print foodJson
     now = datetime.now()
@@ -119,6 +119,7 @@ def add_order(request):
         return HttpResponse(fail)
 
 def mark_detail(request, pk):
+    checkExpire()
     de_member = get_object_or_404(Member, pk=pk)
     now = datetime.now()
     schedules = Schedule.objects.filter(expire=False)
@@ -173,6 +174,7 @@ def today_order(request,pk):
     return render(request, 'bandongo/frontend_todayOrder.html',{'de_member':de_member,'today_foods':today_foods,'today_drinks':today_drinks,'greeting_msg':greeting_msg,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
 
 def delete_food(request):
+    checkExpire()
     now = datetime.now()
     order = FoodOrder.objects.get(id=request.POST['id'])
     order_duedate = Schedule.objects.filter(name=order.scheduleName)[0].date
@@ -190,6 +192,7 @@ def delete_food(request):
 
 
 def delete_drink(request):
+    checkExpire()
     now = datetime.now()
     order = DrinkOrder.objects.get(id=request.POST['id'])
     order_duedate = Schedule.objects.filter(name=order.scheduleName)[0].date
@@ -563,6 +566,22 @@ def savelogPage(request):
     
     return render(request, 'bandongo/backend_savelog.html',{'logs': savelogs})
 
+@login_required(login_url='/backend/login/')
+def addDepartmentPage(request):
+    form = DepartmentForm()
+    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'action': "addDepartment", 'title': 'Add Department'})
+
+@login_required(login_url='/backend/login/')
+def departmentListPage(request):
+    departments=Category.objects.all().order_by('bag')
+    return render(request, 'bandongo/backend_departmentList.html',{'departments': departments})
+
+@login_required(login_url='/backend/login/')
+def editDepartmentPage(request, id):
+    department=Category.objects.get(id=id)
+    form = DepartmentForm(instance=department)
+    return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Department', 'action': 'editDepartment/'+id})
+
 
 ## function part
 @login_required(login_url='/backend/login/')
@@ -596,6 +615,7 @@ def editSchedule(request):
         DrinkOrder.objects.filter(scheduleName=schedule).delete()
     schedule.drink=Drink.objects.get(id=request.POST["drink"])
     schedule.save()
+    checkExpire()
 
     return HttpResponse("Edit Schedule Successfully")
 
@@ -712,6 +732,7 @@ def addCatalogBatch(request):
 
     return HttpResponse("Added successfully.")
 
+@login_required(login_url='/backend/login/')
 def editCatalog(request, id):
     catalog=Catalog.objects.get(id=id)
     form = CatalogForm(request.POST, request.FILES, instance=catalog)
@@ -721,6 +742,7 @@ def editCatalog(request, id):
     else:
         return HttpResponse("<script>alert('not valid form')</script>")
 
+@login_required(login_url='/backend/login/')
 def catalogChangePrice(request):
     catalogs=Catalog.objects.filter(id__in=request.POST.getlist("catalog[]"))
     price=int(request.POST["price"])
@@ -732,6 +754,7 @@ def catalogChangePrice(request):
             order.save()
     return HttpResponse("Change price successfully.")
 
+@login_required(login_url='/backend/login/')
 def deleteCatalog(request):
     catalog=Catalog.objects.get(id=request.POST["id"])
     catalog.delete()
@@ -746,6 +769,7 @@ def addFood(request):
     else:
         return HttpResponse("<script>alert('not valid upload')</script>")
 
+@login_required(login_url='/backend/login/')
 def editFoodShop(request, id):
     shop=Food.objects.get(id=id)
     form = FoodForm(request.POST, request.FILES, instance=shop)
@@ -755,6 +779,7 @@ def editFoodShop(request, id):
     else:
         return HttpResponse("<script>alert('not valid form')</script>")
 
+@login_required(login_url='/backend/login/')
 def deleteFoodShop(request):
     food=Food.objects.get(id=request.POST["id"])
     food.delete()
@@ -769,6 +794,7 @@ def addDrink(request):
     else:
         return HttpResponse("<script>alert('not valid upload')</script>")
 
+@login_required(login_url='/backend/login/')
 def editDrinkShop(request, id):
     shop=Drink.objects.get(id=id)
     form = DrinkForm(request.POST, request.FILES, instance=shop)
@@ -778,11 +804,13 @@ def editDrinkShop(request, id):
     else:
         return HttpResponse("<script>alert('not valid form')</script>")
 
+@login_required(login_url='/backend/login/')
 def deleteDrinkShop(request):
     drink=Drink.objects.get(id=request.POST["id"])
     drink.delete()
     return HttpResponse("Deleted successfully.")
 
+@login_required(login_url='/backend/login/')
 def emergency(request):
     schedule=Schedule.objects.filter(finish=False)
     if len(schedule)>0:
@@ -799,6 +827,7 @@ def emergency(request):
     else:
         return HttpResponse("No non-finished schedule")
 
+@login_required(login_url='/backend/login/')
 def setMessage(request):
     m=Message.objects.get(id=request.POST["message"])
     m.content=request.POST["content"]
@@ -808,6 +837,30 @@ def setMessage(request):
     print request.POST["content"]
     return HttpResponse("Set message successfully.")
 
+@login_required(login_url='/backend/login/')
+def addDepartment(request):
+    form = DepartmentForm(request.POST)
+    if form.is_valid():
+        form.save()
+        return HttpResponse("<script>alert('add successfully'); window.location.replace('/backend/addDepartmentPage/')</script>")
+    else:
+        return HttpResponse("<script>alert('not valid form'); window.location.replace('/backend/departmentListPage/')</script>")
+
+@login_required(login_url='/backend/login/')
+def editDepartment(request, id):
+    department=Category.objects.get(id=id)
+    form = DepartmentForm(request.POST, instance=department)
+    if form.is_valid():
+        form.save()
+        return HttpResponseRedirect("/backend/departmentListPage/")
+    else:
+        return HttpResponse("<script>alert('not valid form')</script>")
+
+@login_required(login_url='/backend/login/')
+def deleteDepartment(request):
+    department=Category.objects.get(id=request.POST["id"])
+    department.delete()
+    return HttpResponse("Deleted successfully.")
 
 def checkExpire():
     nonFinish=Schedule.objects.filter(finish=False)

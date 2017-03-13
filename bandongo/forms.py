@@ -1,5 +1,5 @@
 from django import forms
-from models import Member, Catalog, Food, Drink
+from models import Member, Catalog, Food, Drink, Category
 class MemberForm(forms.ModelForm):
     class Meta:
         model = Member
@@ -43,6 +43,14 @@ class DrinkForm(forms.ModelForm):
             'remark': forms.TextInput(attrs={'class': 'form-control'}),
         }
 
+class DepartmentForm(forms.ModelForm):
+    class Meta:
+        model = Category
+        fields = ['name', 'bag']
+        widgets = {
+            'name': forms.TextInput(attrs={'class': 'form-control'}),
+            'bag': forms.NumberInput(attrs={'class': 'form-control'}),
+        }
 
 
 
