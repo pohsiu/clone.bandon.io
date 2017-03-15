@@ -64,10 +64,10 @@
         <!-- Page Content -->
         <div id="container">
             <div class="row" style="margin-left: 10px; margin-right: 10px;">
-                    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
-                        {% if homePicPath %}
-                            <img src="{{homePicPath}}" class="img-responsive"  width="400" height="360" style="margin-bottom: 10px; display:block; margin:auto;">
-                        {% endif %}
+                    <div class="col-lg-5 col-md-5 col-sm-12 col-xs-12" id = "loading">
+                        <!--{% if homePicPath %}-->
+                        <!--    <img src="{{homePicPath}}" class="img-responsive"  width="400" height="360" style="margin-bottom: 10px; display:block; margin:auto;">-->
+                        <!--{% endif %}-->
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
                         {% block content %}
@@ -88,4 +88,16 @@
 
 </body>
 <footer style="margin-top: 60px; padding-top: 10px; padding-bottom:10px; background-color:#383838; color: #f5f5f5; text-align: center;">&copy;Copyrights 2017. All rights reserved.</footer>
+
+<script>
+    $(window).ready(function() {
+        var exist = "{{homePicPath}}";
+        if(exist){
+            $('#loading').append('\
+               <img src="{{homePicPath}}" class="img-responsive"  width="400" height="360" style="margin-bottom: 10px; display:block; margin:auto;">\
+            ');
+        }
+    });
+</script>
+
 </html>
