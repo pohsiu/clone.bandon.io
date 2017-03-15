@@ -28,7 +28,51 @@ from django.core.files.base import ContentFile
 from django.db.models import Q
 import os
 import json
+import numpy as np
+import jieba
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+from sentence2vec.word2vec import Word2Vec, Sent2Vec, LineSentence
 
+
+with open('bandongo/sentence2vec/haha.sentvec', 'r') as myfile:
+    data=myfile.readlines()
+with open('bandongo/sentence2vec/haha', 'r') as myfile:
+    sentence = myfile.readlines()
+for i in sentence:
+    i = i.replace(' ', "").replace('\n', "")
+sent_bank = []
+for i in range(len(data)):
+    sent_bank.append(np.array(data[i].replace('\n','').split(' ')[1:], dtype=np.float32))
+
+def bot_reply(input):
+    seg = jieba.cut(input, cut_all=True)
+    sent_file = 'bandongo/sentence2vec/output'
+    seg2 = " ".join(seg)
+    output = open(sent_file,'w')
+    output.write(seg2.encode('utf8'))
+    output.close()
+    #model = Sent2Vec(LineSentence(sent_file), model_file='bandongo/sentence2vec/data_seg' + '.model')
+    #model.save_sent2vec_format(sent_file + '.sentvec')
+    
+    #with open(sent_file+'.sentvec', 'r') as myfile:
+        #mysent = myfile.read().replace('\n', "")
+    #myfile.close()
+    mysent_vec = np.random.random((1,100))*10+np.random.random((1,100))
+    #mysent_vec = np.array(mysent.split(' ')[2:], dtype=np.float32)
+    if mysent_vec.shape[0] == 0:
+        answer_sent  = "What?"
+        return answer_sent
+    max = 0
+    answer_sent = ""
+    for i in range(len(sent_bank)):
+        score = np.dot(mysent_vec,sent_bank[i])/(np.linalg.norm(mysent_vec)*np.linalg.norm(sent_bank[i]))
+        if score >= max and input != sentence[i].replace(' ', "").replace('\n' ,""):
+            max = score
+            answer_sent = sentence[i]
+    return answer_sent
+    
 greeting_msg = Message.objects.filter(usage="greeting message")
 msg_morning = Message.objects.filter(usage="greeting msg morning")
 msg_noon = Message.objects.filter(usage="greeting msg noon")
@@ -66,7 +110,7 @@ def filter_json(request):
 
 def post_msg(request):
     user_msg = request.POST['inputMsg']
-    robot_msg = "YOLO"
+    robot_msg = bot_reply(user_msg)
     return HttpResponse(robot_msg)
 
 def frontend_robot(request,pk):
