@@ -2,6 +2,7 @@
 {% load staticfiles %}
 
 {% block script %}
+<link rel="stylesheet" href="{% static 'css/wish.css' %}">
 <script src="{% static 'js/frontend_addWishMeal.js' %}"></script>
 {% endblock %}
 
@@ -9,30 +10,77 @@
 {% block subcontent %}
    
     
-    <div><h3 style="color:#F74906;">心誠則靈許願池</h3></div>
-        <input type="hidden" id="id" value="{{de_member.id}}"/>
-        <div class="form-group">
-            <label for="wish_eat">明天想吃什麼</label>
-            <select class="form-control" id="wish_eat">
-                {% for foods in foodshops %}
-                    <option value='{{foods.id}}'>{{foods.name}}</option>
-                {% endfor%}
-            </select>
-        </div>
-        <div class="form-group">
-            <label for="wish_drink">明天想喝什麼</label>
-            <select class="form-control" id="wish_drink">
-                {% for drinks in drinkshops %}
-                    {% if drinks.name == '休' %}
-                        <option value='{{drinks.id}}'>讓飲料休吧，別再誘惑我了!!!</option>
-                    {% else %}
-                        <option value='{{drinks.id}}'>{{drinks.name}}</option>
-                    {% endif %}
-                {% endfor%}
-            </select>
-        </div>
-        <button type="submit" onclick="submit()" class="btn btn-primary">送出</button>
+    <div>
+        <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">心誠則靈</a></li>
+                <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">寫下心願</a></li>
+                
+            </ul>
+        
+           
+        
+        
+        <!--<div class="pull-right">-->
+            
+        <!--</div>-->
+            
+            <!-- Tab panes -->
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <div>
+                        <div><h3 style="color:#F74906;">許下你心中期盼已久的希冀...</h3></div>
+                        <input type="hidden" id="id" value="{{de_member.id}}"/>
+                        <div class="form-group">
+                            
+                            <label for="wish_eat">明天想吃什麼</label>
+                            <select class="form-control" id="wish_eat">
+                                {% for foods in foodshops %}
+                                    <option value='{{foods.id}}'>{{foods.name}}</option>
+                                {% endfor%}
+                            </select>
+                            
+                        </div>
+                        <div class="form-group">
+                            <label for="wish_drink">明天想喝什麼</label>
+                            <select class="form-control" id="wish_drink">
+                                {% for drinks in drinkshops %}
+                                    {% if drinks.name == '休' %}
+                                        <option value='{{drinks.id}}'>讓飲料休吧，別再誘惑我了!!!</option>
+                                    {% else %}
+                                        <option value='{{drinks.id}}'>{{drinks.name}}</option>
+                                    {% endif %}
+                                {% endfor%}
+                            </select>
+                        </div>
+                        <button type="submit" onclick="submit()" class="btn btn-primary">送出</button>
+                    </div>                    
+                    
+                </div>
+                <div role="tabpanel" class="tab-pane" id="profile">
+                    <div>
+                        <div><h3 style="color:#F74906;">為午餐埋下一顆希望的種子...</h3></div>
+                        <input type="hidden" id="id" value="{{de_member.id}}"/>
+                        <div class="form-group">
+                            
+                            <label for="wish_eat">告訴我們，還有哪些店很好吃呢?</label>
+                            <input type="text" class="form-control" id="textfood" placeholder="湘南大道日式料理">
+                            <label for="wish_eat">告訴我們，還有哪些飲料很好喝呢?</label>
+                            <input type="text" class="form-control" id="textdrink" placeholder="我大竹北夢糟糠">
+                        </div>
+                        
+                        <button type="submit" onclick="recommendSubmit()" class="btn btn-primary">送出</button>
+                    </div>
+                </div>
+                
+            
 
+        </div>
+            
+        
+        
+    </div>
+    
        
     
            

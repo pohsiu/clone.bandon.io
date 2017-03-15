@@ -1,7 +1,7 @@
 # coding=UTF8
 from django.shortcuts import render, get_object_or_404
 from models import Member, Savelog, Food, Drink, Schedule, Catalog, FoodOrder, DrinkOrder, Message
-from models import Category, WishFood, WishDrink
+from models import Category, WishFood, WishDrink, Notification
 
 from .forms import MemberForm, PicForm, CatalogForm, FoodForm, DrinkForm, DepartmentForm
 from django.shortcuts import render_to_response, RequestContext
@@ -258,6 +258,20 @@ def wish_meal(request, pk):
 
 
     return render(request, 'bandongo/frontend_wishMeal.html',{'de_member':de_member,'foodshops':foodshops,'drinkshops':drinkshops,'greeting_msg':greeting_msg,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
+
+
+def add_text_meal(request):
+    member = Member.objects.get(id=request.POST['id'])
+    now = datetime.now()
+    if request.POST['food']:
+        textFood = request.POST['food']
+        Notification.objects.create(classification=2,subject=member,content=textFood,date=now)
+    if request.POST['drink']:
+        textDrink = request.POST['drink']
+        Notification.objects.create(classification=2,subject=member,content=textDrink,date=now)
+    responseMsg = "您的心聲我們聽到了，相信您的付出會使餐飲變的更美好~"
+    
+    return HttpResponse(responseMsg)
 
 def add_wish_meal(request):
     
