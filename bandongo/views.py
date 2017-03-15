@@ -305,7 +305,8 @@ def terms_of_use(request, pk):
 ## page part
 def homePage(request):
     members=Member.objects.all()
-    return render(request, 'bandongo/backend_home.html',{'balance': sum(map(lambda member: member.saving, members))})
+    notifications=Notification.objects.filter(read=False)
+    return render(request, 'bandongo/backend_home.html',{'balance': sum(map(lambda member: member.saving, members)), 'notifications': notifications})
 
 def login(request):
     if request.user.is_authenticated(): 
