@@ -1,7 +1,7 @@
 function postMessage() {
     var inputMsg = $("#btn-input").val();
     
-    
+    if(inputMsg!=""){
     userMsg(inputMsg);
     
     $.post(
@@ -11,7 +11,7 @@ function postMessage() {
                 robotMsg(response);
             }
         );
-    
+    }
     
     
 
