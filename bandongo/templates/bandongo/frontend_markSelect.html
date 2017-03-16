@@ -73,16 +73,20 @@
     {{home_message.0.content|safe}}
     <br>
     {% if s_latest %}
-        {% if s_latest.0.arrived == False %}
-            <h3 style="clear: both; display: inline-block; overflow: hidden; white-space: nowrap;"><b>【{{s_latest.0.name}}】</b></h3>
-            <h4>精選店家：{{s_latest.0.food}}</h4>
-            <h4>精選飲料：{{s_latest.0.drink}}</h4>
-            <h4>餐點狀態：尚未抵達，請耐心等候</h4>
-        {% elif s_latest.0.arrived == True %}
-            <h3 style="clear: both; display: inline-block; overflow: hidden; white-space: nowrap;"><b>【{{s_latest.0.name}}】</b></h3>
-            <h4>精選店家：{{s_latest.0.food}}</h4>
-            <h4>精選飲料：{{s_latest.0.drink}}</h4>
+        <h3 style="clear: both; display: inline-block; overflow: hidden; white-space: nowrap;"><b>【{{s_latest.0.name}}】</b></h3>
+        <h4>精選店家：{{s_latest.0.food}}</h4>
+        <h4>精選飲料：{{s_latest.0.drink}}</h4>
+        {% if s_latest.0.foodArrived %}
             <h4>餐點狀態：已抵達，請逕行取餐</h4>
+        {% else %}
+            <h4>餐點狀態：尚未抵達，請耐心等候</h4>
+        {% endif %}
+        {% if s_latest.0.drink.name != '休' %}
+            {% if s_latest.0.drinkArrived %}
+                <h4>飲料狀態：已抵達，請逕行取餐</h4>
+            {% else %}
+                <h4>飲料狀態：尚未抵達，請耐心等候</h4>
+            {% endif %}
         {% endif %}
     {% endif%}
     <form name="markform" action="" onsubmit="return validateForm()" method="POST" accept-charset="utf-8">{% csrf_token %}

@@ -12,10 +12,10 @@ function finish() {
     );
 }
 
-function arrive() {
+function arrive(type) {
     var id=$("#id").html();
     $.post(
-        "/backend/arriveSchedule",
+        "/backend/"+type+"Arrive",
         {id: id},
         function(response) {
           alert(response);
