@@ -5,12 +5,14 @@
 
 
 {% block script %}
+
         <script type="text/javascript">
             // var js_mark_list = "{{ mark_list }}";
             // console.log(js_mark_list);
             // alert(typeof(js_mark_list));
         </script>
         <script>
+    
     $(document).ready(
         function () {
             var url = "/mark/json_models";
@@ -69,9 +71,12 @@
         
         
 {% block content%}
-    <br><br>
-    {{home_message.0.content|safe}}
     <br>
+    <div>
+        <marquee scroll="continuous" onMouseOver="this.scrollAmount=0" onMouseOut="this.scrollAmount=1" scrollamount="1" direction="up" loop="true" width="100%" height="70">
+            {{home_message.0.content|safe}}
+        </marquee>
+    </div>
     {% if s_latest %}
         <h3 style="clear: both; display: inline-block; overflow: hidden; white-space: nowrap;"><b>【{{s_latest.0.name}}】</b></h3>
         <h4>精選店家：{{s_latest.0.food}}</h4>
@@ -110,7 +115,7 @@
         </div>
         <br>
         <button type="submit" class="btn btn-default">送出</button>
-        <br><br><br>
+        <br>
     </form>
 
 {%endblock%}

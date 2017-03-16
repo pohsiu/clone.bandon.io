@@ -39,10 +39,14 @@ jieba.initialize()
 jieba.set_dictionary('bandongo/dict.txt.big')
 model = Doc2Vec.load('bandongo/womentalk_contents.doc2vec.model')
 
-with open('bandongo/selected_ptt_seg', 'r') as myf:
+with open('bandongo/selected_ptt_comments_seg', 'r') as myf:
     sentbank = myf.readlines()
 for i in range(len(sentbank)):                                                                                                                      
     sentbank[i] = sentbank[i].replace('\n', ' ').split()
+with open('bandongo/selected_ptt_comments', 'r') as myf:
+    ansbank = myf.readlines()
+for i in range(len(sentbank)):                                                                                                                      
+    ansbank[i] = ansbank[i].replace('\n', ' ')
 
     
     
@@ -74,7 +78,7 @@ def bot_reply(real_input):
         score = model.n_similarity(sent,real_input)
         if score >= max:
             max = score
-            answer = sentbank[i]
+            answer = ansbank[i]
     return ''.join(answer)
 
 
