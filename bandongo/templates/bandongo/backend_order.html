@@ -17,7 +17,8 @@
                     <th>Drink Phone</th>
                     <th>Due Date Time</th>
                     <th>Expired</th>
-                    <th>Arrived</th>
+                    <th>Food Arrived</th>
+                    <th>Drink Arrived</th>
                     <th>Finished</th>
                 </tr>
             </thead>
@@ -31,7 +32,8 @@
                     <td>{{ schedule.drink.telephone }}</td>
                     <td>{{ schedule.date }}</td>
                     <td>{{ schedule.expire }}</td>
-                    <td>{{ schedule.arrived }}</td>
+                    <td>{{ schedule.foodArrived }}</td>
+                    <td>{{ schedule.drinkArrived }}</td>
                     <td>{{ schedule.finish }}</td>
                 </tr>
             </tbody>
@@ -123,11 +125,14 @@
             </tbody>
         </table>
     	<div style="margin-top: 20px">
-            {% if schedule.arrived %}
-        	   <button id="finish" class="btn btn-default" onclick="finish();">Finish</button>
+    	    {% if not schedule.foodArrived %}
+                <button class="btn btn-default" onclick="arrive('food');">Food Arrived</button>
             {% endif %}
-            {% if not schedule.arrived %}
-                <button class="btn btn-default" onclick="arrive();">Arrive</button>
+            {% if not schedule.drinkArrived %}
+                <button class="btn btn-default" onclick="arrive('drink');">Drink Arrived</button>
+            {% endif %}
+            {% if schedule.foodArrived and schedule.drinkArrived%}
+        	   <button id="finish" class="btn btn-default" onclick="finish();">Finish</button>
             {% endif %}
     	</div>
     {% else %}

@@ -44,7 +44,7 @@ class FoodAdmin(admin.ModelAdmin):
 class DrinkAdmin(admin.ModelAdmin):
     list_display = ('id', 'name','pic','telephone','address','remark')
 class ScheduleAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'food', 'get_catalogs', 'drink','date','expire', 'arrived', 'finish')
+    list_display = ('id', 'name', 'food', 'get_catalogs', 'drink','date','expire', 'foodArrived', 'drinkArrived', 'finish')
     def get_catalogs(self, obj):
         return "\n".join([p.name for p in obj.catalogs.all()])
 class CategoryAdmin(admin.ModelAdmin):
