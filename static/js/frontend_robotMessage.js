@@ -35,7 +35,7 @@ function robotMsg(feedback){
         </div>\
     </li>\
     ');
-        
+    scrolling();
     }
 function userMsg(msg){
     $("#chatbox").append('\
@@ -54,4 +54,9 @@ function userMsg(msg){
     </li>\
     ');
     $("#btn-input").val("");
+    scrolling();
+}
+function scrolling(){
+    var chatdiv = document.getElementById("panel-body");
+    chatdiv.scrollTop = chatdiv.scrollHeight;
 }
