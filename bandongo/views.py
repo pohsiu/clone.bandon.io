@@ -99,12 +99,7 @@ def post_msg(request):
     user_msg = request.POST['inputMsg']
     seg = jieba.cut(user_msg, cut_all=False)
     seg2 = " ".join(seg)
-    file = open("output", 'w')
-    file.write(seg2)
-    file.close()
-    file = open("output", 'r')
-    user_msg2 = file.read()
-    real_input = filter(lambda x: x in model.wv.vocab, user_msg2.split())
+    real_input = filter(lambda x: x in model.wv.vocab, str(seg2).split())
     if len(real_input) == 0:
         return HttpResponse("你在說什麼？")
     else:

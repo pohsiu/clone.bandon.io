@@ -37,6 +37,8 @@ function recommendSubmit() {
                   });
             }
         );
+        $("#textfood").val("");
+        $("#textdrink").val("");
     }
         
     
