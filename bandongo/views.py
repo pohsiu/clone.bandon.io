@@ -634,6 +634,11 @@ def editDepartmentPage(request, id):
     form = DepartmentForm(instance=department)
     return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Department', 'action': 'editDepartment/'+id})
 
+@login_required(login_url='/backend/login/')
+def notificationPage(request):
+    nots=Notification.objects.all()[:15]
+    return render(request, 'bandongo/backend_notification.html',{'nots': nots})
+
 
 ## function part
 @login_required(login_url='/backend/login/')
@@ -926,6 +931,14 @@ def deleteDepartment(request):
     department.delete()
     return HttpResponse("Deleted successfully.")
 
+@login_required(login_url='/backend/login/')
+def readNot(request):
+    notification=Notification.objects.filter(id=request.POST["not"])
+    if len(notification)==1:
+        notification.update(read=True)
+        return HttpResponse("Read successfully.")
+    else:
+        return HttpResponse("Database Error")
 def checkExpire():
     nonFinish=Schedule.objects.filter(finish=False)
     for schedule in nonFinish:
