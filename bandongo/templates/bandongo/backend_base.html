@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Backend</title>
+        <title>竹簡訂餐後台</title>
+        <link rel="icon" href="{%static 'icon/lunch-icon-23.png' %}">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.min.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-select.min.css' %}">
@@ -82,6 +83,7 @@
                 <li><a href="/backend/order/">Order</a></li>
               </ul>
               <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Frontend</a></li>
                 <li><a href="/backend/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
               </ul>
               {% else %}
