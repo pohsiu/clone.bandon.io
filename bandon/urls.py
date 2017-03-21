@@ -87,6 +87,7 @@ urlpatterns = [
     url(r'^backend/addDepartmentPage/$', views.addDepartmentPage),
     url(r'^backend/departmentListPage/$', views.departmentListPage),
     url(r'^backend/department/([0-9]+)/$', views.editDepartmentPage),
+    url(r'^backend/notificationPage/$', views.notificationPage),
     
     ## function part
     url(r'^backend/setSchedule$', views.setSchedule),
@@ -115,6 +116,7 @@ urlpatterns = [
     url(r'^backend/addDepartment$', views.addDepartment),
     url(r'^backend/editDepartment/([0-9]+)$', views.editDepartment),
     url(r'^backend/deleteDepartment$', views.deleteDepartment),
+    url(r'^backend/readNot$', views.readNot),
     
     url(r'^getCateMem$', views.getCateMem),
     url(r'^getShopCat$', views.getShopCat),

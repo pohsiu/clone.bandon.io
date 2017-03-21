@@ -1,6 +1,19 @@
 {% extends "bandongo/backend_base.html" %}
 {% load staticfiles%}
 {% block js %}
+<script>
+    function read(not) {
+        $.post(
+            "/backend/readNot",
+            {not: not},
+            function(response) {
+              alert(response);
+            }
+        );
+        
+        $("#"+not).html("Already Read");
+    }
+</script>
 {% endblock %}
 {% block css %}
 {% endblock %}
@@ -28,7 +41,7 @@
                         <td>{{not.subject}}</td>
                         <td>{{not.content}}</td>
                         <td>{{not.date}}</td>
-                        <td>{{not.read}}</td>
+                        <td id="{{not.id}}"><button class="btn btn-default" onclick="read({{not.id}})">Got it.</button></td>
                     </tr>
                     {% endfor %}
                 </tbody>

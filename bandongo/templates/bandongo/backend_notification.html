@@ -1,0 +1,32 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Notification List</h1></div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Type</th>
+                    <th>Member</th>
+                    <th>Content</th>
+                    <th>Date</th>
+                    <th>Read</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for notification in nots %}
+                <tr>
+                    <td>{{ notification.id }}</td>
+                    <td>{{ notification.classification }}</td>
+                    <td>{{ notification.subject }}</td>
+                    <td>{{ notification.content }}</td>
+                    <td>{{ notification.date }}</td>
+                    <td>{{ notification.read }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+</div>
+{% endblock %}
