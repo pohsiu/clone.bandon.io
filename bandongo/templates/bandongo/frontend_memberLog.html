@@ -1,102 +1,194 @@
 {% extends 'bandongo/frontend_base.html' %}
+{% load staticfiles %}
+{% load custom_tag %}
+
+
+{% block script %}
+<script src="{% static 'js/frontend_logControl.js' %}"></script>
+{% endblock %}
+
 
 {% block subcontent %}
    
-    {% if savelogs %}
-        <div><h3 style="color:#F74906;">存款紀錄</h3></div>
-        <table class="table">
-            <thead style="background-color:#EDEDE4;">
-                <tr>
-                    <th class = "col-sm-4">存款日期</th>
-                    <th class = "col-sm-5">收款人</th>
-                    <th class = "col-sm-1">金額</th>
-                    <th class = "col-sm-2">備註</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for savings in savelogs %}
-                    <tr>
-                        <td>{{savings.tranDate|date:'Y-m-d H:i' }}</td>
-                        <td>{{savings.adminName}}</td>
-                        <td>{{savings.money}}</td>
-                        <td>{{savings.comment}}</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-            <tr>
-                <td colspan="2" style="font-weight:bold;">總存款</td>
-                <td style="font-weight:bold;">{{save_total}}</td>
-            </tr>
-        </table>
-    {% else %}
-        <h2>沒有儲值紀錄</h2>
-    {% endif %}
+    <div>
+        <!-- Nav tabs -->
+            <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#costlog" aria-controls="costlog" role="tab" data-toggle="tab">消費紀錄</a></li>
+                <li role="presentation"><a href="#savelog" aria-controls="savelog" role="tab" data-toggle="tab">存款紀錄</a></li>
+                
+            </ul>
+            
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="costlog">
+                    <div><h3 style="color:#F74906;">消費紀錄</h3></div>
+                    <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        <div class="row">
+                            <h4>
+                            <div class="col-sm-4">總花費</div>
+                            <div class="col-sm-4">{{cost_total}}</div>
+                            </h4>
+                        </div>
+                    </div>
+                    </div>
+                    
+                    <div class="panel panel-success">
+                    <div class="panel-heading"><h4>近五筆消費紀錄</h4>
+                    </div>
+                    {%if latest5 %}
+                    <div class="panel-body">
+                        <table class="table">
+                            <thead>
+                            <tr class ='warning'>
+                                <th class = "col-sm-3"><b>日期</b></th>
+                                <th class = "col-sm-3">店家</th>
+                                    <th class = "col-sm-3">品項</th>
+                                    <th class = "col-sm-1">數量</th>
+                                    <th class = "col-sm-1">金額</th>
+                                    <th class = "col-sm-1">備註</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        {%for dic in latest5%}
+                            <tr>
+                                <td>{{dic | get_item:"schedule" }}</td>
+                            {% for name,value in dic.items %}
+                                {%if name == "order" %}
+                                    {%for each in value%}
+                                    
+                                        {%if each.foodName%}
+                                            <td>{{each.scheduleName.food.name}}</td>
+                                            <td>{{each.foodName}}</td>
+                                        {%elif each.drinking%}
+                                            <td>{{each.scheduleName.drink.name}}</td>
+                                            <td>{{each.drinking}}</td>
+                                        {%endif%}
+                                            <td>{{each.num}}</td>
+                                            <td>{{each.price}}</td>
+                                            <td>{{each.remark}}</td>
+                                    </tr>    
+                                    {%endfor%}
+                                {%endif%}
+                            {%endfor%}
+                        {%endfor%}
+                            </tbody>
+                        </table>
+                    </div>
+                    {%endif%}
+                    </div>
+                    
+                    {%if listDicMonth %}
+                        
+                        <div class="panel panel-info">    
+                        {%for dic in listDicMonth%}
+                        
+                            <a href=#><div class="panel-heading" onclick="divclick({{forloop.counter0}})">
+                                <div class="row">
+                                    <h4>
+                                    <div class="col-sm-4">{{dic | get_month:"month" }}</div>
+                                    
+                                    
+                                    <div class="col-sm-4">月花費：{{dic | get_sum:"sum" }}</div>
+                                    </h4>
+                                </div>
+                            </a>
+                            </div>
+                            <div class="panel-body" style="display:none;" id ="div{{forloop.counter0}}">
+                        
+                            
+                            <!--<table class="table"  style="display:none;" id ="{{dic | get_month:'month' }}">-->
+                            <table class="table" >
+                                <thead>
+                                    <tr class ='warning'>
+                                    <!--<tr style="background-color:#EDEDE4;">-->
+                                        <td class = "col-sm-3"><b>日期</b></th>
+                                        <td class = "col-sm-3">店家</th>
+                                        <td class = "col-sm-3">品項</th>
+                                        <td class = "col-sm-1">數量</th>
+                                        <td class = "col-sm-1">金額</th>
+                                        <td class = "col-sm-1">備註</th>
+                                    </tr>
+                                </thead>
+                            
+                                <tbody>
+                                
+                                {% for name,value in dic.items %}
+                                    {% if name == "order" %}
+                                        {%for each in value%}
+                                        <tr>
+                                            <td >{{each.scheduleName.date|date:'m-d'}}</td>
+                                            {%if each.foodName%}
+                                                <td>{{each.scheduleName.food.name}}</td>
+                                                <td>{{each.foodName}}</td>
+                                            {%elif each.drinking%}
+                                                <td>{{each.scheduleName.drink.name}}</td>
+                                                <td>{{each.drinking}}</td>
+                                            {%endif%}
+                                            <td>{{each.num}}</td>
+                                            <td>{{each.price}}</td>
+                                            <td>{{each.remark}}</td>
+                                        </tr>    
+                                        {%endfor%}
+                                    {% endif %}
+                                {%endfor%}
+                                </tbody>
+                                </table>
+                            
+                         </div>
+                         
+                        {%endfor%}
+                        </div> 
+                    {%endif%}
+                    
+                    
+                   
+                    {% if money_tag == 'R' %}
+                        <div><h3 style="color:red;font-weight:bold;">餘額：{{total_sum}}</h3></div>
+                    {% else %}
+                        <div><h3 style="color:#003366;font-weight:bold;">餘額：{{total_sum}}</h3></div>
+                    {% endif%}
+                        
+                </div>
+                <div role="tabpanel" class="tab-pane" id="savelog">
+                    {% if savelogs %}
+                        <div><h3 style="color:#F74906;">存款紀錄</h3></div>
+                        <table class="table">
+                            <thead style="background-color:#EDEDE4;">
+                                <tr>
+                                    <th class = "col-sm-4">存款日期</th>
+                                    <th class = "col-sm-5">收款人</th>
+                                    <th class = "col-sm-1">金額</th>
+                                    <th class = "col-sm-2">備註</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for savings in savelogs %}
+                                    <tr>
+                                        <td>{{savings.tranDate|date:'Y-m-d H:i' }}</td>
+                                        <td>{{savings.adminName}}</td>
+                                        <td>{{savings.money}}</td>
+                                        <td>{{savings.comment}}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                            <tr>
+                                <td colspan="2" style="font-weight:bold;">總存款</td>
+                                <td style="font-weight:bold;">{{save_total}}</td>
+                            </tr>
+                        </table>
+                    {% else %}
+                        <h2>沒有儲值紀錄</h2>
+                    {% endif %}
+                </div>
+            </div>
+    </div>
+    
+    
 
        
-    <div><h3 style="color:#F74906;">消費紀錄</h3></div>
-        
-            {% if foods_logs %}
-            <table class="table">
-                <thead>
-                <tr style="background-color:#EDEDE4;">
-                    <th class = "col-sm-4"><b>餐點</b></th>
-                        <th class = "col-sm-4">品項</th>
-                        <th class = "col-sm-1">數量</th>
-                        <th class = "col-sm-1">金額</th>
-                        <th class = "col-sm-2">備註</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                {% for foods in foods_logs %}
-                    <tr>
-                    <td>{{foods.scheduleName}}</td>
-                    <td>{{foods.foodName}}</td>
-                    <td>{{foods.num}}</td>
-                    <td>{{foods.price}}</td>
-                    <td>{{foods.remark}}</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-                
-            
-            {% endif %}
-            {% if drinks_logs %}
-            <table class="table">
-            <thead>
-                <tr style="background-color:#EDEDE4;">
-                    <th class = "col-sm-4"><b>飲料</b></th>
-                    <th class = "col-sm-4">品項</th>
-                    <th class = "col-sm-1">數量</th>
-                    <th class = "col-sm-1">金額</th>
-                    <th class = "col-sm-2">備註</th>
-                </tr>
-            </thead>
-            <tbody>
-                
-                {% for drinks in drinks_logs %}
-                    <tr>
-                        <td class="col-md-4">{{drinks.scheduleName}}</td>
-                        <td class="col-md-3">{{drinks.drinking}}</td>
-                        <td class="col-md-1">{{drinks.num}}</td>
-                        <td class="col-md-1">{{drinks.price}}</td>
-                        <td class="col-md-2">{{drinks.remark}}</td>
-                    </tr>
-                {% endfor %}
-                 </tbody>
-                 
-            
-            {% endif %}
-                <tr>
-                    <td colspan="3" style="font-weight:bold;">總花費</td>
-                    <td style="font-weight:bold;">{{cost_total}}</td>
-                </tr>
-                
-            </table>
-           
-    {% if money_tag == 'R' %}
-        <div><h3 style="color:red;font-weight:bold;">餘額：{{total_sum}}</h2></div>
-    {% else %}
-        <div><h3 style="color:#003366;font-weight:bold;">餘額：{{total_sum}}</h2></div>
-    {% endif%}
+    
+{% endblock %}
+
+{% block script2 %}
+
 {% endblock %}

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+{% load custom_tag %}
 <html>
 
 <head>
@@ -87,6 +88,7 @@
                                 else if (time < 12) { document.write("{{msg_morning.0.content|safe}}"); }
                                 else if (time < 17) { document.write("{{msg_noon.0.content|safe}}"); }
                                 else { document.write("{{msg_night.0.content|safe}}"); }
+
                                 </script>
                                 {%if de_member.name == "沈昇勳" or de_member.name == "蕭博修" or de_member.name == "廖偉宏" or de_member.name == "警長" %}
                                 大雞雞{{ de_member.name }}
@@ -102,6 +104,7 @@
                                 愛心、服務、責任、嗣祥
                                 {%else%}
                                 {{de_member.name}}
+
                                 {%endif%}
                                 ，{{greeting_msg.0.content|safe}}
                             </h3>
