@@ -194,14 +194,56 @@ def member_log(request,pk):
         drinks_total = 0
     foods_logs = FoodOrder.objects.filter(memberName=pk, finish=True).order_by('date')
     drinks_logs = DrinkOrder.objects.filter(memberName=pk, finish=True).order_by('date')
+    
+    
+    combine_logs = list(foods_logs) + list(drinks_logs)
+    sorted_logs = sorted(combine_logs, key=lambda x: x.scheduleName.date, reverse=True)
+    listdic = []    
+    for order in sorted_logs:
+        flag = False
+        for dicIndex in range(len(listdic)):
+            if order.scheduleName == listdic[dicIndex]["schedule"]:
+                listdic[dicIndex]["order"].append(order)
+                flag=True
+        if flag ==False:
+            listdic.append({"schedule":order.scheduleName,"order":[order]})
+
+    latest5 = listdic[:5]
+    listDicMonth = []
+    for each in sorted_logs:
+        flag = False
+        for dicIndex in range(len(listDicMonth)):
+            if each.scheduleName.date.strftime('%Y年-%m月') == listDicMonth[dicIndex]['month']:
+                listDicMonth[dicIndex]["order"].append(each)
+                flag = True
+        if not flag:
+            listDicMonth.append({"month":each.scheduleName.date.strftime('%Y年-%m月'),"order":[each]})
+    
+    #creat each month sum dictionary
+    import itertools
+    gr = itertools.groupby(sorted_logs, lambda d:d.date.strftime('%Y年-%m月'))
+    dt = [{"month":m,"sum":sum([x.price for x in q])} for m, q in gr] #create listDic[{m1:sum(price1)},{m2:sum(price2}]
+    
+    #insert each sum into specific month's dictionary
+    for index in range(len(listDicMonth)):
+        for each in dt:
+            if listDicMonth[index].get('month') == each.get('month'):
+                if "sum" in listDicMonth[index]:
+                    listDicMonth[index].append(each.get('sum'))
+                else:
+                    listDicMonth[index]['sum']=each.get('sum')
+    
+    
+
+
+        
     cost_total = foods_total + drinks_total
     total_sum = save_total - cost_total
     
     if total_sum < 0:
         money_tag = 'R'
     
-    return render(request, 'bandongo/frontend_memberLog.html',{'de_member':de_member,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'foods_logs':foods_logs,'drinks_logs':drinks_logs,'total_sum':total_sum,'greeting_msg':greeting_msg,'money_tag':money_tag,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
-
+    return render(request, 'bandongo/frontend_memberLog.html',{'listDicMonth':listDicMonth,'latest5':latest5,'de_member':de_member,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'sorted_logs':sorted_logs,'total_sum':total_sum,'greeting_msg':greeting_msg,'money_tag':money_tag,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
 
 def today_order(request,pk):
     de_member =  get_object_or_404(Member, pk=pk)

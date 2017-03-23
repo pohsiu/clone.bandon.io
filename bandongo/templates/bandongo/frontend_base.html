@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load staticfiles %}
+{% load custom_tag %}
 <html>
 
 <head>
@@ -88,7 +89,13 @@
                                 else if (time < 17) { document.write("{{msg_noon.0.content|safe}}"); }
                                 else { document.write("{{msg_night.0.content|safe}}"); }
                                 
-                                </script>{{ de_member.name }}，{{greeting_msg.0.content|safe}}
+                                </script>
+                                {%if de_member.name == "沈昇勳" %}
+                                帥哥
+                                {%else%}
+                                {{ de_member.name }}
+                                {%endif%}
+                                ，{{greeting_msg.0.content|safe}}
                             </h3>
                             
                             {% block article %}
