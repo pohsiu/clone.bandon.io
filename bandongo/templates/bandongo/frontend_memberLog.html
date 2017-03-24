@@ -25,8 +25,8 @@
                     <div class="panel-heading">
                         <div class="row">
                             <h4>
-                            <div class="col-sm-4">總花費</div>
-                            <div class="col-sm-4">{{cost_total}}</div>
+                            <div class="col-xs-6 col-sm-6 col-md-6">總花費</div>
+                            <div class="col-xs-6 col-sm-6 col-md-6">{{cost_total}}</div>
                             </h4>
                         </div>
                     </div>
@@ -40,12 +40,12 @@
                         <table class="table">
                             <thead>
                             <tr class ='warning'>
-                                <th class = "col-sm-3"><b>日期</b></th>
-                                <th class = "col-sm-3">店家</th>
-                                    <th class = "col-sm-3">品項</th>
-                                    <th class = "col-sm-1">數量</th>
-                                    <th class = "col-sm-1">金額</th>
-                                    <th class = "col-sm-1">備註</th>
+                                <th class = "col-xs-2 col-sm-3"><b>日期</b></th>
+                                <th class = "col-xs-2 col-sm-3">店家</th>
+                                    <th class = "col-xs-2 col-sm-3">品項</th>
+                                    <th class = "col-xs-2 col-sm-1">數量</th>
+                                    <th class = "col-xs-2 col-sm-1">金額</th>
+                                    <th class = "col-xs-2 col-sm-1">備註</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -85,10 +85,11 @@
                             <div role="button" class="panel-heading" onclick="divclick({{forloop.counter0}})">
                                 <div class="row">
                                     <h4>
-                                    <div class="col-sm-4">{{dic | get_month:"month" }}</div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6">{{dic | get_month:"month" }}</div>
                                     
                                     
-                                    <div class="col-sm-4">月花費：{{dic | get_sum:"sum" }}</div>
+                                    <div class="col-xs-6 col-sm-6 col-md-6">月花費：{{dic | get_sum:"sum" }}</div>
+                                    
                                     </h4>
                                 </div>
                             
@@ -101,12 +102,12 @@
                                 <thead>
                                     <tr class ='warning'>
                                     <!--<tr style="background-color:#EDEDE4;">-->
-                                        <td class = "col-sm-3"><b>日期</b></th>
-                                        <td class = "col-sm-3">店家</th>
-                                        <td class = "col-sm-3">品項</th>
-                                        <td class = "col-sm-1">數量</th>
-                                        <td class = "col-sm-1">金額</th>
-                                        <td class = "col-sm-1">備註</th>
+                                        <td class = "col-xs-2 col-sm-3"><b>日期</b></th>
+                                        <td class = "col-xs-2 col-sm-3">店家</th>
+                                        <td class = "col-xs-2 col-sm-3">品項</th>
+                                        <td class = "col-xs-2 col-sm-1">數量</th>
+                                        <td class = "col-xs-2 col-sm-1">金額</th>
+                                        <td class = "col-xs-2 col-sm-1">備註</th>
                                     </tr>
                                 </thead>
                             
