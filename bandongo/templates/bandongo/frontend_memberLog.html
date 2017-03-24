@@ -24,14 +24,16 @@
                     <div class="panel panel-danger">
                     <div class="panel-heading">
                         <div class="row">
+                            <h4>
                             <div class="col-sm-4">總花費</div>
                             <div class="col-sm-4">{{cost_total}}</div>
+                            </h4>
                         </div>
                     </div>
                     </div>
                     
                     <div class="panel panel-success">
-                    <div class="panel-heading">近五筆消費紀錄
+                    <div class="panel-heading"><h4>近五筆消費紀錄</h4>
                     </div>
                     {%if latest5 %}
                     <div class="panel-body">
@@ -82,11 +84,12 @@
                         
                             <div role="button" class="panel-heading" onclick="divclick({{forloop.counter0}})">
                                 <div class="row">
+                                    <h4>
                                     <div class="col-sm-4">{{dic | get_month:"month" }}</div>
                                     
                                     
                                     <div class="col-sm-4">月花費：{{dic | get_sum:"sum" }}</div>
-                                    
+                                    </h4>
                                 </div>
                             
                             </div>

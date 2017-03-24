@@ -88,12 +88,23 @@
                                 else if (time < 12) { document.write("{{msg_morning.0.content|safe}}"); }
                                 else if (time < 17) { document.write("{{msg_noon.0.content|safe}}"); }
                                 else { document.write("{{msg_night.0.content|safe}}"); }
-                                
+
                                 </script>
-                                {%if de_member.name == "沈昇勳" %}
-                                帥哥
+                                {%if de_member.name == "沈昇勳" or de_member.name == "蕭博修" or de_member.name == "廖偉宏" or de_member.name == "警長" %}
+                                大雞雞{{ de_member.name }}
+                                {%elif de_member.name == "陳大大" %}
+                                緬甸人{{ de_member.name }}
+                                {%elif de_member.name == "楊凱婷" %}
+                                泰國正妹{{ de_member.name }}
+                                {%elif de_member.name == "李學誠" %}
+                                國家未來棟樑{{ de_member.name }}
+                                {%elif de_member.name == "高崇偉" %}
+                                高爺{{ de_member.name }}
+                                {%elif de_member.name == "張嗣祥" %}
+                                愛心、服務、責任、嗣祥
                                 {%else%}
-                                {{ de_member.name }}
+                                {{de_member.name}}
+
                                 {%endif%}
                                 ，{{greeting_msg.0.content|safe}}
                             </h3>

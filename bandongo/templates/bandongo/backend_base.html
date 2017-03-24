@@ -2,7 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>Backend</title>
+        <title>竹簡訂餐後台</title>
+        <link rel="icon" href="{%static 'icon/lunch-icon-23.png' %}">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-theme.min.css' %}">
         <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap-select.min.css' %}">
@@ -73,16 +74,17 @@
                   <a class="dropdown-toggle" data-toggle="dropdown" href="#">Others
                   <span class="caret"></span></a>
                   <ul class="dropdown-menu">
-                    <li><a href="/backend/homePicPage/">Home Pic</a></li>
-                    <li><a href="/backend/messagePage/">Messages</a></li>
-                    <li><a href="/backend/wishPage/">Wish</a></li>
-                    <li><a href="/backend/savelogPage/">Save Log</a></li>
                     <li><a href="/backend/notificationPage/">Notifications</a></li>
+                    <li><a href="/backend/messagePage/">Messages</a></li>
+                    <li><a href="/backend/homePicPage/">Home Pic</a></li>
+                    <li><a href="/backend/savelogPage/">Save Log</a></li>
+                    <li><a href="/backend/wishPage/">Wish</a></li>
                   </ul>
                 </li>
                 <li><a href="/backend/order/">Order</a></li>
               </ul>
               <ul class="nav navbar-nav navbar-right">
+                <li><a href="/">Frontend</a></li>
                 <li><a href="/backend/logout"><span class="glyphicon glyphicon-log-out"></span> Logout</a></li>
               </ul>
               {% else %}
