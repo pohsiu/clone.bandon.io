@@ -82,7 +82,7 @@
                         <div class="panel panel-info">    
                         {%for dic in listDicMonth%}
                         
-                            <div role="button" class="panel-heading" onclick="divclick({{forloop.counter0}})">
+                            <div role="button" id="head{{forloop.counter0}}" class="panel-heading" onclick="divclick({{forloop.counter0}})">
                                 <div class="row">
                                     <h4>
                                     <div class="col-xs-6 col-sm-6 col-md-6">{{dic | get_month:"month" }}</div>

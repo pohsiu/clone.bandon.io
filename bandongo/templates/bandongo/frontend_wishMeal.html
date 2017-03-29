@@ -14,7 +14,7 @@
             <ul class="nav nav-tabs" role="tablist">
                 <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">心誠則靈</a></li>
                 <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">寫下心願</a></li>
-                
+                <li role="presentation"><a href="#feedback" aria-controls="feedback" role="tab" data-toggle="tab">給點回饋</a></li>
             </ul>
         
            
@@ -43,6 +43,7 @@
                         <div class="form-group">
                             <label for="wish_drink">明天想喝什麼</label>
                             <select class="form-control" id="wish_drink">
+                                <option value='0'>沒意見，都可以</option>
                                 {% for drinks in drinkshops %}
                                     {% if drinks.name == '休' %}
                                         <option value='{{drinks.id}}'>讓飲料休吧，別再誘惑我了!!!</option>
@@ -71,6 +72,18 @@
                         </div>
                         
                         <button type="submit" onclick="recommendSubmit()" class="btn btn-primary">送出</button>
+                    </div>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="feedback">
+                    <div>
+                        <div><h3 style="color:#F74906;">您的寶貴意見將使系統變得更完善...大概啦</h3></div>
+                        <input type="hidden" id="id" value="{{de_member.id}}"/>
+                        <div class="form-group">
+                            
+                            <label for="textfeedback">請留下您寶貴的意見給我們，拜託啦</label>
+                            <input type="text" class="form-control" id="textfeedback" placeholder="我覺得要把工程師抓去賣掉，這個系統就完美了">
+                        </div>
+                        <button type="submit" onclick="feedbackSubmit()" class="btn btn-primary">送出</button>
                     </div>
                 </div>
                 

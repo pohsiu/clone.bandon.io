@@ -339,6 +339,14 @@ def wish_meal(request, pk):
     return render(request, 'bandongo/frontend_wishMeal.html',{'de_member':de_member,'foodshops':foodshops,'drinkshops':drinkshops,'greeting_msg':greeting_msg,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
 
 
+def add_feedback(request):
+    member = Member.objects.get(id=request.POST['id'])
+    feedback = request.POST['feedback']
+    now = datetime.now()
+    Notification.objects.create(classification=2,subject=member,content=feedback,date=now)
+    msg= "您的心聲我們聽到了，相信您的付出會使系統變的更完善~"
+    return HttpResponse(msg)
+
 def add_text_meal(request):
     member = Member.objects.get(id=request.POST['id'])
     now = datetime.now()
@@ -366,9 +374,11 @@ def add_wish_meal(request):
     
     if not testFood and (not testDrink):
         food = Food.objects.get(id=request.POST['food'])
-        drink = Drink.objects.get(id=request.POST['drink'])
+        
         WishFood.objects.create(member=member,food=food,date=today)
-        WishDrink.objects.create(member=member,drink=drink,date=today)
+        if request.POST['drink'] != '0':
+            drink = Drink.objects.get(id=request.POST['drink'])
+            WishDrink.objects.create(member=member,drink=drink,date=today)
         return HttpResponse(success)
         
     else:
