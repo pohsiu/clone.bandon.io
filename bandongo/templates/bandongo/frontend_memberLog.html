@@ -85,10 +85,12 @@
                             <div role="button" id="head{{forloop.counter0}}" class="panel-heading" onclick="divclick({{forloop.counter0}})">
                                 <div class="row">
                                     <h4>
-                                    <div class="col-xs-6 col-sm-6 col-md-6">{{dic | get_month:"month" }}</div>
+                                    <!--<div class="col-xs-6 col-sm-6 col-md-6">{{dic | get_month:"month" }}</div>-->
+                                    <div class="col-xs-6 col-sm-6 col-md-6">{{dic.month }}</div>
                                     
                                     
-                                    <div class="col-xs-6 col-sm-6 col-md-6">月花費：{{dic | get_sum:"sum" }}</div>
+                                    <!--<div class="col-xs-6 col-sm-6 col-md-6">月花費：{{dic | get_sum:"sum" }}</div>-->
+                                    <div class="col-xs-6 col-sm-6 col-md-6">月花費：{{dic.sum }}</div>
                                     
                                     </h4>
                                 </div>
@@ -153,30 +155,103 @@
                 <div role="tabpanel" class="tab-pane" id="savelog">
                     {% if savelogs %}
                         <div><h3 style="color:#F74906;">存款紀錄</h3></div>
-                        <table class="table">
-                            <thead style="background-color:#EDEDE4;">
-                                <tr>
+                        <div class="panel panel-danger">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <h4>
+                                <div class="col-xs-6 col-sm-6 col-md-6">總存款</div>
+                                <div class="col-xs-6 col-sm-6 col-md-6">{{save_total}}</div>
+                                </h4>
+                            </div>
+                        </div>
+                        </div>
+                        
+                        <div class="panel panel-success">
+                    <div class="panel-heading"><h4>近五筆存款紀錄</h4>
+                    </div>
+                        {%if savelogs_latest5 %}
+                        <div class="panel-body">
+                            <table class="table">
+                                <thead>
+                                <tr class ='warning'>
                                     <th class = "col-sm-4">存款日期</th>
                                     <th class = "col-sm-5">收款人</th>
                                     <th class = "col-sm-1">金額</th>
                                     <th class = "col-sm-2">備註</th>
                                 </tr>
-                            </thead>
-                            <tbody>
-                                {% for savings in savelogs %}
-                                    <tr>
-                                        <td>{{savings.tranDate|date:'Y-m-d H:i' }}</td>
-                                        <td>{{savings.adminName}}</td>
-                                        <td>{{savings.money}}</td>
-                                        <td>{{savings.comment}}</td>
+                                </thead>
+                                <tbody>
+                            {%for savings in savelogs_latest5%}
+                                <tr>
+                                    <td>{{savings.tranDate|date:'Y-m-d' }}</td>
+                                    <td>{{savings.adminName}}</td>
+                                    <td>{{savings.money}}</td>
+                                    <td>{{savings.comment}}</td>
+                                </tr>
+                            {%endfor%}
+                                </tbody>
+                            </table>
+                        </div>
+                        {%endif%}
+                        </div>
+                        {%if savelogs_listDic %}
+                        
+                        <div class="panel panel-info">    
+                        {%for dic in savelogs_listDic%}
+                        
+                            <div role="button" id="logHead{{forloop.counter0}}" class="panel-heading" onclick="logDivclick({{forloop.counter0}})">
+                                <div class="row">
+                                    <h4>
+                                    <div class="col-xs-6 col-sm-6 col-md-6">{{dic | get_month:"month" }}</div>
+                                    
+                                    
+                                    <div class="col-xs-6 col-sm-6 col-md-6">月存款：{{dic | get_sum:"sum" }}</div>
+                                    
+                                    </h4>
+                                </div>
+                            
+                            </div>
+                            <div class="panel-body" style="display:none;" id ="logDiv{{forloop.counter0}}">
+                        
+                            
+                            <!--<table class="table"  style="display:none;" id ="{{dic | get_month:'month' }}">-->
+                            <table class="table" >
+                                <thead>
+                                    <tr class ='warning'>
+                                    <!--<tr style="background-color:#EDEDE4;">-->
+                                        <td class = "col-xs-4 col-sm-4"><b>日期</b></th>
+                                        <td class = "col-xs-5 col-sm-5">收款人</th>
+                                        <td class = "col-xs-1 col-sm-1">金額</th>
+                                        <td class = "col-xs-2 col-sm-2">備註</th>
+                                        
                                     </tr>
-                                {% endfor %}
-                            </tbody>
-                            <tr>
-                                <td colspan="2" style="font-weight:bold;">總存款</td>
-                                <td style="font-weight:bold;">{{save_total}}</td>
-                            </tr>
-                        </table>
+                                </thead>
+                            
+                                <tbody>
+                                
+                                {% for name,value in dic.items %}
+                                    {% if name == "saving" %}
+                                        {%for each in value%}
+                                        <tr>
+                                            <td>{{each.tranDate|date:'Y-m-d'}}</td>
+                                            <td>{{each.adminName}}</td>
+                                            <td>{{each.money}}</td>
+                                            <td>{{each.comment}}</td>
+                                        </tr>    
+                                        {%endfor%}
+                                    {% endif %}
+                                {%endfor%}
+                                </tbody>
+                                </table>
+                            
+                             </div>
+                         
+                        {%endfor%}
+                        </div> 
+                        {%endif%}  
+                        
+                        
+                        
                     {% else %}
                         <h2>沒有儲值紀錄</h2>
                     {% endif %}

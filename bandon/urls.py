@@ -39,7 +39,9 @@ urlpatterns = [
     url(r'^wish/(?P<pk>[0-9]+)/$',views.wish_meal, name='frontend_wish'),
     url(r'^terms/(?P<pk>[0-9]+)/$',views.terms_of_use, name='frontend_terms'),
     url(r'^todayStatistic/(?P<pk>[0-9]+)/$',views.today_statistic, name='frontend_todayStatistic'),
-    url(r'^$', views.mark_select),
+    
+    # url(r'^test/$', views.index_v2),
+    url(r'^$', views.index_v2),
     
     url(r'^frontend/delete_food$', views.delete_food),
     url(r'^frontend/delete_drink$', views.delete_drink),
