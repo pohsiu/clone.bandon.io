@@ -15,37 +15,395 @@
     <!-- Bootstrap Core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!--<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">-->
-    <link rel="stylesheet" href="{% static 'css/index.css' %}">
+    
+    <link rel="stylesheet" href="{% static 'test/css/test.css' %}">
    
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
     
+    
+    
+    <!-- Custom Fonts -->
+    <link href="{% static 'test/css/test_font.min.css' %}" rel="stylesheet" type="text/css">
     
     <!-- jQuery -->
     <!--<script src="{% static 'js/jquery/jquery-3.1.1.min.js' %}"></script>-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <!--<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>-->
     <!-- Bootstrap Core JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>-->
     <!--<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>-->
-    <script src="{% static 'js/bootbox.min.js' %}"></script>
+    
     <!-- Menu Toggle Script -->
     
     
-    {% block script %}
-    {% endblock %}
+    
 </head>
 
 <body>
+
+    <!-- Navigation -->
+    <!--<a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>-->
+    <!--<nav id="sidebar-wrapper">-->
+    <!--    <ul class="sidebar-nav">-->
+    <!--        <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>-->
+    <!--        <li class="sidebar-brand">-->
+    <!--            <a href="#top" onclick=$("#menu-close").click();>竹簡訂餐</a>-->
+    <!--        </li>-->
+    <!--        <li>-->
+    <!--            <a href="#top" onclick=$("#menu-close").click();>登入頁面</a>-->
+    <!--        </li>-->
+    <!--        <li>-->
+    <!--            <a href="#about" onclick=$("#menu-close").click();>訂餐統計</a>-->
+    <!--        </li>-->
+            
+    <!--    </ul>-->
+    <!--</nav>-->
+
+    <!-- Header -->
+    <header 
+        id="top" 
+         
+        style="background:url({%static 'test/img/index_tran.jpg'%}); background-size: cover; 
+        display: table; position: relative; width: 100%; height: 100%;" >
+        
+        <div class="text-vertical-center" >
+            <!--<h3 >新竹地檢署訂餐系統</h3>-->
+            {% if s_latest %}
+                
+                <h3 style="clear: both; display: inline-block; overflow: hidden; white-space: nowrap;"><b>【{{s_latest.0.name}}】</b></h3>
+                <div style="vertical-align: middle; max-width: 300px; text-align:middle; margin:auto;">
+                    <h4>精選店家：{{s_latest.0.food}}</h4>
+                    <h4>精選飲料：{{s_latest.0.drink}}</h4>
+                    
+                </div>
+                    
+            {% else %}
+                
+                <h3 style="clear: both; display: inline-block; overflow: hidden; white-space: nowrap;"><b>【尚未開放訂餐】</b></h3>    
+                <br>
+                <br>
+            {% endif%}
+            
+            <br>
+        
+        
+            
+            <div class="form">
+                <!--<div class="thumbnail"><i class="fa fa-gavel fa-5x" aria-hidden="true"></i></div>-->
+                <div class="thumbnail"><img src="{%static 'test/img/judge_wh.png'%}"/></div>
+                <form class="login-form" name="markform" action="" onsubmit="return validateForm()" method="POST" accept-charset="utf-8">{% csrf_token %}
+                    <div class="form-group has-success">
+                    
+                    <h4 style="text-align:left;"><label for="mark">科室：</label></h4>
+                    <select class="form-control" name="mark" id="mark">
+                        <option value="Z">選擇科室</option>
+                        {% for mark in mark_list %}
+                            <option value="{{ mark.index }}">{{ mark.name }}</option>
+                        {% endfor %}
+                    </select>
+                    </div>
+                    <div class="form-group has-error">
+                    <h4 style="text-align:left;"><label for="member_name">姓名:</label></h4>
+                    <div>          
+                        <select class="form-control" name="member_name" id="member_name" disabled="true" >
+                            <option value="Z">選擇姓名</option>
+                        </select>
+                    </div>
+                    </div>
+                    <br>
+                    <button type="submit" class="btn btn-info btn-lg">送出</button>
+                    <br>
+                </form>
+            </div>
+            <div style="vertical-align: middle; max-width: 300px; text-align:middle; margin:auto;">
+                {% if s_latest.0.foodArrived %}
+                    <h4>餐點狀態：已抵達，請逕行取餐</h4>
+                {% else %}
+                    <h4>餐點狀態：尚未抵達，請耐心等候</h4>
+                {% endif %}
+                {% if s_latest.0.drink.name != '休' %}
+                    {% if s_latest.0.drinkArrived %}
+                        <h4>飲料狀態：已抵達，請逕行取餐</h4>
+                    {% else %}
+                        <h4>飲料狀態：尚未抵達，請耐心等候</h4>
+                    {% endif %}
+                {% endif %}
+            </div>
+            <br>
+        
+            <a href="#about" class="btn btn-dark btn-lg">訂餐統計</a>
+        </div>
+    </header>
     
+     
+    
+    
+    
+    <!-- About -->
+    <section id="about" class="about">
+        <aside class="aside2" >
+            <div class="text-vertical-center">
+             <h1 style="color:#F74906;" >訂餐統計</h1>
+            </div>
+        </aside>
+        <br>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <!--<div class="text-center">-->
+                    
+                        
+                    <!--<h2 style="color:#F74906;" >訂餐統計</h2>-->
+                    <!--</div>-->
+                    
+                    
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li role="presentation" class="active"><a href="#foodStatistic" aria-controls="foodStatistic" role="tab" data-toggle="tab">餐點統計</a></li>
+                        <li role="presentation"><a href="#drinkStatistic" aria-controls="drinkStatistic" role="tab" data-toggle="tab">飲料統計</a></li>
+                    </ul>
+                    
+                    <!--Tab panes -->
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane active" id="foodStatistic">
+                            
+                             {% if empty == False%}
+                                
+                                    
+                
+                                    {% for name, value in foods.items %}
+                                    
+                                        {% if value %}
+                                        <div><h3 style="color:#00303F;">{{value.0.scheduleName.food.name}}</h3></div>
+                        
+                                        <table class="table table-hover">
+                                            
+                                            <thead>
+                                                <!--<tr><th style="background-color:#E1E1E1; color:#00303F;" colspan="5" ></th></tr>-->
+                                            
+                                                <tr class="warning" style="background-color:#EDEDE4;">
+                                                    <th class = "col-sm-3">科室</th>
+                                                    <th class = "col-sm-2">姓名</th>
+                                                    <th class = "col-sm-5">品項</th>
+                                                    <th class = "col-sm-1">數量</th>
+                                                    <th class = "col-sm-1">金額</th>
+                                                </tr>
+                                            </thead>
+                                            
+                                            <tbody>
+                                            {% for sub in value %}
+                                                <tr>
+                                                    <td>{{ sub.memberName.remark.name }}</td>
+                                                    <td>{{ sub.memberName }}</td>
+                                                    <td>{{ sub.foodName }}</td>
+                                                    <td>{{ sub.num }}</td>
+                                                    <td>{{ sub.price }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                        
+                                        {% endif %}
+                                    
+                                    {% endfor %}
+                                {% else %}
+                                    <div><h3 style="color:#00303F;">暫無</h3></div>
+                                {%endif%}
+                        </div>
+                        <div role="tabpanel" class="tab-pane" id="drinkStatistic">
+                            {% if empty == False%}
+                                
+                                {% for name, value in drinks.items %}
+                                    {% if value %}
+                                    <div><h3 style="color:#00303F;">{{value.0.scheduleName.drink.name}}</h3></div>
+                                    <table class="table table-hover">
+                                        
+                                        <thead>
+                                            
+                                        
+                                            <tr class="warning" style="background-color:#EDEDE4;">
+                                                
+                                                <th class = "col-sm-3">科室</th>
+                                                <th class = "col-sm-2">姓名</th>
+                                                <th class = "col-sm-5">品項</th>
+                                                <th class = "col-sm-1">數量</th>
+                                                <th class = "col-sm-1">金額</th>
+                                            </tr>
+                                        </thead>
+                                        
+                                        <tbody>
+                                        {% for sub in value %}
+                                            <tr>
+                                                
+                                                <td>{{ sub.memberName.remark.name }}</td>
+                                                <td>{{ sub.memberName }}</td>
+                                                <td>{{ sub.drinking }}</td>
+                                                <td>{{ sub.num }}</td>
+                                                <td>{{ sub.price }}</td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                    </table>
+                                    
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                    <div><h3 style="color:#00303F;">暫無</h3></div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="custom-bg"><a href="#top"><i class="fa fa-chevron-up fa-stack-1x text-primary fa-3x" ></i></a></div>
+                </div>
+            
+            </div>
+            <!-- /.row -->
+            
+        </div>
+        <!-- /.container -->
+        
+                                
+        
+            
+       
+        
+        
+    </section>
+    
+    <div id="popup1" class="overlay" style="display:block; z-index:99;">
+        <div class="alert popup">
+        
+        <h2>系統公告</h2>
+        
+        <button id="popbtn" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div class="content">
+        	{{home_message.0.content|safe}}
+        </div>
+        </div>
+    </div>
 
     
     
 
+    
+   
+
+    <!-- Footer -->
+    <footer style="margin-top: 60px; padding-top: 10px; padding-bottom:10px; background-color:#383838; color: #f5f5f5; text-align: center;">&copy;Copyrights 2017. All rights reserved.</footer>
+
+   
+
+    
+    
+
+    <!-- jQuery -->
+    
+    <script src="{% static 'test/js/jquery-1.11.1.js' %}"></script>
+    <!-- Bootstrap Core JavaScript -->
+   
+    <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/bootbox.min.js' %}"></script>
+    <!-- Custom Theme JavaScript -->
+    <script>
+    $("#popbtn").click(function() {
+        $(".overlay").css("visibility", "hidden");
+        });
+    
+    
+    
+    
+    // Scrolls to the selected menu item on the page
+    $(function() {
+        $('a[href*=#]:not([href=#],[data-toggle],[data-target],[data-slide])').click(function() {
+            if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+                var target = $(this.hash);
+                target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                if (target.length) {
+                    $('html,body').animate({
+                        scrollTop: target.offset().top
+                    }, 1000);
+                    return false;
+                }
+            }
+        });
+    });
+    
+    //#to-top button appears after scrolling
+    var fixed = false;
+    $(document).scroll(function() {
+        if ($(this).scrollTop() > 250) {
+            if (!fixed) {
+                fixed = true;
+                // $('#to-top').css({position:'fixed', display:'block'});
+                $('#to-top').show("slow", function() {
+                    $('#to-top').css({
+                        position: 'fixed',
+                        display: 'block'
+                    });
+                });
+            }
+        } else {
+            if (fixed) {
+                fixed = false;
+                $('#to-top').hide("slow", function() {
+                    $('#to-top').css({
+                        display: 'none'
+                    });
+                });
+            }
+        }
+    });
+
+    </script>
+    <script>
+    
+    $(document).ready(
+        
+        function () {
+            var url = "/mark/json_models";
+            var mark_list;
+            var member_list;
+            $.getJSON(url, function(res) {
+                mark_list=res.mark_list;
+                member_list=res.member_list;
+                
+            });
+            $("select#mark").change(function() {
+                if ($(this).val() == 'Z') {
+                     $("select#member_name").html("<option>選擇姓名</option>");
+                     $("select#member_name").attr('disabled', true);
+                }
+                else {
+                    var brand = $(this).val();
+                    
+                    var options = '<option value="Z">選擇姓名</option>';
+                    for (var i = 0; i < member_list[brand].length; i++) {
+                        options += '<option value="' + member_list[brand][i].id + '">'  + member_list[brand][i].name + '</option>';
+                    }
+                    $("select#member_name").html(options);
+                    $("select#member_name option:first").attr('selected', 'selected');
+                    $("select#member_name").attr('disabled', false);
+                }
+            });
+    
+    
+            $("select#member_name").change(function(vent) {
+                if ($(this).val() == -1) {
+                    return;
+                }
+                
+                var e = document.getElementById("member_name");
+                
+            });
+            });
+        </script>
+        <script>
+            function validateForm() {
+                var name = document.forms["markform"]["member_name"].value;
+                var mark = document.forms["markform"]["mark"].value;// bootbox.alert(name);
+                if (name == "Z" || mark == "Z") {
+                    bootbox.alert("請選擇科室姓名");
+                    return false;
+                }
+            }
+    </script>
 </body>
 
 

@@ -64,7 +64,33 @@ msg_midnight = Message.objects.filter(usage="greeting msg midnight")
 #     users=User.objects.all()
 #     return render(request, 'bandongo/user_list.html', {'users':users})
 
-
+def index_v2(request):
+    home_message = Message.objects.filter(usage="home message")
+    schedules = Schedule.objects.filter(finish=False).order_by('-id') #get latest record
+    s_latest = schedules
+    mark_list = list(Category.objects.all().values())
+    if request.method == "POST":
+        if request.POST.get('member_name') != None:
+            
+            member_pk = request.POST.get('member_name')
+            return redirect('frontend_detail', pk=member_pk)
+    empty = False
+    
+    if not schedules:
+        foods = None;
+        drinks = None;
+        empty = True;
+    else:
+        foods = {}
+        drinks = {}
+        for i in schedules:
+            foods[i.name] = FoodOrder.objects.filter(scheduleName=i).order_by('memberName__remark')
+            drinks[i.name] = DrinkOrder.objects.filter(scheduleName=i).order_by('memberName__remark')
+    
+    
+    for i in range(len(mark_list)):
+        mark_list[i]['index']=i
+    return render(request, 'bandongo/frontend_index_v2.html',{'s_latest':s_latest,'mark_list':mark_list,'home_message':home_message,'empty':empty,'drinks':drinks,'foods':foods})
 
 
 def bot_reply(real_input):
@@ -193,7 +219,22 @@ def member_log(request,pk):
     save_total = Savelog.objects.filter(memberName=pk).aggregate(save_total=Sum('money'))['save_total']
     if save_total == None:
         save_total = 0
-    savelogs = Savelog.objects.filter(memberName=pk).order_by('tranDate')
+    savelogs = Savelog.objects.filter(memberName=pk).order_by('-tranDate')
+    savelogs_latest5 = savelogs[:5]
+    
+    savelogs_listDic = []
+    for each in savelogs:
+        flag = False
+        for index in range(len(savelogs_listDic)):
+            if each.tranDate.strftime('%Y年-%m月') == savelogs_listDic[index]['month']:
+                savelogs_listDic[index]['saving'].append(each)
+                savelogs_listDic[index]['sum'] = savelogs_listDic[index]['sum'] + int(each.money)
+                flag = True
+        if not flag:
+            savelogs_listDic.append({"month":each.tranDate.strftime('%Y年-%m月'),"saving":[each],"sum": int(each.money)})
+        
+    
+    
     foods_total = FoodOrder.objects.filter(memberName=pk,finish=True).aggregate(foods_total=Sum('price'))['foods_total']
     drinks_total = DrinkOrder.objects.filter(memberName=pk,finish=True).aggregate(drinks_total=Sum('price'))['drinks_total']
     if foods_total == None:
@@ -223,23 +264,24 @@ def member_log(request,pk):
         for dicIndex in range(len(listDicMonth)):
             if each.scheduleName.date.strftime('%Y年-%m月') == listDicMonth[dicIndex]['month']:
                 listDicMonth[dicIndex]["order"].append(each)
+                listDicMonth[dicIndex]["sum"] = listDicMonth[dicIndex]["sum"] + int(each.price)
                 flag = True
         if not flag:
-            listDicMonth.append({"month":each.scheduleName.date.strftime('%Y年-%m月'),"order":[each]})
+            listDicMonth.append({"month":each.scheduleName.date.strftime('%Y年-%m月'),"order":[each],"sum":int(each.price)})
     
     #creat each month sum dictionary
-    import itertools
-    gr = itertools.groupby(sorted_logs, lambda d:d.date.strftime('%Y年-%m月'))
-    dt = [{"month":m,"sum":sum([x.price for x in q])} for m, q in gr] #create listDic[{m1:sum(price1)},{m2:sum(price2}]
+    # import itertools
+    # gr = itertools.groupby(sorted_logs, lambda d:d.date.strftime('%Y年-%m月'))
+    # dt = [{"month":m,"sum":sum([x.price for x in q])} for m, q in gr] #create listDic[{m1:sum(price1)},{m2:sum(price2}]
     
-    #insert each sum into specific month's dictionary
-    for index in range(len(listDicMonth)):
-        for each in dt:
-            if listDicMonth[index].get('month') == each.get('month'):
-                if "sum" in listDicMonth[index]:
-                    listDicMonth[index].append(each.get('sum'))
-                else:
-                    listDicMonth[index]['sum']=each.get('sum')
+    # #insert each sum into specific month's dictionary
+    # for index in range(len(listDicMonth)):
+    #     for each in dt:
+    #         if listDicMonth[index].get('month') == each.get('month'):
+    #             if "sum" in listDicMonth[index]:
+    #                 listDicMonth[index].append(each.get('sum'))
+    #             else:
+    #                 listDicMonth[index]['sum']=each.get('sum')
     
     
 
@@ -251,7 +293,7 @@ def member_log(request,pk):
     if total_sum < 0:
         money_tag = 'R'
     
-    return render(request, 'bandongo/frontend_memberLog.html',{'listDicMonth':listDicMonth,'latest5':latest5,'de_member':de_member,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'sorted_logs':sorted_logs,'total_sum':total_sum,'greeting_msg':greeting_msg,'money_tag':money_tag,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
+    return render(request, 'bandongo/frontend_memberLog.html',{'savelogs_latest5':savelogs_latest5,'savelogs_listDic':savelogs_listDic,'listDicMonth':listDicMonth,'latest5':latest5,'de_member':de_member,'save_total':save_total,'savelogs':savelogs,'cost_total':cost_total,'sorted_logs':sorted_logs,'total_sum':total_sum,'greeting_msg':greeting_msg,'money_tag':money_tag,'msg_morning':msg_morning,'msg_noon':msg_noon,'msg_night':msg_night,'msg_midnight':msg_midnight})
 
 def today_order(request,pk):
     de_member =  get_object_or_404(Member, pk=pk)
