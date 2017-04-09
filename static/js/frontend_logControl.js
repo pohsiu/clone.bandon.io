@@ -1,8 +1,7 @@
 
 function divclick(tableID){
 
-    
-    
+
     var table = $("#div"+tableID);
     var head = $("#head"+tableID);
     // console.log(table.html());
@@ -10,6 +9,7 @@ function divclick(tableID){
         height:"toggle"    
     });
     $('html,body').animate({scrollTop: head.offset().top}, 500);
+
     
     
 }
@@ -25,4 +25,5 @@ function logDivclick(tableID){
         height:"toggle"    
     });
     $('html,body').animate({scrollTop: head.offset().top}, 500);
+
 }

@@ -51,11 +51,11 @@
                             <tbody>
                         {%for dic in latest5%}
                             <tr>
-                                <td>{{dic | get_item:"schedule" }}</td>
+                                
                             {% for name,value in dic.items %}
                                 {%if name == "order" %}
                                     {%for each in value%}
-                                    
+                                        <td>{{dic | get_item:"schedule" }}</td>
                                         {%if each.foodName%}
                                             <td>{{each.scheduleName.food.name}}</td>
                                             <td>{{each.foodName}}</td>

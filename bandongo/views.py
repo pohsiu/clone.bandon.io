@@ -774,8 +774,8 @@ def editSchedule(request):
 def finishSchedule(request):
     checkExpire()
     schedule=Schedule.objects.get(id=request.POST["id"])
-    if not (schedule.foodArrived and schedule.drinkArrived):
-        return HttpResponse("The schedule is not arrived.")
+    if not (schedule.foodArrived and schedule.drinkArrived and schedule.expire):
+        return HttpResponse("The schedule is not arrived or expired.")
     elif not schedule.finish:
         schedule.finish=True
         schedule.save();
