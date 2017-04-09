@@ -37,7 +37,8 @@ reload(sys)
 sys.setdefaultencoding('utf-8')
 jieba.initialize()
 jieba.set_dictionary('bandongo/dict.txt.big')
-model = Doc2Vec.load('bandongo/womentalk_contents.doc2vec.model')
+model = Doc2Vec.load('bandongo/womentalk_contents.doc2vec.model2')
+
 
 with open('bandongo/selected_ptt_comments_seg', 'r') as myf:
     sentbank = myf.readlines()
@@ -66,21 +67,28 @@ msg_midnight = Message.objects.filter(usage="greeting msg midnight")
 
 
 
-
-
 def bot_reply(real_input):
-    max = 0
+    #max = 0
     answer = ""
+    score_lst = []
     for i in range(len(sentbank)):
         sent = filter(lambda x: x in model.wv.vocab, sentbank[i])
         if len(sent)==0:
-            continue
-        score = model.n_similarity(sent,real_input)
-        if score >= max:
-            max = score
-            answer = ansbank[i]
+            #continue
+            score_lst.append(0.0)
+        else:
+            #score = model.n_similarity(sent,real_input)
+            score_lst.append(model.n_similarity(sent,real_input))
+        #if score >= max:
+        #    max = score
+        #    answer = ansbank[i]
+    pair = zip(score_lst, ansbank)
+    pair.sort()
+    sent_sorted = [x for y, x in pair]
+    idx = np.random.choice(10, p=[1/55.0,2/55.0,3/55.0,4/55.0,5/55.0,6/55.0,7/55.0,8/55.0,9/55.0,10/55.0])
+    answer = sent_sorted[-10:][idx]
     return ''.join(answer)
-
+    
 
 #related test
 def filter_json(request):
