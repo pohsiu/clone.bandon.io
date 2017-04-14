@@ -95,28 +95,40 @@
                                 {%if de_member.name == "沈昇勳" or de_member.name == "蕭博修" or de_member.name == "廖偉宏" or de_member.name == "警長" %}
                                 大雞雞{{ de_member.name }}
                                 {%elif de_member.name == "陳大大" %}
-                                緬甸人{{ de_member.name }}
+                                緬甸人{{ de_member.name }}<img class="img-circle" src="{%static 'pic/chiron.jpg' %}" style="height: 120px; width: 120px">
                                 {%elif de_member.name == "羅傑" %}
-                                海賊王{{ de_member.name }}
+                                爽哥海賊王{{ de_member.name }}
                                 {%elif de_member.name == "吳岳陽" %}
                                 越洋電話
                                 {%elif de_member.name == "張書瑜" %}
                                 章魚哥
                                 {%elif de_member.name == "楊凱婷" %}
-                                絕對不是來自泰國的{{ de_member.name }}
+                                父母國策好喝嗎?美麗動人的yoga天后<img class="img-circle" src="{%static 'pic/kaiz.jpg' %}" style="height: 120px; width: 120px">
                                 {%elif de_member.name == "許文典" %}
-                                不雷{{ de_member.name }}
+                                雷{{ de_member.name }}<img class="img-circle" src="{%static 'pic/wen2.jpg' %}" style="height: 120px; width: 120px">
                                 {%elif de_member.name == "李學誠" %}
-                                國家未來棟樑{{ de_member.name }}
+                                國家未來棟棟棟樑{{ de_member.name }}
+                                {%elif de_member.name == "張祐瑄" %}
+                                仇女隊長Captain Pussy
                                 {%elif de_member.name == "高崇偉" %}
-                                高高高高爺{{ de_member.name }}
+                                高高高高高爺{{ de_member.name }}<img class="img-circle" src="{%static 'pic/kao.jpg' %}" style="height: 120px; width: 120px">
                                 {%elif de_member.name == "張嗣祥" %}
                                 愛心、服務、責任、嗣祥
                                 {%else%}
                                 {{de_member.name}}
 
                                 {%endif%}
+                                
+                                {%if de_member.name == "羅傑" %}
+                                今天過得爽不爽呢？
+                                {%elif de_member.name == "高崇偉" or de_member.name == "沈昇勳" or de_member.name == "蕭博修"  or de_member.name == "李學誠"%}
+                                你今天造了多少口業呢？
+                                {%elif de_member.name == "楊凱婷" %}
+                                對了你今天有選字嗎？
+                                {%else%}
                                 ，{{greeting_msg.0.content|safe}}
+                                
+                                {%endif%}
                             </h3>
                             
                             {% block article %}

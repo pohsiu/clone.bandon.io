@@ -15,6 +15,9 @@
     <!-- Bootstrap Core CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <!--<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">-->
+    <link rel="stylesheet" href="{%static 'bootstrap/css/bootstrap-select.min.css' %}">
+    
+
     
     <link rel="stylesheet" href="{% static 'test/css/test.css' %}">
    
@@ -62,32 +65,29 @@
     <header 
         id="top" 
          
-        style="background:url({%static 'test/img/index_tran.jpg'%}); background-size: cover; 
+        style="background:url({%static 'test/img/IMG_0397-2_small.jpg'%}); background-size: cover; 
         display: table; position: relative; width: 100%; height: 100%;" >
         
         <div class="text-vertical-center" >
             <!--<h3 >新竹地檢署訂餐系統</h3>-->
-            {% if s_latest %}
-                
-                <h3 style="clear: both; display: inline-block; overflow: hidden; white-space: nowrap;"><b>【{{s_latest.0.name}}】</b></h3>
-                <div style="vertical-align: middle; max-width: 300px; text-align:middle; margin:auto;">
-                    <h4>精選店家：{{s_latest.0.food}}</h4>
-                    <h4>精選飲料：{{s_latest.0.drink}}</h4>
+            
+            <br>
+            <div class="form">
+                <div style="vertical-align: middle; max-width: 300px; text-align:middle; margin:auto; overflow: auto;text-overflow: ellipsis;">
+                {% if s_latest %}
+                <h4 style="clear: both; display: inline-block; white-space: nowrap;"><b>【{{s_latest.0.name}}】</b></h3>
+                <h4>精選店家：{{s_latest.0.food}}</h4>
+                <h4>精選飲料：{{s_latest.0.drink}}</h4>
                     
-                </div>
-                    
-            {% else %}
+                {% else %}
                 
                 <h3 style="clear: both; display: inline-block; overflow: hidden; white-space: nowrap;"><b>【尚未開放訂餐】</b></h3>    
                 <br>
                 <br>
-            {% endif%}
+                {% endif%}
+                </div>
+                <br>
             
-            <br>
-        
-        
-            
-            <div class="form">
                 <!--<div class="thumbnail"><i class="fa fa-gavel fa-5x" aria-hidden="true"></i></div>-->
                 <div class="thumbnail"><img src="{%static 'test/img/judge_wh.png'%}"/></div>
                 <form class="login-form" name="markform" action="" onsubmit="return validateForm()" method="POST" accept-charset="utf-8">{% csrf_token %}
@@ -113,20 +113,21 @@
                     <button type="submit" class="btn btn-info btn-lg">送出</button>
                     <br>
                 </form>
-            </div>
-            <div style="vertical-align: middle; max-width: 300px; text-align:middle; margin:auto;">
+                <br>
+                <div style="vertical-align: middle; max-width: 300px; text-align:middle; margin:auto;">
                 {% if s_latest.0.foodArrived %}
-                    <h4>餐點狀態：已抵達，請逕行取餐</h4>
+                    <p>餐點狀態：已抵達，請逕行取餐</p>
                 {% else %}
-                    <h4>餐點狀態：尚未抵達，請耐心等候</h4>
+                    <p>餐點狀態：尚未抵達，請耐心等候</p>
                 {% endif %}
                 {% if s_latest.0.drink.name != '休' %}
                     {% if s_latest.0.drinkArrived %}
-                        <h4>飲料狀態：已抵達，請逕行取餐</h4>
+                        <p>飲料狀態：已抵達，請逕行取餐</p>
                     {% else %}
-                        <h4>飲料狀態：尚未抵達，請耐心等候</h4>
+                        <p>飲料狀態：尚未抵達，請耐心等候</p>
                     {% endif %}
                 {% endif %}
+                </div>
             </div>
             <br>
         
@@ -275,6 +276,8 @@
         <button id="popbtn" type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <div class="content">
         	{{home_message.0.content|safe}}
+        	<br><br><strong>［實用教學］</strong><br>
+            <p>如何在Android手機或iPhone桌面建立一個圖示連到竹簡訂餐：<a href="static/tutorial.html" target="_blank">連結</a></p>
         </div>
         </div>
     </div>
