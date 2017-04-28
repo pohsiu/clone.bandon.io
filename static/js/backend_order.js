@@ -23,3 +23,7 @@ function arrive(type) {
         }
     );
 }
+
+function deleteOrder(id) {
+    alert(id);
+}

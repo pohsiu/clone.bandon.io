@@ -444,7 +444,7 @@ def terms_of_use(request, pk):
 ## page part
 def homePage(request):
     members=Member.objects.all()
-    notifications=Notification.objects.filter(read=False)
+    notifications=Notification.objects.filter(read=False).order_by('-date')
     return render(request, 'bandongo/backend_home.html',{'balance': sum(map(lambda member: member.saving, members)), 'notifications': notifications})
 
 def login(request):
