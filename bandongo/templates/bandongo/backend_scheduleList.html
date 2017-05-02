@@ -4,6 +4,15 @@
 {% block content %}
 <div class="container">
     <div><h1>Schedule List</h1></div>
+        <div>
+            {% for index in pages %}
+                {% if index == curPage%}
+                     <a class="btn btn-default btn-xs active" role="button" style="cursor: default;">{{index}}</a>
+                {% else %}
+                    <a class="btn btn-default btn-xs" href="/backend/scheduleListPage/{{index}}/" role="button">{{index}}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
         <table class="table">
             <thead>
                 <tr>
@@ -21,7 +30,7 @@
             </thead>
             <tbody>
                 {% for schedule in schedules %}
-                <tr>
+                <tr class="{{schedule.page}}" style="display:{{schedule.display}};">
                     <td>{{ schedule.id }}</td>
                     <td><a href="/backend/schedule/{{ schedule.id }}/">{{ schedule.name }}</a></td>
                     <td>{{ schedule.food.name }}</td>
@@ -40,5 +49,14 @@
                 {% endfor %}
             </tbody>
         </table>
+        <div>
+            {% for index in pages %}
+                {% if index == curPage%}
+                     <a class="btn btn-default btn-xs active" role="button" style="cursor: default;">{{index}}</a>
+                {% else %}
+                    <a class="btn btn-default btn-xs" href="/backend/scheduleListPage/{{index}}/" role="button">{{index}}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
 </div>
 {% endblock %}

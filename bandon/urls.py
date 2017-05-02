@@ -64,7 +64,7 @@ urlpatterns = [
     url(r'^backend/logout/$', views.logout),
     url(r'^backend/setSchedulePage/$', views.setSchedulePage),
     url(r'^backend/editSchedulePage/$', views.editSchedulePage),
-    url(r'^backend/scheduleListPage/$', views.scheduleListPage),
+    url(r'^backend/scheduleListPage/([0-9]+)/$', views.scheduleListPage),
     url(r'^backend/emergencyPage/$', views.emergencyPage),
     url(r'^backend/order/$', views.orderPage),
     url(r'^backend/schedule/([0-9]+)/$', views.orderDetailPage),
@@ -90,7 +90,7 @@ urlpatterns = [
     url(r'^backend/addDepartmentPage/$', views.addDepartmentPage),
     url(r'^backend/departmentListPage/$', views.departmentListPage),
     url(r'^backend/department/([0-9]+)/$', views.editDepartmentPage),
-    url(r'^backend/notificationPage/$', views.notificationPage),
+    url(r'^backend/notificationPage/([0-9]+)/$', views.notificationPage),
     
     ## function part
     url(r'^backend/setSchedule$', views.setSchedule),

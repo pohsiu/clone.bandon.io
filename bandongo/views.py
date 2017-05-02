@@ -33,21 +33,21 @@ import jieba
 import sys
 from gensim.models.doc2vec import Doc2Vec
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
-jieba.initialize()
-jieba.set_dictionary('bandongo/dict.txt.big')
-model = Doc2Vec.load('bandongo/womentalk_contents.doc2vec.model2')
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
+# jieba.initialize()
+# jieba.set_dictionary('bandongo/dict.txt.big')
+# model = Doc2Vec.load('bandongo/womentalk_contents.doc2vec.model2')
 
 
-with open('bandongo/selected_ptt_comments_seg', 'r') as myf:
-    sentbank = myf.readlines()
-for i in range(len(sentbank)):                                                                                                                      
-    sentbank[i] = sentbank[i].replace('\n', ' ').split()
-with open('bandongo/selected_ptt_comments', 'r') as myf:
-    ansbank = myf.readlines()
-for i in range(len(sentbank)):                                                                                                                      
-    ansbank[i] = ansbank[i].replace('\n', ' ')
+# with open('bandongo/selected_ptt_comments_seg', 'r') as myf:
+#     sentbank = myf.readlines()
+# for i in range(len(sentbank)):                                                                                                                      
+#     sentbank[i] = sentbank[i].replace('\n', ' ').split()
+# with open('bandongo/selected_ptt_comments', 'r') as myf:
+#     ansbank = myf.readlines()
+# for i in range(len(sentbank)):                                                                                                                      
+#     ansbank[i] = ansbank[i].replace('\n', ' ')
 
     
     
@@ -57,12 +57,6 @@ msg_noon = Message.objects.filter(usage="greeting msg noon")
 msg_night = Message.objects.filter(usage="greeting msg night")
 msg_midnight = Message.objects.filter(usage="greeting msg midnight")
 
-
-
-# Create your views here.
-# def userList(request):
-#     users=User.objects.all()
-#     return render(request, 'bandongo/user_list.html', {'users':users})
 
 def index_v2(request):
     home_message = Message.objects.filter(usage="home message")
@@ -507,10 +501,21 @@ def editSchedulePage(request):
         print "bugbugbugbug"
 
 @login_required(login_url='/backend/login/')
-def scheduleListPage(request):
+def scheduleListPage(request, page):
     checkExpire()
-    schedules=Schedule.objects.all().order_by('-id')[:15]
-    return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules})
+    schedules=Schedule.objects.all().order_by('-id')
+    page=int(page)
+    pages=[]
+    for i in range(len(schedules)/10+1):
+        pages.append(i+1)
+    if page*10-10>len(schedules):
+        print "page error"
+    elif page*10>len(schedules) and len(schedules)>page*10-10:
+        return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules[page*10-10:], 'pages': pages, 'curPage': page})
+    else:
+        return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules[page*10-10:page*10], 'pages': pages, 'curPage': page})
+    
+    
 
 @login_required(login_url='/backend/login/')
 def emergencyPage(request):
@@ -737,9 +742,18 @@ def editDepartmentPage(request, id):
     return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Department', 'action': 'editDepartment/'+id})
 
 @login_required(login_url='/backend/login/')
-def notificationPage(request):
-    nots=Notification.objects.all()[:15]
-    return render(request, 'bandongo/backend_notification.html',{'nots': nots})
+def notificationPage(request, page):
+    nots=Notification.objects.all().order_by("-id")
+    page=int(page)
+    pages=[]
+    for i in range(len(nots)/10+1):
+        pages.append(i+1)
+    if page*10-10>len(nots):
+        print "page error"
+    elif page*10>len(nots) and len(nots)>page*10-10:
+        return render(request, 'bandongo/backend_notification.html',{'nots': nots[page*10-10:], 'pages': pages, 'curPage': page})
+    else:
+        return render(request, 'bandongo/backend_notification.html',{'nots': nots[page*10-10:page*10], 'pages': pages, 'curPage': page})
 
 
 ## function part
