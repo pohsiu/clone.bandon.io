@@ -120,6 +120,8 @@ urlpatterns = [
     url(r'^backend/editDepartment/([0-9]+)$', views.editDepartment),
     url(r'^backend/deleteDepartment$', views.deleteDepartment),
     url(r'^backend/readNot$', views.readNot),
+    url(r'^backend/deleteFoodOrder$', views.deleteFoodOrder),
+    url(r'^backend/deleteDrinkOrder$', views.deleteDrinkOrder),
     
     url(r'^getCateMem$', views.getCateMem),
     url(r'^getShopCat$', views.getShopCat),

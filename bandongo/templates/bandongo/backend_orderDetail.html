@@ -1,6 +1,6 @@
 {% extends "bandongo/backend_base.html" %}
 {% load staticfiles%}
-{% block js %}<script src="{% static 'js/backend_order.js' %}"></script>{% endblock %}
+{% block js %}<script src="{% static 'js/backend_orderDetail.js' %}"></script>{% endblock %}
 {% block content %}
 <div class="container">
 	{% if schedule %}
@@ -20,7 +20,9 @@
                     <td style="vertical-align: middle;">{{ schedule.food.name }}</td>
                     <td style="vertical-align: middle;">{{ schedule.drink.name }}</td>
                     <td style="vertical-align: middle;">{{ schedule.date }}</td>
+                    {% if not schedule.finish %}
                     <td style="vertical-align: middle;"><a class="btn btn-default" href="/backend/order/" role="button">Order</a></td>
+                    {% endif %}
                 </tr>
             </tbody>
         </table>
@@ -42,14 +44,14 @@
             {% for bag in foodBags %}
             <tr><td style="background-color:#D3D3D3 !important;" colspan="3">Bag {{ forloop.counter }}</td><td style="background-color:#D3D3D3 !important;" colspan="3">{{ bag.num }}</td></tr>
             	{% for order in bag.orders %}
-                <tr>
+                <tr id="food{{order.id}}">
                     <td>{{ order.memberName.remark.name }}</td>
                     <td>{{ order.memberName.name }}</td>
                 	<td>{{ order.foodName.name }}</td>
                     <td>{{ order.num }}</td>
                     <td>{{ order.price }}</td>
                     {% if not schedule.finish %}
-                    <td><a onclick="deleteOrder({{order.id}});"><span class="glyphicon glyphicon-remove" style="cursor: pointer;"></span></a></td>
+                    <td><a onclick="deleteFoodOrder({{order.id}});"><span class="glyphicon glyphicon-remove" style="cursor: pointer;"></span></a></td>
                     {% endif %}
                 </tr>
                 {% endfor %}
@@ -79,7 +81,7 @@
             {% for bag in drinkBags %}
             <tr><td style="background-color:#D3D3D3 !important;" colspan="4">Bag {{ forloop.counter }}</td><td style="background-color:#D3D3D3 !important;" colspan="3">{{ bag.num }}</td></tr>
                 {% for order in bag.orders %}
-                <tr>
+                <tr id="drink{{order.id}}">
                     <td>{{ order.memberName.remark.name }}</td>
                     <td>{{ order.memberName.name }}</td>
                     <td>{{ order.drinking }}</td>
@@ -87,7 +89,7 @@
                     <td>{{ order.num }}</td>
                     <td>{{ order.price }}</td>
                     {% if not schedule.finish %}
-                    <td><a onclick="deleteOrder({{order.id}});"><span class="glyphicon glyphicon-remove" style="cursor: pointer;"></span></a></td>
+                    <td><a onclick="deleteDrinkOrder({{order.id}});"><span class="glyphicon glyphicon-remove" style="cursor: pointer;"></span></a></td>
                     {% endif %}
                 </tr>
                 {% endfor %}

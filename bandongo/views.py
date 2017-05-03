@@ -1055,6 +1055,27 @@ def readNot(request):
         return HttpResponse("Read successfully.")
     else:
         return HttpResponse("Database Error")
+        
+@login_required(login_url='/backend/login/')
+def deleteFoodOrder(request):
+    order=FoodOrder.objects.filter(id=request.POST["orderId"])
+    if len(order)==1:
+        order.delete()
+        return HttpResponse(True)
+    else:
+        return HttpResponse(False)
+        
+@login_required(login_url='/backend/login/')
+def deleteDrinkOrder(request):
+    order=DrinkOrder.objects.filter(id=request.POST["orderId"])
+    if len(order)==1:
+        order.delete()
+        return HttpResponse(True)
+    else:
+        return HttpResponse(False)
+        
+        
+        
 def checkExpire():
     nonFinish=Schedule.objects.filter(finish=False)
     for schedule in nonFinish:
