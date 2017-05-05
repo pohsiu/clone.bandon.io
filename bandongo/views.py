@@ -11,6 +11,8 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 
+from django.forms.models import model_to_dict
+
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 
@@ -587,7 +589,7 @@ def orderDetailPage(request, id):
         drinkBags=[]
         foodTotalPrice=0
         drinkTotalPrice=0
-
+        
         for i in range(3):
             orders=FoodOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1)).order_by('memberName__remark')
             num=0
@@ -604,7 +606,10 @@ def orderDetailPage(request, id):
                 num+=order.num
             drinkBags.append({'orders': orders, 'num': num})
         
-        return render(request, 'bandongo/backend_orderDetail.html',{'schedule': schedule, 'foodBags': foodBags, 'foodTotalPrice': foodTotalPrice, 'drinkBags': drinkBags, 'drinkTotalPrice': drinkTotalPrice})
+        categories=Category.objects.all()
+        members=Member.objects.filter(remark=categories[0])
+        
+        return render(request, 'bandongo/backend_orderDetail.html',{'schedule': schedule, 'foodBags': foodBags, 'foodTotalPrice': foodTotalPrice, 'drinkBags': drinkBags, 'drinkTotalPrice': drinkTotalPrice, 'categories': categories, 'members': members})
     except ObjectDoesNotExist:
         return render(request, 'bandongo/backend_orderDetail.html',{'schedule': None})
 
@@ -1060,19 +1065,50 @@ def readNot(request):
 def deleteFoodOrder(request):
     order=FoodOrder.objects.filter(id=request.POST["orderId"])
     if len(order)==1:
+        bag=order[0].memberName.remark.bag
+        count=order[0].num
+        price=order[0].price
         order.delete()
-        return HttpResponse(True)
+        return JsonResponse({'count': count, 'price': price, 'bag': bag})
     else:
-        return HttpResponse(False)
+        return JsonResponse(None, safe=False)
         
 @login_required(login_url='/backend/login/')
 def deleteDrinkOrder(request):
     order=DrinkOrder.objects.filter(id=request.POST["orderId"])
     if len(order)==1:
+        bag=order[0].memberName.remark.bag
+        count=order[0].num
+        price=order[0].price
         order.delete()
-        return HttpResponse(True)
+        return JsonResponse({'count': count, 'price': price, 'bag': bag})
     else:
-        return HttpResponse(False)
+        return JsonResponse(None, safe=False)
+
+@login_required(login_url='/backend/login/')
+def addFoodOrder(request):
+    member=Member.objects.filter(id=request.POST["member"])
+    catalog=Catalog.objects.filter(id=request.POST["catalog"])
+    count=int(request.POST["count"])
+    schedule=Schedule.objects.filter(finish=False)
+    if len(member)==1 and len(catalog)==1 and len(schedule)==1:
+        foodOrder=FoodOrder.objects.create(memberName=member[0], scheduleName=schedule[0], foodName=catalog[0], num=count, price=catalog[0].price*count)
+        return JsonResponse({'order': model_to_dict(foodOrder)})
+    else:
+        return JsonResponse(None, safe=False)
+
+@login_required(login_url='/backend/login/')
+def addDrinkOrder(request):
+    member=Member.objects.filter(id=request.POST["member"])
+    drink=request.POST["drink"]
+    remark=request.POST["remark"]
+    price=int(request.POST["price"])
+    schedule=Schedule.objects.filter(finish=False)
+    if len(member)==1 and len(schedule)==1:
+        drinkOrder=DrinkOrder.objects.create(memberName=member[0], scheduleName=schedule[0], drinking=drink, num=1, remark=remark, price=price)
+        return JsonResponse({'order': model_to_dict(drinkOrder)})
+    else:
+        return JsonResponse(None, safe=False)
         
         
         
