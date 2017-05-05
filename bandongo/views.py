@@ -11,8 +11,6 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import JsonResponse
 
-from django.forms.models import model_to_dict
-
 from django.core.urlresolvers import reverse
 from django.shortcuts import redirect
 
@@ -1093,7 +1091,8 @@ def addFoodOrder(request):
     schedule=Schedule.objects.filter(finish=False)
     if len(member)==1 and len(catalog)==1 and len(schedule)==1:
         foodOrder=FoodOrder.objects.create(memberName=member[0], scheduleName=schedule[0], foodName=catalog[0], num=count, price=catalog[0].price*count)
-        return JsonResponse({'order': model_to_dict(foodOrder)})
+        response={'id': foodOrder.id, 'remark': member[0].remark.name, 'member': member[0].name, 'catalog': catalog[0].name, 'count': count, 'price': catalog[0].price*count, 'bag': member[0].remark.bag}
+        return JsonResponse(response)
     else:
         return JsonResponse(None, safe=False)
 
@@ -1106,7 +1105,8 @@ def addDrinkOrder(request):
     schedule=Schedule.objects.filter(finish=False)
     if len(member)==1 and len(schedule)==1:
         drinkOrder=DrinkOrder.objects.create(memberName=member[0], scheduleName=schedule[0], drinking=drink, num=1, remark=remark, price=price)
-        return JsonResponse({'order': model_to_dict(drinkOrder)})
+        response={'id': drinkOrder.id, 'remark': member[0].remark.name, 'member': member[0].name, 'drink': drink, 'remark': remark, 'count': 1, 'price': price, 'bag': member[0].remark.bag}
+        return JsonResponse(response)
     else:
         return JsonResponse(None, safe=False)
         

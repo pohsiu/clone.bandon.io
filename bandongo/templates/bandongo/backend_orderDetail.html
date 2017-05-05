@@ -40,9 +40,9 @@
                     {% endif %}
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="food">
             {% for bag in foodBags %}
-            <tr><td style="background-color:#D3D3D3 !important;" colspan="3">Bag {{ forloop.counter }}</td><td id="foodCount{{forloop.counter}}" style="background-color:#D3D3D3 !important;" colspan="3">{{ bag.num }}</td></tr>
+            <tr id="foodBag{{forloop.counter}}"><td style="background-color:#D3D3D3 !important;" colspan="3">Bag {{ forloop.counter }}</td><td id="foodCount{{forloop.counter}}" style="background-color:#D3D3D3 !important;" colspan="3">{{ bag.num }}</td></tr>
             	{% for order in bag.orders %}
                 <tr id="food{{order.id}}">
                     <td>{{ order.memberName.remark.name }}</td>
@@ -77,9 +77,9 @@
                     {% endif %}
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="drink">
             {% for bag in drinkBags %}
-            <tr><td style="background-color:#D3D3D3 !important;" colspan="4">Bag {{ forloop.counter }}</td><td id="drinkCount{{forloop.counter}}" style="background-color:#D3D3D3 !important;" colspan="3">{{ bag.num }}</td></tr>
+            <tr id="drinkBag{{forloop.counter}}"><td style="background-color:#D3D3D3 !important;" colspan="4">Bag {{ forloop.counter }}</td><td id="drinkCount{{forloop.counter}}" style="background-color:#D3D3D3 !important;" colspan="3">{{ bag.num }}</td></tr>
                 {% for order in bag.orders %}
                 <tr id="drink{{order.id}}">
                     <td>{{ order.memberName.remark.name }}</td>

@@ -84,7 +84,29 @@ function addFoodOrder() {
         {member: member, catalog: catalog, count: count},
         function(response) {
             if(response) {
-                alert(response);
+                var bag=response.bag;
+                var row='\
+                        <tr id="food'+response.id+'">\
+                            <td>'+response.remark+'</td>\
+                            <td>'+response.member+'</td>\
+                        	<td>'+response.catalog+'</td>\
+                            <td>'+response.count+'</td>\
+                            <td>'+response.price+'</td>\
+                            <td><a onclick="deleteFoodOrder('+response.id+');"><span class="glyphicon glyphicon-remove" style="cursor: pointer;"></span></a></td>\
+                        </tr>'
+                if(bag!=3) {
+                    $("#foodBag"+(bag+1)).before(row);
+                } else {
+                    $("#food").append(row);
+                }
+                
+                var count=$("#foodCount"+response.bag).html();
+                count=parseInt(count)+response.count;
+                $("#foodCount"+response.bag).html(count);
+                
+                var price=$("#foodPrice").html();
+                price=parseInt(price)+response.price;
+                $("#foodPrice").html(price);
             } else {
                 alert("Schedule is finished.");
             }
@@ -102,7 +124,30 @@ function addDrinkOrder() {
         {member: member, drink: drink, remark: remark, price: price},
         function(response) {
             if(response) {
-                alert(response);
+                var bag=response.bag;
+                var row='\
+                        <tr id="drink'+response.id+'">\
+                            <td>'+response.remark+'</td>\
+                            <td>'+response.member+'</td>\
+                        	<td>'+response.drink+'</td>\
+                        	<td>'+response.remark+'</td>\
+                            <td>'+response.count+'</td>\
+                            <td>'+response.price+'</td>\
+                            <td><a onclick="deleteDrinkOrder('+response.id+');"><span class="glyphicon glyphicon-remove" style="cursor: pointer;"></span></a></td>\
+                        </tr>'
+                if(bag!=3) {
+                    $("#drinkBag"+(bag+1)).before(row);
+                } else {
+                    $("#drink").append(row);
+                }
+                
+                var count=$("#drinkCount"+response.bag).html();
+                count=parseInt(count)+1;
+                $("#drinkCount"+response.bag).html(count);
+                
+                var price=$("#drinkPrice").html();
+                price=parseInt(price)+response.price;
+                $("#drinkPrice").html(price);
             } else {
                 alert("Schedule is finished.");
             }
