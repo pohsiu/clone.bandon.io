@@ -116,12 +116,12 @@ function addFoodOrder() {
 
 function addDrinkOrder() {
     var member=$("#member-drink").val();
-    var drink=$("#drink").val();
+    var drinking=$("#drinking").val();
     var remark=$("#sugar").val()+$("#ice").val()+$("#comment").val();
     var price=$("#price").val();
     $.post(
         "/backend/addDrinkOrder",
-        {member: member, drink: drink, remark: remark, price: price},
+        {member: member, drinking: drinking, remark: remark, price: price},
         function(response) {
             if(response) {
                 var bag=response.bag;

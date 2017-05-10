@@ -1099,12 +1099,12 @@ def addFoodOrder(request):
 @login_required(login_url='/backend/login/')
 def addDrinkOrder(request):
     member=Member.objects.filter(id=request.POST["member"])
-    drink=request.POST["drink"]
+    drinking=request.POST["drinking"]
     remark=request.POST["remark"]
     price=int(request.POST["price"])
     schedule=Schedule.objects.filter(finish=False)
     if len(member)==1 and len(schedule)==1:
-        drinkOrder=DrinkOrder.objects.create(memberName=member[0], scheduleName=schedule[0], drinking=drink, num=1, remark=remark, price=price)
+        drinkOrder=DrinkOrder.objects.create(memberName=member[0], scheduleName=schedule[0], drinking=drinking, num=1, remark=remark, price=price)
         response={'id': drinkOrder.id, 'category': member[0].remark.name, 'member': member[0].name, 'drink': drink, 'remark': remark, 'count': 1, 'price': price, 'bag': member[0].remark.bag}
         return JsonResponse(response)
     else:
