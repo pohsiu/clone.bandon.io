@@ -127,7 +127,7 @@ function addDrinkOrder() {
                 var bag=response.bag;
                 var row='\
                         <tr id="drink'+response.id+'">\
-                            <td>'+response.remark+'</td>\
+                            <td>'+response.category+'</td>\
                             <td>'+response.member+'</td>\
                         	<td>'+response.drink+'</td>\
                         	<td>'+response.remark+'</td>\
