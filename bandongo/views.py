@@ -758,6 +758,13 @@ def notificationPage(request, page):
     else:
         return render(request, 'bandongo/backend_notification.html',{'nots': nots[page*10-10:page*10], 'pages': pages, 'curPage': page})
 
+@login_required(login_url='/backend/login/')
+def chuChienPayPage(request):
+    admins=Member.objects.filter(auth='admin')
+    categories=Category.objects.all()
+    members=Member.objects.filter(remark=categories[0])
+    return render(request, 'bandongo/backend_pay.html',{'admins': admins, 'categories': categories, 'members': members})
+
 
 ## function part
 @login_required(login_url='/backend/login/')
@@ -1109,7 +1116,22 @@ def addDrinkOrder(request):
         return JsonResponse(response)
     else:
         return JsonResponse(None, safe=False)
-        
+
+@login_required(login_url='/backend/login/')
+def chuChienPay(request):
+    memberR=Member.objects.get(id=request.POST["memberReceive"])
+    memberP=Member.objects.get(id=request.POST["memberPay"])
+    value=int(request.POST["value"])
+    admin=Member.objects.get(id=request.POST["admin"])
+    comment=request.POST["comment"]
+    
+    Savelog.objects.create(memberName=memberR, money=value, adminName=admin, comment=comment)
+    Savelog.objects.create(memberName=memberP, money=-value, adminName=admin, comment=comment)
+    memberR.saving+=value
+    memberP.saving-=value
+    memberR.save()
+    memberP.save()
+    return HttpResponse("Chu Chien Pay Successfully")
         
         
 def checkExpire():

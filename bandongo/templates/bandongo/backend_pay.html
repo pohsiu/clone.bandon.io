@@ -1,0 +1,53 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}<script src="{% static 'js/backend_pay.js' %}"></script>{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Chu Chien Pay</h1></div>
+    <div><h3>Receive Member</h3></div>
+    <div>
+        <select id="categoryReceive" style="width: 20%;" class="selectpicker">
+            {% for category in categories %}
+                <option value="{{forloop.counter0}}">{{category.name}}</option>
+            {% endfor %}
+        </select>
+        <select id="memberReceive" style="width: 20%;" class="selectpicker">
+            {% for member in members %}
+                <option value="{{member.id}}">{{member.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div><h3>Pay Member</h3></div>
+    <div>
+        <select id="categoryPay" style="width: 20%;" class="selectpicker">
+            {% for category in categories %}
+                <option value="{{forloop.counter0}}">{{category.name}}</option>
+            {% endfor %}
+        </select>
+        <select id="memberPay" style="width: 20%;" class="selectpicker">
+            {% for member in members %}
+                <option value="{{member.id}}">{{member.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div><h3>Value</h3></div>
+    <div>
+        <input type="number" step="100" class="form-control" style="width: 20%;" id="value" value="0">
+    </div>
+    <div><h3>Admin</h3></div>
+    <div>
+        <select id="admin" style="width: 20%;" class="selectpicker">
+            {% for admin in admins %}
+                <option value="{{admin.id}}">{{admin.name}}</option>
+            {% endfor %}
+        </select>
+    </div>
+    <div><h3>Comment</h3></div>
+    <div>
+        <input type="text" class="form-control" style="width: 50%;" id="comment">
+    </div>
+    <div style="margin-top: 20px">
+        <button id="submit" class="btn btn-default" onclick="submit();">Submit</button>
+    </div>
+</div>
+{% endblock %}
