@@ -7,7 +7,7 @@ function finish() {
         {id: id},
         function(response) {
           alert(response);
-          window.location.href = "/backend/scheduleListPage";
+          window.location.href = "/backend/scheduleListPage/";
         }
     );
 }
@@ -22,8 +22,4 @@ function arrive(type) {
           window.location.href = "/backend/order";
         }
     );
-}
-
-function deleteOrder(id) {
-    alert(id);
 }
