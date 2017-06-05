@@ -59,6 +59,8 @@ urlpatterns = [
     
     ## backend part
     ## url part
+    url(r'^backend/sendInstantMsg$', views.sendLineRobot),
+    
     url(r'^backend/$', views.homePage),
     url(r'^backend/login/$', views.login),
     url(r'^backend/logout/$', views.logout),
@@ -85,6 +87,7 @@ urlpatterns = [
     url(r'^backend/foodShop/([0-9]+)/$', views.editFoodShopPage),
     url(r'^backend/drinkShop/([0-9]+)/$', views.editDrinkShopPage),
     url(r'^backend/messagePage/$', views.messagePage),
+    url(r'^backend/instantMessage/$', views.instantMsg),
     url(r'^backend/wishPage/$', views.wishPage),
     url(r'^backend/savelogPage/$', views.savelogPage),
     url(r'^backend/addDepartmentPage/$', views.addDepartmentPage),

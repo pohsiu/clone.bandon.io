@@ -236,6 +236,7 @@ footer {
   position: relative;
   z-index: 1;
   background: #FFFFFF;
+  opacity: 0.85;
   max-width: 300px;
   
   margin: 0 auto 100px;
