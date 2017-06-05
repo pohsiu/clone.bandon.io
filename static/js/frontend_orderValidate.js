@@ -135,20 +135,38 @@ function orderForm() {
         
         return false;
     }
-    function post(){
+function post(){
+        var foodlist=[]
         for (var i = 1; i <= foodlen; i++) {
             catalog_id = document.forms["orderform"]["catalog-id"+i].value;
             food_num = document.forms["orderform"]["food-num"+i].value;
+            food_name = document.forms["orderform"]["food-name"+i].value;
             foodJson.push({catalog_id:catalog_id , food_num:food_num});
+            foodlist.push({name:food_name, num:food_num});
         }
         
         $.post(
             "/frontend/add_order",
             {foodJson:JSON.stringify(foodJson), drinkname:drinkname, drinkprice:drinkprice, member_id:member_id, schedule_id:schedule_id, sugar:sugar, ice:ice, drinkcomment:drinkcomment },
             function(response) {
+            var cart = NaN;
+            // console.log(foodlist[0]);
+            // console.log(JSON.parse(foodlist[0].num));
+            // console.log(foodlist.length);
+            
+            for(var listi = 0; listi< foodlist.length; listi++){
+                if(JSON.parse(foodlist[listi].num) != "0"){
+                    if(isNaN(cart)){
+                        cart = JSON.stringify(foodlist[listi].name)+" "+JSON.parse(foodlist[listi].num)+"個<br>";
+                    }
+                    else{
+                        cart= cart+JSON.stringify(foodlist[listi].name)+" "+JSON.parse(foodlist[listi].num)+"個<br>";
+                    }
+                }
+            }
             bootbox.alert({
                 title: "訂餐結果",
-                message: response,
+                message: response+"</br>"+cart+drinkname,
                 callback: function () {
                     console.log('This was logged in the callback!');
                     document.forms["orderform"].remove();

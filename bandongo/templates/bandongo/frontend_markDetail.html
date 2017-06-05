@@ -98,7 +98,11 @@
                 <input type="hidden" name="schedule_id" value="{{schedules.0.id}}"/>
                 {% for foods in list_food %}
                     <tr>
-                        <td class="col-sm-3"><input type="hidden" name="catalog-id{{ forloop.counter }}" value="{{ foods.id }}"/>{{foods.name}}</td>
+                        <td class="col-sm-3">
+                            <input type="hidden" name="catalog-id{{ forloop.counter }}" value="{{ foods.id }}"/>
+                            <input type="hidden" name="food-name{{ forloop.counter }}" value="{{ foods.name }}"/>
+                            {{foods.name}}
+                        </td>
                         
                         <td class="col-sm-5">{{foods.price}}</td>
                         <td class="col-sm-4">
