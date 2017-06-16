@@ -1153,8 +1153,8 @@ def chuChienPay(request):
     admin=Member.objects.get(id=request.POST["admin"])
     comment=request.POST["comment"]
     
-    Savelog.objects.create(memberName=memberR, money=value, adminName=admin, comment=comment)
-    Savelog.objects.create(memberName=memberP, money=-value, adminName=admin, comment=comment)
+    Savelog.objects.create(memberName=memberR, money=value, adminName=admin, comment=comment+" from "+memberP.name)
+    Savelog.objects.create(memberName=memberP, money=-value, adminName=admin, comment=comment+" to "+memberR.name)
     memberR.saving+=value
     memberP.saving-=value
     memberR.save()
