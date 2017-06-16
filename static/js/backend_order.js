@@ -7,7 +7,7 @@ function finish() {
         {id: id},
         function(response) {
           alert(response);
-          window.location.href = "/backend/scheduleListPage";
+          window.location.href = "/backend/scheduleListPage/1/";
         }
     );
 }

@@ -135,7 +135,7 @@ function orderForm() {
         
         return false;
     }
-    function post(){
+function post(){
         var foodlist=[]
         for (var i = 1; i <= foodlen; i++) {
             catalog_id = document.forms["orderform"]["catalog-id"+i].value;
@@ -149,19 +149,14 @@ function orderForm() {
             "/frontend/add_order",
             {foodJson:JSON.stringify(foodJson), drinkname:drinkname, drinkprice:drinkprice, member_id:member_id, schedule_id:schedule_id, sugar:sugar, ice:ice, drinkcomment:drinkcomment },
             function(response) {
-            var cart = NaN;
+            var cart = "";
             // console.log(foodlist[0]);
             // console.log(JSON.parse(foodlist[0].num));
             // console.log(foodlist.length);
             
             for(var listi = 0; listi< foodlist.length; listi++){
                 if(JSON.parse(foodlist[listi].num) != "0"){
-                    if(isNaN(cart)){
-                        cart = JSON.stringify(foodlist[listi].name)+" "+JSON.parse(foodlist[listi].num)+"個<br>";
-                    }
-                    else{
-                        cart= cart+JSON.stringify(foodlist[listi].name)+" "+JSON.parse(foodlist[listi].num)+"個<br>";
-                    }
+                    cart= cart+JSON.stringify(foodlist[listi].name)+" "+JSON.parse(foodlist[listi].num)+"個<br>";
                 }
             }
             bootbox.alert({

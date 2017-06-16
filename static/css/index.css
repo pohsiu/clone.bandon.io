@@ -7,8 +7,13 @@
     font-style: normal;
 }
 
-body,button, input, select, textarea,h1 ,h2, h3, h4, h5, h6 { font-family: '王漢宗粗明體繁', Microsoft JhengHei ,'微軟正黑體' , Tahoma, Helvetica, Arial, sans-serif;}
+body,button, input, select, textarea,h1 ,h2, h4, h5, h6 { font-family: 
+'微軟正黑體', Microsoft JhengHei ,'微軟正黑體' , Tahoma, Helvetica, Arial, sans-serif;}
 
+
+h3 {
+  font-family:'王漢宗粗明體繁',Arial;
+}
 body {
   -webkit-animation-duration: 0.1s;
   -webkit-animation-name: fontfix;

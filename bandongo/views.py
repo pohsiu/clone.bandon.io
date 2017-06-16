@@ -33,26 +33,29 @@ import jieba
 import sys
 from gensim.models.doc2vec import Doc2Vec
 
+
 from linebot import LineBotApi
 from linebot.models import TextSendMessage
 from linebot.exceptions import LineBotApiError
 
 
-reload(sys)
-sys.setdefaultencoding('utf-8')
-jieba.initialize()
-jieba.set_dictionary('bandongo/dict.txt.big')
-model = Doc2Vec.load('bandongo/womentalk_contents.doc2vec.model2')
+
+# reload(sys)
+# sys.setdefaultencoding('utf-8')
+# jieba.initialize()
+# jieba.set_dictionary('bandongo/dict.txt.big')
+# model = Doc2Vec.load('bandongo/womentalk_contents.doc2vec.model2')
 
 
-with open('bandongo/selected_ptt_comments_seg', 'r') as myf:
-    sentbank = myf.readlines()
-for i in range(len(sentbank)):                                                                                                                      
-    sentbank[i] = sentbank[i].replace('\n', ' ').split()
-with open('bandongo/selected_ptt_comments', 'r') as myf:
-    ansbank = myf.readlines()
-for i in range(len(sentbank)):                                                                                                                      
-    ansbank[i] = ansbank[i].replace('\n', ' ')
+# with open('bandongo/selected_ptt_comments_seg', 'r') as myf:
+#     sentbank = myf.readlines()
+# for i in range(len(sentbank)):                                                                                                                      
+#     sentbank[i] = sentbank[i].replace('\n', ' ').split()
+# with open('bandongo/selected_ptt_comments', 'r') as myf:
+#     ansbank = myf.readlines()
+# for i in range(len(sentbank)):                                                                                                                      
+#     ansbank[i] = ansbank[i].replace('\n', ' ')
+
 
     
     
@@ -62,16 +65,21 @@ msg_noon = Message.objects.filter(usage="greeting msg noon")
 msg_night = Message.objects.filter(usage="greeting msg night")
 msg_midnight = Message.objects.filter(usage="greeting msg midnight")
 
+
 def sendLineRobot(request):
     msg = request.POST['inputMsg']
     line_bot_api = LineBotApi('qho7RfDk/PuWamawJGF4H/Pj/Pt1zpom+R/aAuVYl3pmyzm2zenB9TCNFjwYs5EiJS9JyslG3ivLtMgj8A4Gk7p/yIlsBlKGheKj8QGvKcwQNeG/nPWGYtqxrH+0i1z+WMkoqN+mveWLBadzICGvQwdB04t89/1O/w1cDnyilFU=')
-    line_bot_api.push_message('U2b76d9b94e8298a1ed591554d781d192', TextSendMessage(text=msg))
+    users = Member.objects.all()
+    for user in users:
+        if user.lineid:
+            line_bot_api.push_message(user.lineid, TextSendMessage(text=msg))
     return "ok"
 
 # Create your views here.
 # def userList(request):
 #     users=User.objects.all()
 #     return render(request, 'bandongo/user_list.html', {'users':users})
+
 
 def index_v2(request):
     home_message = Message.objects.filter(usage="home message")
@@ -453,7 +461,7 @@ def terms_of_use(request, pk):
 ## page part
 def homePage(request):
     members=Member.objects.all()
-    notifications=Notification.objects.filter(read=False)
+    notifications=Notification.objects.filter(read=False).order_by('-date')
     return render(request, 'bandongo/backend_home.html',{'balance': sum(map(lambda member: member.saving, members)), 'notifications': notifications})
 
 def login(request):
@@ -516,10 +524,21 @@ def editSchedulePage(request):
         print "bugbugbugbug"
 
 @login_required(login_url='/backend/login/')
-def scheduleListPage(request):
+def scheduleListPage(request, page):
     checkExpire()
-    schedules=Schedule.objects.all().order_by('-id')[:15]
-    return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules})
+    schedules=Schedule.objects.all().order_by('-id')
+    page=int(page)
+    pages=[]
+    for i in range(len(schedules)/10+1):
+        pages.append(i+1)
+    if page*10-10>len(schedules):
+        print "page error"
+    elif page*10>len(schedules) and len(schedules)>page*10-10:
+        return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules[page*10-10:], 'pages': pages, 'curPage': page})
+    else:
+        return render(request, 'bandongo/backend_scheduleList.html',{'schedules': schedules[page*10-10:page*10], 'pages': pages, 'curPage': page})
+    
+    
 
 @login_required(login_url='/backend/login/')
 def emergencyPage(request):
@@ -591,7 +610,7 @@ def orderDetailPage(request, id):
         drinkBags=[]
         foodTotalPrice=0
         drinkTotalPrice=0
-
+        
         for i in range(3):
             orders=FoodOrder.objects.filter(scheduleName=schedule, memberName__remark__bag=(i+1)).order_by('memberName__remark')
             num=0
@@ -608,7 +627,10 @@ def orderDetailPage(request, id):
                 num+=order.num
             drinkBags.append({'orders': orders, 'num': num})
         
-        return render(request, 'bandongo/backend_orderDetail.html',{'schedule': schedule, 'foodBags': foodBags, 'foodTotalPrice': foodTotalPrice, 'drinkBags': drinkBags, 'drinkTotalPrice': drinkTotalPrice})
+        categories=Category.objects.all()
+        members=Member.objects.filter(remark=categories[0])
+        
+        return render(request, 'bandongo/backend_orderDetail.html',{'schedule': schedule, 'foodBags': foodBags, 'foodTotalPrice': foodTotalPrice, 'drinkBags': drinkBags, 'drinkTotalPrice': drinkTotalPrice, 'categories': categories, 'members': members})
     except ObjectDoesNotExist:
         return render(request, 'bandongo/backend_orderDetail.html',{'schedule': None})
 
@@ -751,9 +773,25 @@ def editDepartmentPage(request, id):
     return render(request, 'bandongo/backend_addForm.html',{'form': form, 'title': 'Edit Department', 'action': 'editDepartment/'+id})
 
 @login_required(login_url='/backend/login/')
-def notificationPage(request):
-    nots=Notification.objects.all()[:15]
-    return render(request, 'bandongo/backend_notification.html',{'nots': nots})
+def notificationPage(request, page):
+    nots=Notification.objects.all().order_by("-id")
+    page=int(page)
+    pages=[]
+    for i in range(len(nots)/10+1):
+        pages.append(i+1)
+    if page*10-10>len(nots):
+        print "page error"
+    elif page*10>len(nots) and len(nots)>page*10-10:
+        return render(request, 'bandongo/backend_notification.html',{'nots': nots[page*10-10:], 'pages': pages, 'curPage': page})
+    else:
+        return render(request, 'bandongo/backend_notification.html',{'nots': nots[page*10-10:page*10], 'pages': pages, 'curPage': page})
+
+@login_required(login_url='/backend/login/')
+def chuChienPayPage(request):
+    admins=Member.objects.filter(auth='admin')
+    categories=Category.objects.all()
+    members=Member.objects.filter(remark=categories[0])
+    return render(request, 'bandongo/backend_pay.html',{'admins': admins, 'categories': categories, 'members': members})
 
 
 ## function part
@@ -1055,6 +1093,75 @@ def readNot(request):
         return HttpResponse("Read successfully.")
     else:
         return HttpResponse("Database Error")
+        
+@login_required(login_url='/backend/login/')
+def deleteFoodOrder(request):
+    order=FoodOrder.objects.filter(id=request.POST["orderId"])
+    if len(order)==1:
+        bag=order[0].memberName.remark.bag
+        count=order[0].num
+        price=order[0].price
+        order.delete()
+        return JsonResponse({'count': count, 'price': price, 'bag': bag})
+    else:
+        return JsonResponse(None, safe=False)
+        
+@login_required(login_url='/backend/login/')
+def deleteDrinkOrder(request):
+    order=DrinkOrder.objects.filter(id=request.POST["orderId"])
+    if len(order)==1:
+        bag=order[0].memberName.remark.bag
+        count=order[0].num
+        price=order[0].price
+        order.delete()
+        return JsonResponse({'count': count, 'price': price, 'bag': bag})
+    else:
+        return JsonResponse(None, safe=False)
+
+@login_required(login_url='/backend/login/')
+def addFoodOrder(request):
+    member=Member.objects.filter(id=request.POST["member"])
+    catalog=Catalog.objects.filter(id=request.POST["catalog"])
+    count=int(request.POST["count"])
+    schedule=Schedule.objects.filter(finish=False)
+    if len(member)==1 and len(catalog)==1 and len(schedule)==1:
+        foodOrder=FoodOrder.objects.create(memberName=member[0], scheduleName=schedule[0], foodName=catalog[0], num=count, price=catalog[0].price*count)
+        response={'id': foodOrder.id, 'remark': member[0].remark.name, 'member': member[0].name, 'catalog': catalog[0].name, 'count': count, 'price': catalog[0].price*count, 'bag': member[0].remark.bag}
+        return JsonResponse(response)
+    else:
+        return JsonResponse(None, safe=False)
+
+@login_required(login_url='/backend/login/')
+def addDrinkOrder(request):
+    member=Member.objects.filter(id=request.POST["member"])
+    drinking=request.POST["drinking"]
+    remark=request.POST["remark"]
+    price=int(request.POST["price"])
+    schedule=Schedule.objects.filter(finish=False)
+    if len(member)==1 and len(schedule)==1:
+        drinkOrder=DrinkOrder.objects.create(memberName=member[0], scheduleName=schedule[0], drinking=drinking, num=1, remark=remark, price=price)
+        response={'id': drinkOrder.id, 'category': member[0].remark.name, 'member': member[0].name, 'drink': drinking, 'remark': remark, 'count': 1, 'price': price, 'bag': member[0].remark.bag}
+        return JsonResponse(response)
+    else:
+        return JsonResponse(None, safe=False)
+
+@login_required(login_url='/backend/login/')
+def chuChienPay(request):
+    memberR=Member.objects.get(id=request.POST["memberReceive"])
+    memberP=Member.objects.get(id=request.POST["memberPay"])
+    value=int(request.POST["value"])
+    admin=Member.objects.get(id=request.POST["admin"])
+    comment=request.POST["comment"]
+    
+    Savelog.objects.create(memberName=memberR, money=value, adminName=admin, comment=comment)
+    Savelog.objects.create(memberName=memberP, money=-value, adminName=admin, comment=comment)
+    memberR.saving+=value
+    memberP.saving-=value
+    memberR.save()
+    memberP.save()
+    return HttpResponse("Chu Chien Pay Successfully")
+        
+        
 def checkExpire():
     nonFinish=Schedule.objects.filter(finish=False)
     for schedule in nonFinish:

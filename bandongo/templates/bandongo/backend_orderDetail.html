@@ -1,6 +1,6 @@
 {% extends "bandongo/backend_base.html" %}
 {% load staticfiles%}
-{% block js %}<script src="{% static 'js/backend_order.js' %}"></script>{% endblock %}
+{% block js %}<script src="{% static 'js/backend_orderDetail.js' %}"></script>{% endblock %}
 {% block content %}
 <div class="container">
 	{% if schedule %}
@@ -20,11 +20,16 @@
                     <td style="vertical-align: middle;">{{ schedule.food.name }}</td>
                     <td style="vertical-align: middle;">{{ schedule.drink.name }}</td>
                     <td style="vertical-align: middle;">{{ schedule.date }}</td>
+                    {% if not schedule.finish %}
                     <td style="vertical-align: middle;"><a class="btn btn-default" href="/backend/order/" role="button">Order</a></td>
+                    {% endif %}
                 </tr>
             </tbody>
         </table>
-    	<div><h1>Bandon Orders</h1></div>
+    	<div><h1>Bandon Orders</h1>
+    	{% if not schedule.finish %}
+    	<span class="glyphicon glyphicon-plus" style="float: right; cursor: pointer;" data-toggle="modal" data-target="#foodOrderModal"></span></div>
+        {% endif %}
         <table class="table">
             <thead>
                 <tr>
@@ -33,28 +38,37 @@
                     <th>Food</th>
                     <th>Count</th>
                     <th>Price</th>
+                    {% if not schedule.finish %}
+                    <th>Delete</th>
+                    {% endif %}
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="food">
             {% for bag in foodBags %}
-            <tr><td style="background-color:#D3D3D3 !important;" colspan="3">Bag {{ forloop.counter }}</td><td style="background-color:#D3D3D3 !important;" colspan="2">{{ bag.num }}</td></tr>
+            <tr id="foodBag{{forloop.counter}}"><td style="background-color:#D3D3D3 !important;" colspan="3">Bag {{ forloop.counter }}</td><td id="foodCount{{forloop.counter}}" style="background-color:#D3D3D3 !important;" colspan="3">{{ bag.num }}</td></tr>
             	{% for order in bag.orders %}
-                <tr>
+                <tr id="food{{order.id}}">
                     <td>{{ order.memberName.remark.name }}</td>
                     <td>{{ order.memberName.name }}</td>
                 	<td>{{ order.foodName.name }}</td>
                     <td>{{ order.num }}</td>
                     <td>{{ order.price }}</td>
+                    {% if not schedule.finish %}
+                    <td><a onclick="deleteFoodOrder({{order.id}});"><span class="glyphicon glyphicon-remove" style="cursor: pointer;"></span></a></td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             {% endfor %}
             </tbody>
             <tr>
                 <td colspan="4"><b>Total Price</b></td>
-                <td><b>{{ foodTotalPrice }}</b></td>
+                <td><b id="foodPrice">{{ foodTotalPrice }}</b></td>
             </tr>
         </table>
-        <div><h1>Drink Orders</h1></div>
+        <div><h1>Drink Orders</h1>
+        {% if not schedule.finish %}
+        <span class="glyphicon glyphicon-plus" style="float: right; cursor: pointer;" data-toggle="modal" data-target="#drinkOrderModal"></span></div>
+        {% endif %}
         <table class="table">
             <thead>
                 <tr>
@@ -64,28 +78,140 @@
                     <th>Sugar and Ice</th>
                     <th>Count</th>
                     <th>Price</th>
+                    {% if not schedule.finish %}
+                    <th>Delete</th>
+                    {% endif %}
                 </tr>
             </thead>
-            <tbody>
+            <tbody id="drink">
             {% for bag in drinkBags %}
-            <tr><td style="background-color:#D3D3D3 !important;" colspan="4">Bag {{ forloop.counter }} Total count: {{ bag.num }}</td><td style="background-color:#D3D3D3 !important;" colspan="2">{{ bag.num }}</td></tr>
+            <tr id="drinkBag{{forloop.counter}}"><td style="background-color:#D3D3D3 !important;" colspan="4">Bag {{ forloop.counter }}</td><td id="drinkCount{{forloop.counter}}" style="background-color:#D3D3D3 !important;" colspan="3">{{ bag.num }}</td></tr>
                 {% for order in bag.orders %}
-                <tr>
+                <tr id="drink{{order.id}}">
                     <td>{{ order.memberName.remark.name }}</td>
                     <td>{{ order.memberName.name }}</td>
                     <td>{{ order.drinking }}</td>
                     <td>{{ order.remark }}</td>
                     <td>{{ order.num }}</td>
                     <td>{{ order.price }}</td>
+                    {% if not schedule.finish %}
+                    <td><a onclick="deleteDrinkOrder({{order.id}});"><span class="glyphicon glyphicon-remove" style="cursor: pointer;"></span></a></td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             {% endfor %}
             </tbody>
             <tr>
                 <td colspan="5"><b>Total Price</b></td>
-                <td><b>{{ drinkTotalPrice }}</b></td>
+                <td><b id="drinkPrice">{{ drinkTotalPrice }}</b></td>
             </tr>
         </table>
+        
+        <div id="foodOrderModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+        
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add Food Order</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div><h3>Department</h3></div>
+                        <div>
+                            <select id="category-food" class="selectpicker">
+                                {% for category in categories %}
+                                    <option value="{{forloop.counter0}}">{{category.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div><h3>Member</h3></div>
+                        <div>
+                            <select id="member-food" class="selectpicker">
+                                {% for member in members %}
+                                    <option value="{{member.id}}">{{member.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div><h3>Food</h3></div>
+                        <div>
+                            <select id="catalog" class="selectpicker">
+                                {% for catalog in schedule.catalogs.all %}
+                                    <option value="{{catalog.id}}">{{catalog.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div><h3>Count</h3></div>
+                        <div>
+                            <select id="count-food" class="selectpicker">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="addFoodOrder();">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="drinkOrderModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+        
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Add Drink Order</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div><h3>Department</h3></div>
+                        <div>
+                            <select id="category-drink" class="selectpicker">
+                                {% for category in categories %}
+                                    <option value="{{forloop.counter0}}">{{category.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div><h3>Member</h3></div>
+                        <div>
+                            <select id="member-drink" class="selectpicker">
+                                {% for member in members %}
+                                    <option value="{{member.id}}">{{member.name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div><h3>Drink</h3></div>
+                        <div>
+                            <input type="text" class="form-control" id="drinking">
+                        </div>
+                        <div><h3>Sugar</h3></div>
+                        <div>
+                            <input type="text" class="form-control" id="sugar">
+                        </div>
+                        <div><h3>Ice</h3></div>
+                        <div>
+                            <input type="text" class="form-control" id="ice">
+                        </div>
+                        <div><h3>Comment</h3></div>
+                        <div>
+                            <input type="text" class="form-control" id="comment">
+                        </div>
+                        <div><h3>price</h3></div>
+                        <div>
+                            <input type="text" class="form-control" id="price">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" onclick="addDrinkOrder();">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% else %}
     	<div><h1>No this schedule.</h1></div>
     {% endif %}

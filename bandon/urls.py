@@ -17,7 +17,7 @@ Including another URLconf
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from bandongo import views
-
+import echobot
 # from pratest import views2
 
 
@@ -27,7 +27,7 @@ urlpatterns = [
     # url(r'^user_list/', views.userList, name='home'),
     
     
-    
+    url(r'^echobot/', include('echobot.urls')),
    
     
     
@@ -66,7 +66,7 @@ urlpatterns = [
     url(r'^backend/logout/$', views.logout),
     url(r'^backend/setSchedulePage/$', views.setSchedulePage),
     url(r'^backend/editSchedulePage/$', views.editSchedulePage),
-    url(r'^backend/scheduleListPage/$', views.scheduleListPage),
+    url(r'^backend/scheduleListPage/([0-9]+)/$', views.scheduleListPage),
     url(r'^backend/emergencyPage/$', views.emergencyPage),
     url(r'^backend/order/$', views.orderPage),
     url(r'^backend/schedule/([0-9]+)/$', views.orderDetailPage),
@@ -93,7 +93,8 @@ urlpatterns = [
     url(r'^backend/addDepartmentPage/$', views.addDepartmentPage),
     url(r'^backend/departmentListPage/$', views.departmentListPage),
     url(r'^backend/department/([0-9]+)/$', views.editDepartmentPage),
-    url(r'^backend/notificationPage/$', views.notificationPage),
+    url(r'^backend/notificationPage/([0-9]+)/$', views.notificationPage),
+    url(r'^backend/chuChienPayPage/$', views.chuChienPayPage),
     
     ## function part
     url(r'^backend/setSchedule$', views.setSchedule),
@@ -123,6 +124,11 @@ urlpatterns = [
     url(r'^backend/editDepartment/([0-9]+)$', views.editDepartment),
     url(r'^backend/deleteDepartment$', views.deleteDepartment),
     url(r'^backend/readNot$', views.readNot),
+    url(r'^backend/deleteFoodOrder$', views.deleteFoodOrder),
+    url(r'^backend/deleteDrinkOrder$', views.deleteDrinkOrder),
+    url(r'^backend/addFoodOrder$', views.addFoodOrder),
+    url(r'^backend/addDrinkOrder$', views.addDrinkOrder),
+    url(r'^backend/chuChienPay$', views.chuChienPay),
     
     url(r'^getCateMem$', views.getCateMem),
     url(r'^getShopCat$', views.getShopCat),

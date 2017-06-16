@@ -4,15 +4,25 @@
 {% block content %}
 <div class="container">
     <div><h1>Notification List</h1></div>
-        <table class="table">
+    <div>
+        <div>
+            {% for index in pages %}
+                {% if index == curPage%}
+                     <a class="btn btn-default btn-xs active" role="button" style="cursor: default;">{{index}}</a>
+                {% else %}
+                    <a class="btn btn-default btn-xs" href="/backend/notificationPage/{{index}}/" role="button">{{index}}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <table class="table" style="table-layout:fixed;">
             <thead>
                 <tr>
-                    <th>id</th>
-                    <th>Type</th>
-                    <th>Member</th>
-                    <th>Content</th>
-                    <th>Date</th>
-                    <th>Read</th>
+                    <th class="col-md-1">id</th>
+                    <th class="col-md-1">Type</th>
+                    <th class="col-md-1">Member</th>
+                    <th class="col-md-6">Content</th>
+                    <th class="col-md-2">Date</th>
+                    <th class="col-md-1">Read</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,12 +31,22 @@
                     <td>{{ notification.id }}</td>
                     <td>{{ notification.classification }}</td>
                     <td>{{ notification.subject }}</td>
-                    <td>{{ notification.content }}</td>
+                    <td style="word-break: break-all;">{{ notification.content }}</td>
                     <td>{{ notification.date }}</td>
                     <td>{{ notification.read }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
+        <div>
+            {% for index in pages %}
+                {% if index == curPage%}
+                     <a class="btn btn-default btn-xs active" role="button" style="cursor: default;">{{index}}</a>
+                {% else %}
+                    <a class="btn btn-default btn-xs" href="/backend/notificationPage/{{index}}/" role="button">{{index}}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+    </div>
 </div>
 {% endblock %}
