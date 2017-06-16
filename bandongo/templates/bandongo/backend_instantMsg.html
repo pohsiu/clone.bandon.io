@@ -1,0 +1,27 @@
+{% extends "bandongo/backend_base.html" %}
+{% load staticfiles%}
+{% block js %}
+<script src="{% static 'js/backend_instantMsg.js' %}"></script>
+<script src="https://cdn.quilljs.com/1.2.2/quill.js"></script>
+{% endblock %}
+{% block css %}
+<link href="https://cdn.quilljs.com/1.2.2/quill.snow.css" rel="stylesheet">
+{% endblock %}
+{% block content %}
+<div class="container">
+    <div><h1>Send Instant Message</h1></div>
+    
+    <div><h3>Content</h3></div>
+    <div style="width: 50%;">
+        
+        <div id="editor">
+            <textarea style="height:160px; resize: none;" class="form-control input-sm" id="btn-input" placeholder="在此輸入訊息........"></textarea>
+          
+        </div>
+    </div>
+    <div style="margin-top: 20px">
+        <button id="submit" class="btn btn-default" onclick="submit();">Submit</button>
+    </div>
+</div>
+
+{% endblock %}

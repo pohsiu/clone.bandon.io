@@ -23,6 +23,7 @@ class Member(models.Model):
     remark = models.ForeignKey(Category)
     auth = models.CharField(max_length=10, default='normal')
     saving = models.IntegerField(default=0)
+    lineid = models.CharField(max_length=100, default='')
     
     def store(self):
         self.save()

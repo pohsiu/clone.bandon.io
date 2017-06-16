@@ -116,6 +116,7 @@
                 <br>
                 <div style="vertical-align: middle; max-width: 300px; text-align:middle; margin:auto;">
                 {% if s_latest.0.foodArrived %}
+
                     <p>餐點狀態：已抵達，請逕行取餐</p>
                 {% else %}
                     <p>餐點狀態：尚未抵達，請耐心等候</p>
@@ -125,6 +126,7 @@
                         <p>飲料狀態：已抵達，請逕行取餐</p>
                     {% else %}
                         <p>飲料狀態：尚未抵達，請耐心等候</p>
+
                     {% endif %}
                 {% endif %}
                 </div>
@@ -132,6 +134,8 @@
             <br>
         
             <a href="#about" class="btn btn-dark btn-lg">訂餐統計</a>
+            
+            <button type="submit" class="btn btn-info btn-lg"onclick="notifyMe()">Notify me!</button>
         </div>
     </header>
     
@@ -304,6 +308,45 @@
     <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/bootbox.min.js' %}"></script>
     <!-- Custom Theme JavaScript -->
+    <script>
+        function notifyMe() {
+        // Let's check if the browser supports notifications
+        if (!("Notification" in window)) {
+        alert("This browser does not support desktop notification");
+        }
+        
+        // Let's check if the user is okay to get some notification
+        else if (Notification.permission === "granted") {
+        // If it's okay let's create a notification
+        
+            var options = {
+                body: "This is new notification",
+                icon: "{%static 'icon/lunch-icon-23.png' %}"
+            }
+            var notification = new Notification("Bandongo",options);
+          
+        
+        }
+        
+        // Otherwise, we need to ask the user for permission
+        else if (Notification.permission !== 'denied') {
+        Notification.requestPermission(function (permission) {
+          // If the user is okay, let's create a notification
+          if (permission === "granted") {
+            var options = {
+                body: "This is new notification",
+                icon: "{%static 'icon/lunch-icon-23.png' %}"
+            }
+            var notification = new Notification("Bandongo",options);
+          }
+        });
+        }
+        
+        // At last, if the user already denied any notification, and you 
+        // want to be respectful there is no need to bother them any more.
+        }    
+    </script>
+    
     <script>
     $("#popbtn").click(function() {
         $(".overlay").css("visibility", "hidden");

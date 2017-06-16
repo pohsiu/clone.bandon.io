@@ -17,7 +17,7 @@ from .models import WishDrink
 
 
 class MemberAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'phone', 'email','remark','auth','saving')
+    list_display = ('id', 'name', 'phone', 'email','remark','auth','saving','lineid')
     search_fields = ('name','email')
 class SavelogAdmin(admin.ModelAdmin):
     list_display = ('id', 'memberName','money','adminName','tranDate', 'comment')

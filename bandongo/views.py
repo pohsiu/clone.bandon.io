@@ -33,6 +33,13 @@ import jieba
 import sys
 from gensim.models.doc2vec import Doc2Vec
 
+
+from linebot import LineBotApi
+from linebot.models import TextSendMessage
+from linebot.exceptions import LineBotApiError
+
+
+
 # reload(sys)
 # sys.setdefaultencoding('utf-8')
 # jieba.initialize()
@@ -49,6 +56,7 @@ from gensim.models.doc2vec import Doc2Vec
 # for i in range(len(sentbank)):                                                                                                                      
 #     ansbank[i] = ansbank[i].replace('\n', ' ')
 
+
     
     
 greeting_msg = Message.objects.filter(usage="greeting message")
@@ -56,6 +64,21 @@ msg_morning = Message.objects.filter(usage="greeting msg morning")
 msg_noon = Message.objects.filter(usage="greeting msg noon")
 msg_night = Message.objects.filter(usage="greeting msg night")
 msg_midnight = Message.objects.filter(usage="greeting msg midnight")
+
+
+def sendLineRobot(request):
+    msg = request.POST['inputMsg']
+    line_bot_api = LineBotApi('qho7RfDk/PuWamawJGF4H/Pj/Pt1zpom+R/aAuVYl3pmyzm2zenB9TCNFjwYs5EiJS9JyslG3ivLtMgj8A4Gk7p/yIlsBlKGheKj8QGvKcwQNeG/nPWGYtqxrH+0i1z+WMkoqN+mveWLBadzICGvQwdB04t89/1O/w1cDnyilFU=')
+    users = Member.objects.all()
+    for user in users:
+        if user.lineid:
+            line_bot_api.push_message(user.lineid, TextSendMessage(text=msg))
+    return "ok"
+
+# Create your views here.
+# def userList(request):
+#     users=User.objects.all()
+#     return render(request, 'bandongo/user_list.html', {'users':users})
 
 
 def index_v2(request):
@@ -714,6 +737,11 @@ def editDrinkShopPage(request, id):
 def messagePage(request):
     messages=Message.objects.all()
     return render(request, 'bandongo/backend_message.html',{'messages': messages})
+    
+@login_required(login_url='/backend/login/')
+def instantMsg(request):
+    
+    return render(request, 'bandongo/backend_instantMsg.html')
 
 @login_required(login_url='/backend/login/')
 def wishPage(request):
