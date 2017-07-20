@@ -11,9 +11,24 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+# from django.core.exceptions import ImproperlyConfigured
+# def get_env_variable(var_name):
+#     try:
+#         return os.environ[var_name]
+#     except KeyError:
+#         error_msg = 'Set the {} environment variable'.format(var_name)
+#         raise ImproperlyConfigured(error_msg)
+
+# try:
+#     from .settings_secret import *
+# except ImportError:
+#     SECRET_KEY = get_env_variable('SECRET_KEY')
+#     LINE_CHANNEL_ACCESS_TOKEN = get_env_variable('LINE_CHANNEL_ACCESS_TOKEN')
+#     LINE_CHANNEL_SECRET = get_env_variable('LINE_CHANNEL_SECRET')
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 
 # Quick-start development settings - unsuitable for production
@@ -21,7 +36,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'oia=nojf+vr8iesh77i44nqfli!(l#5h@v%r3a-$y))z)*4tv9'
-
+LINE_CHANNEL_ACCESS_TOKEN = 'qho7RfDk/PuWamawJGF4H/Pj/Pt1zpom+R/aAuVYl3pmyzm2zenB9TCNFjwYs5EiJS9JyslG3ivLtMgj8A4Gk7p/yIlsBlKGheKj8QGvKcwQNeG/nPWGYtqxrH+0i1z+WMkoqN+mveWLBadzICGvQwdB04t89/1O/w1cDnyilFU='
+LINE_CHANNEL_SECRET = 'd9ffd21d6bc1e03dd2403c0f555e2e59'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -39,6 +55,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bandongo',
+    'echobot',
 ]
 
 MIDDLEWARE_CLASSES = [

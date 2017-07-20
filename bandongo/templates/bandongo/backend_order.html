@@ -126,10 +126,10 @@
         </table>
     	<div style="margin-top: 20px">
     	    {% if not schedule.foodArrived %}
-                <button class="btn btn-default" onclick="arrive('food');">Food Arrived</button>
+                <button id="foodArrived" class="btn btn-default" onclick="arrive('food');">Food Arrived</button>
             {% endif %}
             {% if not schedule.drinkArrived %}
-                <button class="btn btn-default" onclick="arrive('drink');">Drink Arrived</button>
+                <button id="drinkArrived" class="btn btn-default" onclick="arrive('drink');">Drink Arrived</button>
             {% endif %}
             {% if schedule.foodArrived and schedule.drinkArrived%}
         	   <button id="finish" class="btn btn-default" onclick="finish();">Finish</button>

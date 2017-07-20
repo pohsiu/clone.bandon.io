@@ -18,7 +18,7 @@ from django.db.models import Sum, Count
 
 from django.core import serializers
 from django.core.exceptions import ObjectDoesNotExist
-
+from django.conf import settings
 from datetime import datetime, timedelta
 from datetime import date #detail index used
 from django.utils.dateparse import parse_datetime
@@ -32,6 +32,13 @@ from django.db.models import Q
 # import jieba
 # import sys
 # from gensim.models.doc2vec import Doc2Vec
+
+
+from linebot import LineBotApi
+from linebot.models import TextSendMessage
+from linebot.exceptions import LineBotApiError
+
+
 
 # reload(sys)
 # sys.setdefaultencoding('utf-8')
@@ -49,6 +56,7 @@ from django.db.models import Q
 # for i in range(len(sentbank)):                                                                                                                      
 #     ansbank[i] = ansbank[i].replace('\n', ' ')
 
+
     
     
 greeting_msg = Message.objects.filter(usage="greeting message")
@@ -56,6 +64,26 @@ msg_morning = Message.objects.filter(usage="greeting msg morning")
 msg_noon = Message.objects.filter(usage="greeting msg noon")
 msg_night = Message.objects.filter(usage="greeting msg night")
 msg_midnight = Message.objects.filter(usage="greeting msg midnight")
+
+
+def sendLineRobot(request):
+    msg = request.POST['inputMsg']
+    sendMsg(msg)
+
+def sendMsg(msg):
+    line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
+    users = Member.objects.all()
+    line_bot_api.push_message('Cb7328a260f74e17ab1ff8c1c4c8ef529', TextSendMessage(text=msg))
+    # line_bot_api.push_message('R7eea25b5394b5a2118d07d6cf5382f43', TextSendMessage(text=msg))
+    for user in users:
+        if user.lineid:
+            line_bot_api.push_message(user.lineid, TextSendMessage(text=msg))
+    return "ok"
+
+# Create your views here.
+# def userList(request):
+#     users=User.objects.all()
+#     return render(request, 'bandongo/user_list.html', {'users':users})
 
 
 def index_v2(request):
@@ -526,7 +554,7 @@ def emergencyPage(request):
     catalogs=Catalog.objects.filter(foodShop=shops[0])
     return render(request, 'bandongo/backend_emergency.html',{'shops': shops, 'catalogs': catalogs, 'schedule': schedule})
 
-@login_required(login_url='/backend/login/')
+
 def orderPage(request):
     checkExpire()
     try:
@@ -578,7 +606,6 @@ def orderPage(request):
     except ObjectDoesNotExist:
         return render(request, 'bandongo/backend_order.html',{'schedule': None})
 
-@login_required(login_url='/backend/login/')
 def orderDetailPage(request, id):
     checkExpire()
     try:
@@ -714,6 +741,11 @@ def editDrinkShopPage(request, id):
 def messagePage(request):
     messages=Message.objects.all()
     return render(request, 'bandongo/backend_message.html',{'messages': messages})
+    
+@login_required(login_url='/backend/login/')
+def instantMsg(request):
+    
+    return render(request, 'bandongo/backend_instantMsg.html')
 
 @login_required(login_url='/backend/login/')
 def wishPage(request):
@@ -778,6 +810,9 @@ def setSchedule(request):
     if nonFinish==0:
         schedule=Schedule.objects.create(name=request.POST["schedule_name"], food=bandon, drink=drink, date=dueDatetime)
         schedule.catalogs.set(Catalog.objects.filter(id__in=catalogs))
+        head = "<"+request.POST["schedule_name"].encode('utf-8')+">"
+        msg = head+"\n"+"吃:"+bandon.name.encode('utf-8')+"\n喝:"+drink.name.encode('utf-8')
+        sendMsg(msg)
         return HttpResponse("Registered Schedule Successfully")
     else:
         return HttpResponse("Another schedule is not finished.")
@@ -833,7 +868,6 @@ def finishSchedule(request):
         
         return HttpResponse("Finish Schedule Successfully")
 
-@login_required(login_url='/backend/login/')
 def foodArrive(request):
     checkExpire()
     schedule=Schedule.objects.get(id=request.POST["id"])
@@ -843,9 +877,9 @@ def foodArrive(request):
         schedule.foodArrived=True
         schedule.save();
         
+        sendMsg("便當到囉~")
         return HttpResponse("Bandon arrived.")
     
-@login_required(login_url='/backend/login/')
 def drinkArrive(request):
     checkExpire()
     schedule=Schedule.objects.get(id=request.POST["id"])
@@ -855,6 +889,7 @@ def drinkArrive(request):
         schedule.drinkArrived=True
         schedule.save();
         
+        sendMsg("飲料到囉~")
         return HttpResponse("Drink arrived.")
 
 @login_required(login_url='/backend/login/')
