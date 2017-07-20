@@ -125,6 +125,7 @@ urlpatterns = [
     url(r'^backend/deleteDrinkOrder$', views.deleteDrinkOrder),
     url(r'^backend/addFoodOrder$', views.addFoodOrder),
     url(r'^backend/addDrinkOrder$', views.addDrinkOrder),
+    url(r'^backend/editFoodOrder$', views.editFoodOrder),
     url(r'^backend/chuChienPay$', views.chuChienPay),
     
     url(r'^getCateMem$', views.getCateMem),

@@ -1,5 +1,6 @@
 var categories;
 var members;
+var catalogs;
 $( document ).ready(function() {
     var url = "/getCateMem";
     $.getJSON(url, function(res) {
@@ -25,6 +26,10 @@ $( document ).ready(function() {
         }
         $("#member-drink option:first").attr('selected', 'selected');
         $("#member-drink").selectpicker('refresh');
+    });
+    var url = "/getScheduleCatalogs";
+    $.getJSON(url, function(res) {
+        catalogs=res.catalogs;
     });
 });
 
@@ -153,4 +158,104 @@ function addDrinkOrder() {
             }
         }
     );
+}
+
+var editing=false;
+var preFood=-1;
+function editFood(id) {
+    if(!editing) {
+        editing=true;
+        var name=$("#foodName"+id).html();
+        var text='<select id="foodSelect'+id+'" onChange="postEditFood('+id+');">';
+        for(var i=0; i<catalogs.length; i++) {
+            if(catalogs[i].name==name) {
+                text+='<option value="'+i+'" selected>'+catalogs[i].name+'</option>';
+                preFood=i;
+            }
+            else {
+                text+='<option value="'+i+'">'+catalogs[i].name+'</option>';
+            }
+        }
+        text+='<option value="-1">cancel edit</option>';
+        text+='</select>';
+        $("#foodName"+id).html(text);
+    }
+}
+
+function postEditFood(id) {
+    if($("#foodSelect"+id).val()==-1) {
+        $("#foodName"+id).html(catalogs[preFood].name);
+        editing=false;
+    } else {
+        var cataInd=$("#foodSelect"+id).val();
+        $("#foodName"+id).html(catalogs[cataInd].name);
+        var price=catalogs[cataInd].price*$("#foodCount"+id).html();
+        $("#foodPrice"+id).html(price);
+        $.post("/backend/editFoodOrder",
+            {id: id, food: catalogs[cataInd].id, count: $("#foodCount"+id).html()},
+            function(response) {
+                if(response.err) {
+                    alert(response.err);
+                    editing=false;
+                } else {
+                    alert("edit finished");
+                    editing=false;
+                }
+            }
+        )
+    }
+}
+
+var preCount=-1;
+function editCount(id) {
+    if(!editing) {
+        editing=true;
+        var count=$("#foodCount"+id).html();
+        var text='<select id="foodCountSelect'+id+'" onChange="postEditFoodCount('+id+');">';
+        for(var i=1; i<6; i++) {
+            if(i==count) {
+                text+='<option value="'+i+'" selected>'+i+'</option>';
+                preCount=i;
+            }
+            else {
+                text+='<option value="'+i+'">'+i+'</option>';
+            }
+        }
+        text+='<option value="-1">cancel edit</option>';
+        text+='</select>';
+        $("#foodCount"+id).html(text);
+    }
+}
+
+function postEditFoodCount(id) {
+    if($("#foodCountSelect"+id).val()==-1) {
+        $("#foodCount"+id).html(preCount);
+        editing=false;
+    } else {
+        var name=$("#foodName"+id).html();
+        var cataInd=-1;
+        for(var i=0; i<catalogs.length; i++) {
+            if(catalogs[i].name==name) {
+                cataInd=i;
+                break
+            }
+        }
+        var count=$("#foodCountSelect"+id).val();
+        $("#foodCount"+id).html(count);
+        var price=catalogs[cataInd].price*count;
+        $("#foodPrice"+id).html(price);
+        $.post("/backend/editFoodOrder",
+            {id: id, food: catalogs[cataInd].id, count: count},
+            function(response) {
+                if(response.err) {
+                    alert(response.err);
+                    editing=false;
+                } else {
+                    alert("edit finished");
+                    editing=false;
+                }
+            }
+        )
+        editing=false;
+    }
 }

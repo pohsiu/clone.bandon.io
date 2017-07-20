@@ -50,9 +50,9 @@
                 <tr id="food{{order.id}}">
                     <td>{{ order.memberName.remark.name }}</td>
                     <td>{{ order.memberName.name }}</td>
-                	<td>{{ order.foodName.name }}</td>
-                    <td>{{ order.num }}</td>
-                    <td>{{ order.price }}</td>
+                	<td id="foodName{{order.id}}" style="cursor: pointer;" ondblclick="editFood({{order.id}});">{{ order.foodName.name }}</td>
+                    <td id="foodCount{{order.id}}" style="cursor: pointer;" ondblclick="editCount({{order.id}});">{{ order.num }}</td>
+                    <td id="foodPrice{{order.id}}">{{ order.price }}</td>
                     {% if not schedule.finish %}
                     <td><a onclick="deleteFoodOrder({{order.id}});"><span class="glyphicon glyphicon-remove" style="cursor: pointer;"></span></a></td>
                     {% endif %}

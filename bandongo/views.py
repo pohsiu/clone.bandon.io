@@ -26,12 +26,12 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 
 from django.db.models import Q
-import os
-import json
-import numpy as np
-import jieba
-import sys
-from gensim.models.doc2vec import Doc2Vec
+# import os
+# import json
+# import numpy as np
+# import jieba
+# import sys
+# from gensim.models.doc2vec import Doc2Vec
 
 # reload(sys)
 # sys.setdefaultencoding('utf-8')
@@ -1116,6 +1116,24 @@ def addDrinkOrder(request):
         return JsonResponse(response)
     else:
         return JsonResponse(None, safe=False)
+        
+@login_required(login_url='/backend/login/')
+def editFoodOrder(request):
+    order=FoodOrder.objects.filter(id=request.POST["id"])
+    food=Catalog.objects.filter(id=request.POST["food"])
+    count=int(request.POST["count"])
+    if len(order)==1 and len(food)==1:
+        if order[0].scheduleName.finish:
+            return JsonResponse({'err': 'Something wrong'})
+        else:
+            order[0].foodName=food[0]
+            order[0].num=count
+            order[0].price=food[0].price*order[0].num
+            order[0].save()
+            response={'err': None}
+            return JsonResponse(response)
+    else:
+        return JsonResponse({'err': 'Something wrong'})
 
 @login_required(login_url='/backend/login/')
 def chuChienPay(request):
