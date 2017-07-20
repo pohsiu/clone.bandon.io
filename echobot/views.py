@@ -36,44 +36,56 @@ def callback(request):
         for event in events:
             if isinstance(event, MessageEvent):
                 if isinstance(event.message, TextMessage):
-                    print type(event.message.text)
-                    inputMsg = event.message.text
-                    head = inputMsg[:4]
-                    head2 = inputMsg[4:6]
-                    compare1 = '我要註冊'.decode('utf-8')
-                    compare2 = '我是'.decode('utf-8')
-                    if(head == compare1 and  head2 == compare2):
-                        combineName = inputMsg[6:len(inputMsg)]
-                        allusers = Member.objects.all()
-                        lock = False
-                        print combineName
-                        for each in allusers:
-                        	each_combine = each.remark.name+each.name
-                        	print each_combine
-                        	if(each_combine == combineName):
-                        		lock = True
-                        		target = Member.objects.get(id=each.id)
-                        		target.lineid = str(event.source.user_id)
-                        		target.save()
-                        		print "成功"
-                        		break
-                        
-                        if(lock is False):
+                    if(str(event.source.type) == 'user'):
+                        print type(event.message.text)
+                         
+                        inputMsg = event.message.text
+                        head = inputMsg[:4]
+                        head2 = inputMsg[4:6]
+                        compare1 = '我要註冊'.decode('utf-8')
+                        compare2 = '我是'.decode('utf-8')
+                        if(head == compare1 and  head2 == compare2):
+                            combineName = inputMsg[6:len(inputMsg)]
+                            allusers = Member.objects.all()
+                            lock = False
+                            print combineName
+                            for each in allusers:
+                            	each_combine = each.remark.name+each.name
+                            # 	print each_combine
+                            	if(each_combine == combineName):
+                            		lock = True
+                            		target = Member.objects.get(id=each.id)
+                            		target.lineid = str(event.source.user_id)
+                            		target.save()
+                            		print "成功"
+                            		break
+                            
+                            if(lock is False):
+                                line_bot_api.reply_message(
+                                    event.reply_token,
+                                    TextSendMessage(text='註冊失敗，請再次檢查重新輸入')
+                                )
+                            else:
+                                line_bot_api.reply_message(
+                                    event.reply_token,
+                                    TextSendMessage(text='註冊成功，現在可以接收到最新消息囉^^')
+                                )
+                        elif(inputMsg == '文裕是不是白癡'.decode('utf-8')):
                             line_bot_api.reply_message(
                                 event.reply_token,
-                                TextSendMessage(text='註冊失敗，請再次檢查重新輸入')
+                                TextSendMessage(text="幹 馬子狗")
                             )
                         else:
+                            print "userfail"
                             line_bot_api.reply_message(
                                 event.reply_token,
-                                TextSendMessage(text='註冊成功，現在可以接收到最新消息囉^^')
+                                TextSendMessage(text="系統不會回復您任何訊息哦=)")
                             )
                     else:
+                        # print event.source.room_id
+                        # print event.source.group_id
                         print "fail"
-                        line_bot_api.reply_message(
-                            event.reply_token,
-                            TextSendMessage(text=event.message.text)
-                        )
+                        
                     
 
         return HttpResponse()

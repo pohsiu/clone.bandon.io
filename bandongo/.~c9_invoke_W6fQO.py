@@ -73,8 +73,6 @@ def sendLineRobot(request):
 def sendMsg(msg):
     line_bot_api = LineBotApi(settings.LINE_CHANNEL_ACCESS_TOKEN)
     users = Member.objects.all()
-    line_bot_api.push_message('Cb7328a260f74e17ab1ff8c1c4c8ef529', TextSendMessage(text=msg))
-    # line_bot_api.push_message('R7eea25b5394b5a2118d07d6cf5382f43', TextSendMessage(text=msg))
     for user in users:
         if user.lineid:
             line_bot_api.push_message(user.lineid, TextSendMessage(text=msg))
@@ -606,6 +604,7 @@ def orderPage(request):
     except ObjectDoesNotExist:
         return render(request, 'bandongo/backend_order.html',{'schedule': None})
 
+@login_required(login_url='/backend/login/')
 def orderDetailPage(request, id):
     checkExpire()
     try:

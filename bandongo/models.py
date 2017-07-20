@@ -37,7 +37,7 @@ class Savelog(models.Model):
     memberName = models.ForeignKey(Member, related_name='person') # not sure can operate
     money = models.IntegerField()
     tranDate = models.DateTimeField(default=timezone.now)
-    adminName = models.ForeignKey(Member, default='none', related_name='admin')
+    adminName = models.ForeignKey(Member, default=None, related_name='admin', null=True, on_delete=models.SET_NULL,)
     comment = models.CharField(max_length=50, blank=True)
     def __unicode__(self):
         return u'%s' % (self.memberName)

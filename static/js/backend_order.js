@@ -14,6 +14,7 @@ function finish() {
 
 function arrive(type) {
     var id=$("#id").html();
+    $('#'+type+'Arrived').prop("disabled", true);
     $.post(
         "/backend/"+type+"Arrive",
         {id: id},
