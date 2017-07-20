@@ -45,16 +45,20 @@
             </thead>
             <tbody id="food">
             {% for bag in foodBags %}
-            <tr id="foodBag{{forloop.counter}}"><td style="background-color:#D3D3D3 !important;" colspan="3">Bag {{ forloop.counter }}</td><td id="foodCount{{forloop.counter}}" style="background-color:#D3D3D3 !important;" colspan="3">{{ bag.num }}</td></tr>
+            <tr id="foodBag{{forloop.counter}}"><td style="background-color:#D3D3D3 !important;" colspan="3">Bag {{ forloop.counter }}</td><td id="foodBagCount{{forloop.counter}}" style="background-color:#D3D3D3 !important;" colspan="3">{{ bag.num }}</td></tr>
             	{% for order in bag.orders %}
                 <tr id="food{{order.id}}">
                     <td>{{ order.memberName.remark.name }}</td>
                     <td>{{ order.memberName.name }}</td>
-                	<td id="foodName{{order.id}}" style="cursor: pointer;" ondblclick="editFood({{order.id}});">{{ order.foodName.name }}</td>
-                    <td id="foodCount{{order.id}}" style="cursor: pointer;" ondblclick="editCount({{order.id}});">{{ order.num }}</td>
-                    <td id="foodPrice{{order.id}}">{{ order.price }}</td>
                     {% if not schedule.finish %}
+                	<td id="foodName{{order.id}}" style="cursor: pointer;" ondblclick="editFood({{order.id}});">{{ order.foodName.name }}</td>
+                    <td id="foodCount{{order.id}}" style="cursor: pointer;" ondblclick="editFoodCount({{order.id}});">{{ order.num }}</td>
+                    <td id="foodPrice{{order.id}}">{{ order.price }}</td>
                     <td><a onclick="deleteFoodOrder({{order.id}});"><span class="glyphicon glyphicon-remove" style="cursor: pointer;"></span></a></td>
+                    {% else %}
+                    <td>{{ order.foodName.name }}</td>
+                    <td>{{ order.num }}</td>
+                    <td>{{ order.price }}</td>
                     {% endif %}
                 </tr>
                 {% endfor %}
@@ -85,17 +89,22 @@
             </thead>
             <tbody id="drink">
             {% for bag in drinkBags %}
-            <tr id="drinkBag{{forloop.counter}}"><td style="background-color:#D3D3D3 !important;" colspan="4">Bag {{ forloop.counter }}</td><td id="drinkCount{{forloop.counter}}" style="background-color:#D3D3D3 !important;" colspan="3">{{ bag.num }}</td></tr>
+            <tr id="drinkBag{{forloop.counter}}"><td style="background-color:#D3D3D3 !important;" colspan="4">Bag {{ forloop.counter }}</td><td id="drinkBagCount{{forloop.counter}}" style="background-color:#D3D3D3 !important;" colspan="3">{{ bag.num }}</td></tr>
                 {% for order in bag.orders %}
                 <tr id="drink{{order.id}}">
                     <td>{{ order.memberName.remark.name }}</td>
                     <td>{{ order.memberName.name }}</td>
-                    <td>{{ order.drinking }}</td>
-                    <td>{{ order.remark }}</td>
-                    <td>{{ order.num }}</td>
-                    <td>{{ order.price }}</td>
                     {% if not schedule.finish %}
+                    <td id="drinkName{{order.id}}" style="cursor: pointer;" ondblclick="editDrink({{order.id}});">{{ order.drinking }}</td>
+                    <td id="drinkRemark{{order.id}}" style="cursor: pointer;" ondblclick="editDrinkRemark({{order.id}});"{{ order.remark }}</td>
+                    <td id="drinkCount{{order.id}}" style="cursor: pointer;" ondblclick="editDrinkCount({{order.id}});">{{ order.num }}</td>
+                    <td id="drinkPrice{{order.id}}" style="cursor: pointer;" ondblclick="editDrinkPrice({{order.id}});">{{ order.price }}</td>
                     <td><a onclick="deleteDrinkOrder({{order.id}});"><span class="glyphicon glyphicon-remove" style="cursor: pointer;"></span></a></td>
+                    {% else %}
+                    <td id="drinkName{{order.id}}">{{ order.drinking }}</td>
+                    <td>{{ order.remark }}</td>
+                    <td id="drinkCount{{order.id}}">{{ order.num }}</td>
+                    <td id="drinkPrice{{order.id}}">{{ order.price }}</td>
                     {% endif %}
                 </tr>
                 {% endfor %}

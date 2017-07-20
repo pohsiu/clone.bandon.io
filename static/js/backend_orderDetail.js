@@ -41,9 +41,9 @@ function deleteFoodOrder(id) {
             function(response) {
                 if(response) {
                     $("#food"+id).remove();
-                    var count=$("#foodCount"+response.bag).html();
+                    var count=$("#foodBagCount"+response.bag).html();
                     count=parseInt(count)-response.count;
-                    $("#foodCount"+response.bag).html(count);
+                    $("#foodBagCount"+response.bag).html(count);
                     
                     var price=$("#foodPrice").html();
                     price=parseInt(price)-response.price;
@@ -105,9 +105,9 @@ function addFoodOrder() {
                     $("#food").append(row);
                 }
                 
-                var count=$("#foodCount"+response.bag).html();
+                var count=$("#foodBagCount"+response.bag).html();
                 count=parseInt(count)+response.count;
-                $("#foodCount"+response.bag).html(count);
+                $("#foodBagCount"+response.bag).html(count);
                 
                 var price=$("#foodPrice").html();
                 price=parseInt(price)+response.price;
@@ -191,23 +191,12 @@ function postEditFood(id) {
         $("#foodName"+id).html(catalogs[cataInd].name);
         var price=catalogs[cataInd].price*$("#foodCount"+id).html();
         $("#foodPrice"+id).html(price);
-        $.post("/backend/editFoodOrder",
-            {id: id, food: catalogs[cataInd].id, count: $("#foodCount"+id).html()},
-            function(response) {
-                if(response.err) {
-                    alert(response.err);
-                    editing=false;
-                } else {
-                    alert("edit finished");
-                    editing=false;
-                }
-            }
-        )
+        postEdit(id, catalogs[cataInd].id, $("#foodCount"+id).html());
     }
 }
 
 var preCount=-1;
-function editCount(id) {
+function editFoodCount(id) {
     if(!editing) {
         editing=true;
         var count=$("#foodCount"+id).html();
@@ -244,18 +233,131 @@ function postEditFoodCount(id) {
         $("#foodCount"+id).html(count);
         var price=catalogs[cataInd].price*count;
         $("#foodPrice"+id).html(price);
-        $.post("/backend/editFoodOrder",
-            {id: id, food: catalogs[cataInd].id, count: count},
-            function(response) {
-                if(response.err) {
-                    alert(response.err);
-                    editing=false;
-                } else {
-                    alert("edit finished");
-                    editing=false;
-                }
-            }
-        )
-        editing=false;
+        var diff=count-preCount;
+        var oldTotal=parseInt($("#foodCount").html());
+        $("#foodCount").html(oldTotal+diff);
+        postEdit(id, catalogs[cataInd].id, count);
     }
+}
+
+function postEdit(id, food, count) {
+    $.post("/backend/editFoodOrder",
+        {id: id, food: food, count: count},
+        function(response) {
+            if(response.err) {
+                alert(response.err);
+                editing=false;
+            } else {
+                for(var i=1; i<4; i++) {
+                    $("#foodBagCount"+i).html(response.bagCount[i-1]);
+                }
+                $("#foodPrice").html(response.price)
+                alert("edit finished");
+                editing=false;
+            }
+        }
+    )
+}
+
+function editDrink(id) {
+    if(!editing) {
+        editing=true;
+        var name=$("#drinkName"+id).html();
+        var text='<input type="text" id="drinkText'+id+'" value="'+name+'">';
+        $("#drinkName"+id).html(text);
+        $("#drinkText"+id).on('keyup', function (e) {
+            if (e.keyCode == 13) {
+                var drink=$("#drinkText"+id).val();
+                $("#drinkName"+id).html(drink);
+                postEditDrink(id);
+            }
+        });
+    }
+}
+
+var preDrinkCount=-1;
+function editDrinkCount(id) {
+    if(!editing) {
+        editing=true;
+        var count=$("#drinkCount"+id).html();
+        var text='<select id="drinkCountSelect'+id+'" onChange="postEditDrinkCount('+id+');">';
+        for(var i=1; i<6; i++) {
+            if(i==count) {
+                text+='<option value="'+i+'" selected>'+i+'</option>';
+                preDrinkCount=i;
+            }
+            else {
+                text+='<option value="'+i+'">'+i+'</option>';
+            }
+        }
+        text+='<option value="-1">cancel edit</option>';
+        text+='</select>';
+        $("#drinkCount"+id).html(text);
+    }
+}
+
+function postEditDrinkCount(id) {
+    if($("#drinkCountSelect"+id).val()==-1) {
+        $("#drinkCount"+id).html(preDrinkCount);
+        editing=false;
+    } else {
+        var count=$("#drinkCountSelect"+id).val();
+        $("#drinkCount"+id).html(count);
+        postEditDrink(id)
+    }
+}
+
+function editDrinkRemark(id) {
+    if(!editing) {
+        editing=true;
+        var remark=$("#drinkRemark"+id).html();
+        var text='<input type="text" id="drinkRemarkText'+id+'" value="'+remark+'">';
+        $("#drinkRemark"+id).html(text);
+        $("#drinkRemarkText"+id).on('keyup', function (e) {
+            if (e.keyCode == 13) {
+                var remark=$("#drinkRemarkText"+id).val();
+                $("#drinkRemark"+id).html(remark);
+                postEditDrink(id);
+            }
+        });
+    }
+}
+
+function editDrinkPrice(id) {
+    if(!editing) {
+        editing=true;
+        var price=$("#drinkPrice"+id).html();
+        var text='<input type="text" id="drinkPriceText'+id+'" value="'+price+'">';
+        $("#drinkPrice"+id).html(text);
+        $("#drinkPriceText"+id).on('keyup', function (e) {
+            if (e.keyCode == 13) {
+                var remark=$("#drinkPriceText"+id).val();
+                $("#drinkPrice"+id).html(remark);
+                postEditDrink(id);
+            }
+        });
+    }
+}
+
+function postEditDrink(id) {
+    var drink=$("#drinkName"+id).html();
+    var remark=$("#drinkRemark"+id).html();
+    var count=$("#drinkCount"+id).html();
+    var price=$("#drinkPrice"+id).html();
+    $.post("/backend/editDrinkOrder",
+        {id: id, drink: drink, count: count, remark: remark, price: price},
+        function(response) {
+            if(response.err) {
+                alert(response.err);
+                editing=false;
+            } else {
+                for(var i=1; i<4; i++) {
+                    $("#drinkBagCount"+i).html(response.bagCount[i-1]);
+                }
+                $("#drinkPrice").html(response.price)
+                alert("edit finished");
+                editing=false;
+            }
+        }
+    )
 }

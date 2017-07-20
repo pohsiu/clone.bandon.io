@@ -26,7 +26,7 @@ from django.core.files.storage import default_storage
 from django.core.files.base import ContentFile
 
 from django.db.models import Q
-# import os
+import os
 # import json
 # import numpy as np
 # import jieba
@@ -1159,17 +1159,48 @@ def editFoodOrder(request):
     count=int(request.POST["count"])
     if len(order)==1 and len(food)==1:
         if order[0].scheduleName.finish:
-            return JsonResponse({'err': 'Something wrong'})
+            return JsonResponse({'err': 'Schedule is finished.'})
         else:
             order[0].foodName=food[0]
             order[0].num=count
             order[0].price=food[0].price*order[0].num
             order[0].save()
-            response={'err': None}
+            
+            response={'err': None, 'bagCount': [], 'price':0}
+            for i in range(3):
+                response["bagCount"].append(FoodOrder.objects.filter(scheduleName=order[0].scheduleName, memberName__remark__bag=(i+1)).aggregate(count_total=Sum('num'))['count_total'])
+            
+            response["price"]=FoodOrder.objects.filter(scheduleName=order[0].scheduleName).aggregate(price_total=Sum('price'))['price_total']
+            
             return JsonResponse(response)
     else:
         return JsonResponse({'err': 'Something wrong'})
 
+@login_required(login_url='/backend/login/')
+def editDrinkOrder(request):
+    order=DrinkOrder.objects.filter(id=request.POST["id"])
+    drink=request.POST["drink"]
+    count=int(request.POST["count"])
+    remark=request.POST["remark"]
+    price=request.POST["price"]
+    if len(order)==1:
+        if order[0].scheduleName.finish:
+            return JsonResponse({'err': 'Schedule is finished.'})
+        else:
+            order[0].drinking=drink
+            order[0].num=count
+            order[0].price=price
+            order[0].remark=remark
+            order[0].save()
+            response={'err': None, 'bagCount': [], 'price':0}
+            for i in range(3):
+                response["bagCount"].append(DrinkOrder.objects.filter(scheduleName=order[0].scheduleName, memberName__remark__bag=(i+1)).aggregate(count_total=Sum('num'))['count_total'])
+            
+            response["price"]=DrinkOrder.objects.filter(scheduleName=order[0].scheduleName).aggregate(price_total=Sum('price'))['price_total']
+            return JsonResponse(response)
+    else:
+        return JsonResponse({'err': 'Something wrong'})
+        
 @login_required(login_url='/backend/login/')
 def chuChienPay(request):
     memberR=Member.objects.get(id=request.POST["memberReceive"])
