@@ -30,6 +30,17 @@
             {% endfor %}
         </select>
     </div>
+    <div><h3>Set Admin</h3></div>
+    {% if member.auth == "admin" %}
+        <div class="checkbox">
+            <label><input id="admin" type="checkbox" checked>admin</label>
+        </div>
+    {% else %}
+        <div class="checkbox">
+            <label><input id="admin" type="checkbox">admin</label>
+        </div>
+    {% endif%}
+    
     <div style="margin-top: 20px">
         <button class="btn btn-default" onclick="submit();">Submit</button>
         <button class="btn btn-default" onclick="deleteMem();">Delete</button>

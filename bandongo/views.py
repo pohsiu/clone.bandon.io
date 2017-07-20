@@ -905,6 +905,10 @@ def editMember(request):
     member.phone=request.POST["phone"]
     member.email=request.POST["email"]
     member.remark=Category.objects.get(id=request.POST["category"])
+    if request.POST["admin"]=="true":
+        member.auth="admin"
+    else:
+        member.auth="normal"
     member.save()
     return HttpResponse("Edit Member Successfully")
 

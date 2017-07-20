@@ -4,9 +4,16 @@ function submit() {
     var phone=$("#phone").val();
     var email=$("#email").val();
     var category=$("#category").val();
+    var admin;
+    if($('#admin').prop('checked')) {
+        admin=true;
+    }
+    else {
+        admin=false
+    }
     $.post(
         "/backend/editMember",
-        {id:id, name: name, phone: phone, email: email, category: category},
+        {id:id, name: name, phone: phone, email: email, category: category, admin: admin},
         function(response) {
           alert(response);
         }
