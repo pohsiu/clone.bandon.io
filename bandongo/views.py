@@ -27,7 +27,7 @@ from django.core.files.base import ContentFile
 
 from django.db.models import Q
 import os
-# import json
+import json
 # import numpy as np
 # import jieba
 # import sys
@@ -37,7 +37,7 @@ import os
 from linebot import LineBotApi
 from linebot.models import TextSendMessage
 from linebot.exceptions import LineBotApiError
-
+import json
 
 
 # reload(sys)
