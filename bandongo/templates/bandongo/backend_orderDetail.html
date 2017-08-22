@@ -96,7 +96,7 @@
                     <td>{{ order.memberName.name }}</td>
                     {% if not schedule.finish %}
                     <td id="drinkName{{order.id}}" style="cursor: pointer;" ondblclick="editDrink({{order.id}});">{{ order.drinking }}</td>
-                    <td id="drinkRemark{{order.id}}" style="cursor: pointer;" ondblclick="editDrinkRemark({{order.id}});"{{ order.remark }}</td>
+                    <td id="drinkRemark{{order.id}}" style="cursor: pointer;" ondblclick="editDrinkRemark({{order.id}});">{{ order.remark }}</td>
                     <td id="drinkCount{{order.id}}" style="cursor: pointer;" ondblclick="editDrinkCount({{order.id}});">{{ order.num }}</td>
                     <td id="drinkPrice{{order.id}}" style="cursor: pointer;" ondblclick="editDrinkPrice({{order.id}});">{{ order.price }}</td>
                     <td><a onclick="deleteDrinkOrder({{order.id}});"><span class="glyphicon glyphicon-remove" style="cursor: pointer;"></span></a></td>

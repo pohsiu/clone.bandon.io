@@ -52,7 +52,14 @@ function orderForm() {
           "/frontend/check_order",
           {schedule_id:schedule_id,member_id:member_id},
           function(response) {
-              if(response == "both"){
+              if(response == "insufficient"){
+                  bootbox.alert({
+                    title:"<h3 style='color:#0C182D; font-weight:bold;'>請儲值</h3>",
+                    message: "<h4>您的帳戶餘額不足，請儲值後再進行點餐</h4>",
+                    backdrop: true
+                    });
+              }
+              else if(response == "both"){
                   bootbox.confirm({
                         title: "訂餐確認",
                         message: "您已經有訂飲料跟便當了，確定加點嗎?",
@@ -135,7 +142,7 @@ function orderForm() {
         
         return false;
     }
-function post(){
+    function post(){
         var foodlist=[]
         for (var i = 1; i <= foodlen; i++) {
             catalog_id = document.forms["orderform"]["catalog-id"+i].value;
@@ -171,11 +178,11 @@ function post(){
                 });
             }
         );
-        }
+    }
     function recover(){
-    setTimeout(function(){
-        btn.prop("disabled", false);
-    }, 300);
-}
+        setTimeout(function(){
+            btn.prop("disabled", false);
+        }, 300);
+    }
     
 }

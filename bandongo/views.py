@@ -37,7 +37,7 @@ import json
 from linebot import LineBotApi
 from linebot.models import TextSendMessage
 from linebot.exceptions import LineBotApiError
-import json
+
 
 
 # reload(sys)
@@ -172,6 +172,9 @@ def check_order(request):
     member_id = request.POST['member_id']
     foodorders = FoodOrder.objects.filter(scheduleName__id=schedule_id,memberName__id=member_id)
     drinkorders = DrinkOrder.objects.filter(scheduleName__id=schedule_id,memberName__id=member_id)
+    savings = Member.objects.get(id=member_id).saving
+    if savings < -500:
+        return HttpResponse("insufficient")
     if foodorders.exists() and (drinkorders.exists()):
         return HttpResponse("both")
     if (not foodorders.exists()) and drinkorders.exists():

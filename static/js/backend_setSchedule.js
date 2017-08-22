@@ -19,6 +19,7 @@ $( document ).ready(function() {
     });
 });
 function submit() {
+    $('#submit').prop("disabled", true);
     var name=$("#schedule_name").val();
     var bandon=shops[$("#bandon").val()].id;
     var drink=$("#drink").val();

@@ -55,7 +55,9 @@
         
         <form id="orderForm" name="orderform" onsubmit="return orderForm()" action="" method="" class="post-form" accept-charset="utf-8">
             {% if list_food.0.foodShop != "休" %}
-                
+                <input type="hidden" name="member_id" value="{{ de_member.id }}"/>
+                <input type="hidden" name="food-len" value="{{ list_food|length }}"/>
+                <input type="hidden" name="schedule_id" value="{{schedules.0.id}}"/>
                 <table class="table">
                     <thead>
                     <!--<tr>-->
@@ -93,9 +95,6 @@
                     <th class="col-sm-4" ><h4>數量</h4></th>
                     
                 </tr>
-                <input type="hidden" name="member_id" value="{{ de_member.id }}"/>
-                <input type="hidden" name="food-len" value="{{ list_food|length }}"/>
-                <input type="hidden" name="schedule_id" value="{{schedules.0.id}}"/>
                 {% for foods in list_food %}
                     <tr>
                         <td class="col-sm-3">
